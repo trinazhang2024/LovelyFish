@@ -1,0 +1,178 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+li{
+  list-style: none;
+}
+a{
+  text-decoration: none;
+}
+/* 以上为准备工作 */
+
+body{
+  background-color: rgb(183, 246, 198);
+  color: #333;
+}
+
+/* 导航 */
+.bg-body-tertiary{
+  background-color: transparent !important;
+}
+
+.navbar-collapse{
+  flex-grow: 0;
+}
+/* 精品推荐区域 */
+.recommend{
+  display: flex;
+  margin-top: 11px;
+  height: 60px;
+  background-color: #fff;
+  line-height: 60px;
+  box-shadow: 0px 1px 2px 0px rgba(211,211,211,0.5);
+}
+
+.recommend h3{
+  font-weight: 400;
+  font-size: 18px;
+  color:#00a4ff;
+  line-height: 60px;
+}
+.recommend ul{
+  flex: 1;
+  display: flex;
+}
+
+.recommend ul li a{
+  padding: 0 24px;
+  border-right: 1px solid #e0e0e0;
+  font-size: 18px;
+}
+
+.recommend ul li:last-child a{
+  border-right: 0;
+}
+/* 轮播图 <768 图片高度250； >=768 图片高度400； >=900 图片高度500；*/
+/* 响应式用媒体查询 */
+@media (max-width:768px){
+  .carousel-item{
+    height: 250px;
+  }
+}
+
+@media (min-width:768px){
+  .carousel-item{
+    height: 400px;
+  }
+}
+
+@media (min-width:900px){
+  .carousel-item{
+    height: 500px;
+  }
+}
+.carousel-item{
+  /* height: 500px; */
+  background-size: cover;
+  background-position: center 0;
+}
+
+.carousel-item:nth-child(1){
+  background-image: url(../assets/uploads/banner_1.jpg);
+}
+.carousel-item:nth-child(2){
+  background-image: url(../assets/uploads/banner_2.jpg);
+}
+.carousel-item:nth-child(3){
+  background-image: url(../assets/uploads/banner_3.jpg);
+}
+
+.carousel-item:nth-child(4){
+  background-image: url(../assets/uploads/banner_4.jpg);
+}
+
+/* 限时折扣区左面 新到产品右面 */
+.discountnew{
+  /* margin-top: 11px; */
+  display: flex;
+  justify-content: space-between;
+  /* text-align: center; */
+  
+}
+
+.discountnew .left{
+  width: 791px;
+  height: 500px;
+  background-color: pink;
+  text-align: center;
+}
+
+.discountnew .right{
+  width: 791px;
+  height: 500px;
+  background-color: blue;
+  text-align: center;
+}
+
+/* 左右公用类 */
+.discountnew h2{
+  margin-top: 100px;
+  font-weight: 700;
+  font-size: 50px;
+  color: #ffff00;
+}
+
+.discountnew h3{
+  margin-top: 15px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.discountnew .button{
+  display: inline-block;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: 700;
+  width: 280px;
+  height: 80px;
+  line-height: 80px;
+  background-color: #ffff00;
+  border-radius: 50px;
+}
+
+
+
+
+
+/* 产品类别区域:
+视口宽度>992一行排4个，col-lg-3
+视口宽度>768一行排2个，col-md-6 */
+.product{
+  margin-top: 60px;
+  /* text-align: center; */
+}
+
+/* 公共类以下三个 不要带上父级 */
+.title{
+  display: flex;
+  justify-content:space-between;
+}
+
+.title h3{
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.title .more{
+  font-size: 14px;
+  color: #999;
+}
+
+.row div{
+  margin-bottom: 10px;
+  height: 500px;
+  /* background-color: pink; */
+}
