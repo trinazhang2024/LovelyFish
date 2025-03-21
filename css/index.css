@@ -97,7 +97,7 @@ body{
 .discountnew{
   /* margin-top: 11px; */
   display: flex;
-  justify-content: space-between;
+  justify-content:space-around;
   /* text-align: center; */
   
 }

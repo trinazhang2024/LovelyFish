@@ -1,0 +1,45 @@
+.discountnew {
+  display: flex;
+  justify-content: space-between;
+}
+
+.discountnew .left,
+.discountnew .right {
+  width: 791px;
+  height: 500px;
+  text-align: center;
+}
+
+.discountnew .left {
+  background-color: pink;
+}
+
+.discountnew .right {
+  background-color: blue;
+}
+
+.discountnew h2 {
+  margin-top: 100px;
+  font-weight: 700;
+  font-size: 50px;
+  color: #ffff00;
+}
+
+.discountnew h3 {
+  margin-top: 15px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.discountnew .button {
+  display: inline-block;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: 700;
+  width: 280px;
+  height: 80px;
+  line-height: 80px;
+  background-color: #ffff00;
+  border-radius: 50px;
+}

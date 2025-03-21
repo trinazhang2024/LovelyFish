@@ -1,0 +1,7 @@
+.bg-body-tertiary {
+  background-color: transparent !important;
+}
+
+.navbar-collapse {
+  flex-grow: 0;
+}
