@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import Home from "./pages/Home";
 import Products from './pages/Products';
-import ProductDetail from './pages/ProductDetail'; // 引入动态路由组件
+import ProductDetail from './pages/ProductDetail/ProductDetail'; // 引入动态路由组件
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 
