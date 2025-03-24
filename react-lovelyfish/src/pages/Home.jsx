@@ -11,7 +11,8 @@ function Home() {
             <Carousel />
             <DiscountNew />
             <Recommend />
-            <ProductList products={productsByCategory} /> {/* 传递产品数据 */}
+            {/* 传递 limit={true}，表示限制显示4个产品 */}
+            <ProductList products={productsByCategory} limit={true} />
         </div>
     );
 }

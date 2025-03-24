@@ -5,7 +5,7 @@ import productsByCategory from '../data/data'; // 引入产品数据
 const Products = () => {
   return (
     <div className="container">
-      <h1>所有产品</h1>
+      <h1>All the Products</h1>
       <ProductList products={productsByCategory} /> {/* 传递产品数据 */}
     </div>
   );
