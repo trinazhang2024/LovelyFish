@@ -22,3 +22,28 @@
   background-color: #f8f9fa;
   color: #00a4ff;
 }
+
+/* 搜索框 */
+.navbar .form-control {
+  min-width: 250px;
+  border-radius: 20px;
+  padding: 8px 20px;
+}
+
+.navbar .btn-outline-primary {
+  border-radius: 20px;
+  margin-left: 5px;
+  padding: 8px 20px;
+}
+
+/* 移动端适配 */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    padding-top: 15px;
+  }
+  
+  .navbar .form-control {
+    margin-top: 10px;
+    min-width: 100%;
+  }
+}

@@ -1,10 +1,12 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useCart } from '../../contexts/CartContext'; // 新增
 import productsByCategory from '../../data/data'; // 引入数据源
 import './ProductDetail.css'; // 引入样式文件
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const {dispatch} = useCart(); // 新增
 
   // 从数据源中查找当前产品
   let product = null;
@@ -24,6 +26,19 @@ const ProductDetail = () => {
       </div>
     );
   }
+
+  const addToCart = () => { // 新增函数
+    dispatch({ 
+      type: 'ADD_ITEM', 
+      product: {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image
+      }
+    });
+    alert(`${product.name} 已添加到购物车`);
+  };
 
   return (
     <div className="product-detail">
@@ -45,7 +60,7 @@ const ProductDetail = () => {
         <div className="product-info-container">
           <h1 className="product-title">{product.name}</h1>
           <p className="product-price">${product.price}</p>
-          <button className="buy-button">Add to Cart</button>
+          <button className="buy-button" onClick={addToCart}>Add to Cart</button>
           <div className="product-description">
             <h2>Description</h2>
             <p>{product.description}</p>

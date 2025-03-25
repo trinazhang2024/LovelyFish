@@ -1,8 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React,{ useState } from "react";
+import { Link,useNavigate } from "react-router-dom";
+import CartIcon from '../Cart/CartIcon';
 import './Navbar.css'; // 引入 Navbar 的样式
 
 function Navbar() {
+    const [searchQuery,setSearchQuery] = useState("")
+    const navigate = useNavigate()
+    const handleSearch = (e)=>{
+        e.preventDefault();
+        if(searchQuery.trim()){
+            navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+            setSearchQuery("");
+        }
+    }
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top">
             <div className="container">
@@ -16,6 +26,7 @@ function Navbar() {
                         <li className="nav-item">
                             <Link className="nav-link active" to="/">Home</Link>
                         </li>
+                        {/* 产品分类下拉菜单 */}
                         <li className="nav-item dropdown">
                             <Link className="nav-link dropdown-toggle" to="/products" role="button" data-bs-toggle="dropdown" aria-expanded="false">产品列表</Link>
                             <ul className="dropdown-menu">
@@ -50,12 +61,14 @@ function Navbar() {
                             <Link className="nav-link" to="/contact">Contact Us</Link>
                         </li>
                     </ul>
-                    <form className="d-flex">
-                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button className="btn btn-outline-success" type="submit">Search</button>
+                    {/* 搜索表单 */}
+                    <form className="d-flex" onSubmit={handleSearch}>
+                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
+                        <button className="btn btn-outline-success" type="submit" disabled={!searchQuery.trim()}>Search</button>
                     </form>
                 </div>
             </div>
+            <CartIcon />
         </nav>
     );
 }
