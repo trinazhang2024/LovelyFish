@@ -49,7 +49,7 @@ function Navbar() {
                         </li>
                                                            
                         <li className="nav-item">
-                            <Link className="nav-link" to="/new">新到产品</Link>
+                            <Link className="nav-link" to="/new-arrivals">新到产品</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/discount">限时折扣</Link>

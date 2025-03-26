@@ -4,6 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import Home from "./pages/Home";
 import Products from './pages/Products';
+import NewArrivals from './pages/NewArrivals/NewArrivals';
 import ProductDetail from './pages/ProductDetail/ProductDetail'; // 引入动态路由组件
 import ProductCategoryPage from './pages/ProductCategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
@@ -11,6 +12,7 @@ import { CartProvider } from './contexts/CartContext';
 import CartPage from './pages/Cart/CartPage'
 import CheckoutPage from './pages/Cart/Checkout'
 import PaymentConfirmation from './pages/Cart/PaymentConfirmation'
+import OrderConfirmation from './pages/Cart/OrderConfirmation'
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 
@@ -30,6 +32,7 @@ const App = () => {
               <Route path="/search" element={<SearchResultsPage />} />
               <Route path="/products/:id" element={<ProductDetail/>} />
               <Route path="/products" element={<Products/>} />
+              <Route path="/new-arrivals" element={<NewArrivals/>} />
               {/* 支持价格+瓦数排序的分类 */}
               <Route
                 path="/products/filters"
@@ -53,6 +56,7 @@ const App = () => {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/payment-confirmation" element={<PaymentConfirmation />} />
+              <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
               <Route path="/about" element={<About/>} />
               <Route path="/contact" element={<Contact/>} />

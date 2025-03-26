@@ -14,8 +14,9 @@ import {
 import { BsUpload, BsCurrencyDollar } from 'react-icons/bs';
 
 export default function CheckoutPage() {
-  const { cart, dispatch } = useCart();
   const navigate = useNavigate();
+  const { cart, dispatch } = useCart();
+  
 
   // 计算总金额
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -43,9 +44,9 @@ export default function CheckoutPage() {
               <Alert variant="warning" className="mt-3">
                 <strong>Bank Transfer Details:</strong>
                 <ul className="mt-2 mb-0">
-                  <li>Bank Name: YOUR BANK NAME</li>
+                  <li>Bank Name: LovelyFish</li>
                   <li>Account Number: 1234 5678 9012</li>
-                  <li>Account Holder: YOUR NAME</li>
+                  <li>Account Holder: Trina Zhang</li>
                   <li>Amount: <strong>${total.toFixed(2)}</strong></li>
                 </ul>
               </Alert>

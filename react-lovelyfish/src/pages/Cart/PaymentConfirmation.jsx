@@ -7,6 +7,7 @@ import {
   Alert
 } from 'react-bootstrap';
 import { BsCheckCircleFill, BsCloudUpload } from 'react-icons/bs';
+import { Navigate } from 'react-router-dom';
 
 export default function PaymentConfirmation() {
   const [file, setFile] = useState(null);
@@ -84,6 +85,7 @@ export default function PaymentConfirmation() {
               size="lg"
               className="w-100 py-2"
               disabled={!file || !email}
+              onClick={()=>Navigate('./order-confirmation')}
             >
               Submit Proof
             </Button>

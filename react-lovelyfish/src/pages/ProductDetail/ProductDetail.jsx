@@ -2,30 +2,25 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext'; // 新增
 import productsByCategory from '../../data/data'; // 引入数据源
+import newProducts from '../../data/newProducts' ;
 import './ProductDetail.css'; // 引入样式文件
 
 const ProductDetail = () => {
   const { id } = useParams();
   const {dispatch} = useCart(); // 新增
 
-  // 从数据源中查找当前产品
-  let product = null;
-  for (const category of productsByCategory) {
-    product = category.products.find((p) => p.id === parseInt(id));
-    if (product) break;
+  // 从数据源中查找当前产品 合并搜索范围：常规产品 + 新品
+  const allProducts = [
+    ...productsByCategory.flatMap(c => c.products),
+    ...newProducts
+  ];
+
+  const product = allProducts.find(p => p.id === parseInt(id));
+
+  if (!product) {
+    return <div>Product Not Found</div>;
   }
 
-  // 如果未找到产品，显示错误信息
-  if (!product) {
-    return (
-      <div className="product-detail">
-        <h1>Product Not Found</h1>
-        <Link to="/products" className="back-button">
-          Back to Products
-        </Link>
-      </div>
-    );
-  }
 
   const addToCart = () => { // 新增函数
     dispatch({ 
