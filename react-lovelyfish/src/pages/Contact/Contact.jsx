@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './Contact.css'; // 引入样式文件
+import './Contact.css';
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaUser, FaPaperPlane } from 'react-icons/fa';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -18,62 +19,65 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`感谢您的留言，${formData.name}！我们会尽快与您联系。`);
-    setFormData({ name: '', email: '', message: '' }); // 清空表单
+    alert(`Thanks for your messages，${formData.name}！We will contact you as soon as possibl.`);
+    setFormData({ name: '', email: '', message: '' });
   };
 
   return (
     <div className="contact-container">
-      <h1 className="contact-title">....</h1>
+      <h1 className="contact-title">Contact Us</h1>
 
-      {/* 联系方式 */}
+      {/* Contact Us*/}
       <section className="contact-section">
-        <h2 className="section-title">联系方式</h2>
+        <h2 className="section-title">Contact Info</h2>
         <ul className="contact-info">
-          <li>电话: +86 123 4567 890</li>
-          <li>邮箱: info@lovelyfish.com</li>
-          <li>地址: 中国北京市朝阳区渔具大道 123 号</li>
+          <li><FaPhoneAlt /> Phone: +64 221932432</li>
+          <li><FaEnvelope /> Email: lovelyfish@yahoo.com</li>
+          <li><FaMapMarkerAlt /> Address: Massey, west Auckland, New Zealand 0614</li>
         </ul>
       </section>
 
-      {/* 联系表单 */}
+      {/* Contact Form */}
       <section className="contact-section">
-        <h2 className="section-title">发送消息</h2>
+        <h2 className="section-title">Send a Message</h2>
         <form className="contact-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">姓名</label>
+            <label htmlFor="name"><FaUser /> Name</label>
             <input
               type="text"
               id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
+              placeholder="Please input your name here."
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="email">邮箱</label>
+            <label htmlFor="email"><FaEnvelope />Email</label>
             <input
               type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Please input your email address here."
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="message">留言</label>
+            <label htmlFor="message"><FaPaperPlane />Message</label>
             <textarea
               id="message"
               name="message"
               value={formData.message}
               onChange={handleChange}
+              placeholder="Please leave your message here."
               required
             />
           </div>
           <button type="submit" className="submit-button">
-            提交
+            Submit
           </button>
         </form>
       </section>

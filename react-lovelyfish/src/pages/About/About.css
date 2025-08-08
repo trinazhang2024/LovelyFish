@@ -1,74 +1,86 @@
-/* About 页面容器 */
 .about-container {
-  padding: 20px;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
+  padding: 2rem;
+  background-color: #f4faff;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
 }
 
-/* 页面标题 */
 .about-title {
   text-align: center;
-  font-size: 36px;
-  color: #333;
-  margin-bottom: 40px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0066cc;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #0066cc;
+  padding-bottom: 0.5rem;
 }
 
-/* 每个部分的样式 */
 .about-section {
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
 }
 
-.section-title {
-  font-size: 24px;
-  color: #00a4ff;
-  margin-bottom: 20px;
+.about-container .section-title {
+  font-size: 1.8rem;
+  color: #004d99;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  position: relative;
+  border-bottom: none;
 }
 
-.section-content {
-  font-size: 16px;
-  color: #666;
-  line-height: 1.6;
+.about-container .section-title::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 3px;
+  background-color: #00aaff;
+  margin-top: 5px;
 }
 
-/* 团队成员样式 */
-.team-members {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+/* 作用：
+
+创建一个小横条作为装饰线，突出每个 section 的标题。
+
+用不同的蓝色，使页面层次更丰富。 */
+
+.about-container .section-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
 }
 
-.team-member {
-  text-align: center;
-  margin: 20px;
+.about-container .section-content li {
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
-.member-photo {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-
-.member-name {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.member-role {
-  font-size: 14px;
-  color: #666;
-}
-
-/* 联系我们样式 */
-.contact-list {
+.about-container .contact-list {
   list-style: none;
   padding: 0;
+  margin: 1rem 0;
 }
 
-.contact-list li {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 10px;
+.about-container .contact-list li {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+  color: #333;
 }
+
+.about-container .contact-list svg {
+  color: #007acc;
+  margin-right: 0.6rem;
+  font-size: 1.2rem;
+}
+
+.highlight {
+  font-weight: bold;
+  color: #cc0000;
+}
+

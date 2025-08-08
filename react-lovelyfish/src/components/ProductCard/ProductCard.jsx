@@ -16,7 +16,7 @@ const ProductCard = ({ product }) => {
           <h5 className="card-title">{product.name}</h5>
           <p className="card-text">{product.description}</p>
           <p><strong>Price:</strong> <span>${product.price}</span></p>
-          <Link to={`/products/${product.id}`} className="btn btn-primary">
+          <Link to={`/product/${product.id}`} className="btn btn-primary">
             Shop Now
           </Link>
         </div>

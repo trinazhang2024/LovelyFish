@@ -1,0 +1,35 @@
+.clearance-section .card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.clearance-section .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  
+}
+
+.clearance-section .card-body {
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.clearance-section .card-title {
+  height: 50px
+}
+
+.clearance-section .card-text {
+  font-size: 1.1rem;
+  color: #dc3545; 
+  /* margin-top: 20px; */
+}
+
+
+

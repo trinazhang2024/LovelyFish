@@ -1,19 +1,26 @@
 import React from 'react';
-import './DiscountNew.css'; // 引入 DiscountNew 的样式
+import './DiscountNew.css'; 
 
 const DiscountNew = () => {
   return (
     <div className="discountnew">
+     {/* Left - New Arrivals */}
       <div className="left">
-        <h2>CLEARANCE SPECIALS</h2>
-        <h3>20-50% off selected products</h3>
-        <a href="#" className="button">SHOP ALL SPECIALS NOW</a>
+        <h2>NEW ARRIVALS</h2>
+        <h3>Fresh gear just landed!</h3>
+        <div className="button-container">
+          <a href="/new-arrivals" className="button">Shop Now</a>
+        </div>
       </div>
+      {/* Right - Clearance Specials */}
       <div className="right">
-        <h2>New Coming</h2>
-        <h3>10% off selected new products</h3>
-        <a href="#" className="button">SHOP ALL NEWS NOW</a>
+        <h2>CLEARANCE SPECIALS</h2>
+        <h3>Big discounts 30% before it's gone!</h3>
+        <div className="button-container">
+          <a href="/clearance" className="button">GRAB DEALS</a>
+        </div>
       </div>
+
     </div>
   );
 };

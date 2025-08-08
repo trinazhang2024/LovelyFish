@@ -1,49 +1,49 @@
-.bg-body-tertiary {
-  background-color: transparent !important;
+.navbar, .navbar-nav, .dropdown-item {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  color: #05445E; 
 }
 
-.navbar-collapse {
-  flex-grow: 0;
+.navbar .nav-link, .dropdown-item {
+  color: #05445E;
 }
 
-/* 下拉菜单样式 */
+.navbar .nav-link:hover, .dropdown-item:hover {
+  color: #189AB4; 
+  background-color: #E0F7FA; 
+}
+
 .dropdown-menu {
+  background-color: #E0F7FA; 
   border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(5, 68, 94, 0.2);
 }
 
-.dropdown-item {
-  font-size: 14px;
-  color: #333;
-  padding: 8px 16px;
-}
-
-.dropdown-item:hover {
-  background-color: #f8f9fa;
-  color: #00a4ff;
-}
-
-/* 搜索框 */
 .navbar .form-control {
+  border: 1.5px solid #189AB4;
   min-width: 250px;
   border-radius: 20px;
   padding: 8px 20px;
+  color: #05445E;
 }
 
-.navbar .btn-outline-primary {
+.navbar .btn-outline-success {
+  border-color: #189AB4;
+  color: #189AB4;
   border-radius: 20px;
   margin-left: 5px;
   padding: 8px 20px;
 }
 
-/* 移动端适配 */
-@media (max-width: 992px) {
-  .navbar-collapse {
-    padding-top: 15px;
-  }
-  
-  .navbar .form-control {
-    margin-top: 10px;
-    min-width: 100%;
-  }
+.navbar .btn-outline-success:hover {
+  background-color: #189AB4;
+  color: #fff;
 }
+
+.bg-body-tertiary {
+  background-color: transparent !important;
+}
+
+/* .navbar{
+  position: sticky;
+} */

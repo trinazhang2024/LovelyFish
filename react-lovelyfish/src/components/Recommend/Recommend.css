@@ -1,4 +1,4 @@
-.recommend {
+/* .recommend {
   display: flex;
   margin-top: 11px;
   height: 60px;
@@ -27,4 +27,55 @@
 
 .recommend ul li:last-child a {
   border-right: 0;
+} */
+
+.recommend {
+  padding: 20px;
+}
+
+.recommend h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.recommend ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.recommend li {
+  background-color: #f2f2f2;
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+.recommend a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .recommend {
+    padding: 10px;
+  }
+
+  .recommend h3 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .recommend ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .recommend li {
+    width: 100%;
+    text-align: center;
+  }
 }

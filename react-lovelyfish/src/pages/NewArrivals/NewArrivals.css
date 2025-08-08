@@ -1,8 +1,9 @@
-/* 卡片悬停效果 */
 .new-arrivals-section .card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 0.5rem;
   overflow: hidden;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .new-arrivals-section .card:hover {
@@ -10,13 +11,23 @@
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-/* 价格样式 */
-.new-arrivals-section .card-text {
-  font-size: 1.1rem;
+.new-arrivals-section .card-body {
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-/* 按钮悬停效果 */
-.new-arrivals-section .btn-outline-primary:hover {
-  background-color: var(--bs-primary);
-  color: white;
+.new-arrivals-section .card-text {
+  font-size: 1.1rem;
+  color: #dc3545; /* bootstrap danger */
+  margin-top: auto; /* 价格推到底部 */
+  height: 50px;
+  line-height: 50px;   
 }
+
+.new-arrivals-section .card-title {
+  height: 50px;
+}
+

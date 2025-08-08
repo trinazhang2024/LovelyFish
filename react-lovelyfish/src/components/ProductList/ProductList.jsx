@@ -1,37 +1,36 @@
-
-//productsByCategory在 ProductList.jsx 中遍历，并通过 props 传递给 ProductCard.jsx
-
+// src/components/ProductList/ProductList.jsx
 import React from 'react';
-import ProductCard from '../ProductCard/ProductCard'; // 引入 ProductCard 组件
-import './ProductList.css'; // 引入样式文件
+import ProductCard from '../ProductCard/ProductCard';
+import './ProductList.css';
 
 const ProductList = ({ products, limit }) => {
+  if (!products || products.length === 0) {
+    return <p>没有产品可显示</p>;
+  }
+
+  console.log('products:', products);
+
+  // 如果需要限制数量（比如首页显示前 4 个）
+  const displayProducts = limit ? products.slice(0, 4) : products;
+
+  console.log('displayProducts', displayProducts); //test displayProducts
+  console.log("Product IDs:", displayProducts.map(p => p.id)); //check the key
+  displayProducts.forEach((p, index) => {
+    console.log(`Product at index ${index}:`, p);
+  });
+
   return (
     <div className="product container">
-      {/* 遍历每个类别 */}
-      {products.map((category) => (
-        <div key={category.category} className="product-category">
-          {/* 类别标题 */}
-          <div className="title">
-            <h3>{category.category}</h3>
-
-            {/* 如果是首页，显示“查看全部”链接,通过传递一个额外的参数 给 ProductList 组件，来区分是首页还是单个类别页面。如果是首页，就只显示4个产品；如果是单个类别页面，就显示所有产品。*/}
-            {limit && (
-              <a href={`/products/${category.category}`} className="more">
-                查看全部
-              </a>
-            )}
-          </div>
-
-          {/* 产品列表 */}
-          <div className="row">
-             {/* 根据 limit 参数决定是否切片 */}
-            {(limit ? category.products.slice(0, 4) : category.products).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      ))}
+      <div className="title">
+        <h3>All Products</h3>
+        {limit && <a href="/products">查看全部</a>}
+      </div>
+      <div className="row">
+        
+        {displayProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
     </div>
   );
 };

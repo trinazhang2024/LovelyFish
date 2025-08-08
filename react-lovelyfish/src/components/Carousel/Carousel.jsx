@@ -11,18 +11,10 @@ function Carousel() {
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
             </div>
             <div className="carousel-inner">
-                <div className="carousel-item active">
-                    <img src="/assets/uploads/banner_1.jpg" className="d-block w-100" alt="Slide 1" />
-                </div>
-                <div className="carousel-item">
-                    <img src="/assets/uploads/banner_2.jpg" className="d-block w-100" alt="Slide 2" />
-                </div>
-                <div className="carousel-item">
-                    <img src="/assets/uploads/banner_3.jpg" className="d-block w-100" alt="Slide 3" />
-                </div>
-                <div className="carousel-item">
-                    <img src="/assets/uploads/banner_4.jpg" className="d-block w-100" alt="Slide 4" />
-                </div>
+                <div className="carousel-item active"></div>
+                <div className="carousel-item"></div>
+                <div className="carousel-item"></div>           
+                <div className="carousel-item"></div>
             </div>
             <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                 <span className="carousel-control-prev-icon" aria-hidden="true"></span>

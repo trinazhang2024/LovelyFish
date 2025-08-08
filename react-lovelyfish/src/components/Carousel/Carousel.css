@@ -1,3 +1,10 @@
+.carousel-item {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .carousel-item {
     height: 250px;
@@ -14,11 +21,6 @@
   .carousel-item {
     height: 500px;
   }
-}
-
-.carousel-item {
-  background-size: cover;
-  background-position: center 0;
 }
 
 .carousel-item:nth-child(1) {
