@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation ,  useNavigate} from 'react-router-dom';
 import api from '../../API/axios'
 import { useUser } from '../../contexts/UserContext'; // 你自己的用户上下文
+import { Link } from 'react-router-dom';
 import './Login.css';
 
 const Login = () => {
@@ -82,6 +83,9 @@ const Login = () => {
                 placeholder="Enter your password"
                 autoComplete="new-password"
               />
+              <div className="forgot-password-link">
+                <Link to="/forgot-password">忘记密码？</Link>
+              </div>
             </div>
             <button type="submit" className="btn btn-primary w-100" disabled={loading}>
               {loading ? 'Logging in ...': 'login'}

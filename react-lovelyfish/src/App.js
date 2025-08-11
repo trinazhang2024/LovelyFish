@@ -5,6 +5,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar/Navbar';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import ResetPasswordPage from "./pages/ResetPassword/ResetPasswordPage";
+import ForgotPasswordPage from './pages/ForgotPassword/ForgotPasswordPage';
 import Profile from './pages/Profile/Profile';
 import Footer from './components/Footer/Footer';
 import Home from "./pages/Home";
@@ -46,6 +48,8 @@ const App = () => {
                     </ProtectedRoute>
                   }
                 />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
 
                 {/* 在路由配置中添加 */}
                 <Route path="/search" element={<SearchResultsPage />} />

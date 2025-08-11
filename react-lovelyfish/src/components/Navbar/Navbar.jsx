@@ -133,6 +133,12 @@ function Navbar() {
                                     <span className="nav-link">Welcome, {user.name || user.email || 'User'}</span>
                                 </li>
                                 <li className="nav-item">
+                                    {/* Profile 按钮 */}
+                                    <Link className="nav-link" to="/profile">
+                                        Profile
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
                                     <button className="btn btn-link nav-link" onClick={handleLogout}>
                                         Logout
                                     </button>

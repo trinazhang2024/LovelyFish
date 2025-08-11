@@ -1,0 +1,159 @@
+.profile-container {
+  max-width: 900px;       /* 最大宽度，不要太宽 */
+  margin: 50px auto;      /* 上下 50px 空间，左右自动居中 */
+  padding: 30px 40px;     /* 内边距，内容不紧贴边缘 */
+  background-color: #fff; /* 白底 */
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1); /* 轻微阴影 */
+  border-radius: 12px;    /* 圆角 */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.profile-container h2 {
+  text-align: center;
+  font-weight: 700;
+  font-size: 2.4rem;
+  margin-bottom: 30px;
+  color: #007bff;
+}
+
+.profile-info p {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+}
+
+.profile-info strong {
+  color: #555;
+}
+
+.password-requirements {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 12px;
+  background-color: #f0f8ff;
+  padding: 10px 15px;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+}
+
+.change-password-button {
+  background-color: #007bff;    /* 蓝色背景 */
+  color: white;                 /* 白字 */
+  border: none;                 /* 去掉边框 */
+  padding: 12px 24px;           /* 内边距 */
+  border-radius: 8px;           /* 圆角 */
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgb(0 123 255 / 0.3);
+}
+
+.change-password-button:hover {
+  background-color: #0056b3;  /* 深蓝色hover */
+  transform: translateY(-2px); /* 悬浮上移效果 */
+  box-shadow: 0 6px 12px rgb(0 86 179 / 0.5);
+}
+
+.change-password-button:active {
+  background-color: #003d80;
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgb(0 61 128 / 0.4);
+}
+
+.change-password-section {
+  width: 40%;
+}
+
+.change-password-section,
+.orders-section {
+  margin-top: 40px;
+  border-top: 1px solid #ddd;
+  padding-top: 30px;
+}
+
+.toggle-password-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.toggle-password-btn:hover {
+  background-color: #0056b3;
+}
+
+.change-password-form input {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.password-requirements {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 16px;
+  background-color: #f0f8ff;
+  padding: 10px 15px;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+}
+
+.change-password-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.change-password-button:hover {
+  background-color: #218838;
+}
+
+
+.orders-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.order-item {
+  background: #f9f9f9;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.05);
+}
+
+.logout-button {
+  display: block;
+  margin: 50px auto 0 auto; 
+  padding: 16px 0;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  width: 30%;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #b52a38;
+}
