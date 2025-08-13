@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
-import axios from 'axios';
+import api from '../../API/axios';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
   const { id } = useParams();
-  console.log("产品 ID 是：", id); 
-  const { dispatch } = useCart();
+  const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [adding, setAdding] = useState(false);
 
   useEffect(() => {
-    axios.get(`https://localhost:7148/api/Product/${id}`)
+    //用统一的 api 请求实例，方便管理请求拦截和错误处理
+    api.get(`/Product/${id}`)
       .then(response => {
         setProduct(response.data);
         setLoading(false);
@@ -25,18 +26,18 @@ const ProductDetail = () => {
         setLoading(false);
       });
   }, [id]);
-
-  const addToCart = () => {
-    dispatch({ 
-      type: 'ADD_ITEM', 
-      product: {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image
-      }
-    });
-    alert(`${product.name} 已添加到购物车`);
+  
+  //购物车调用改为直接用 addToCart(productId, qty)，跟你的 CartContext 设计对接, 添加了按钮 loading 状态，防止多次点“Add to Cart”
+  const addToCartHandler = async () => {
+    setAdding(true);
+    try {
+      await addToCart(product.id, 1);
+      alert(`${product.name} 已添加到购物车`);
+    } catch (err) {
+      alert('添加购物车失败，请稍后重试');
+    } finally {
+      setAdding(false);
+    }
   };
 
   if (loading) return <p>正在加载产品详情...</p>;
@@ -57,22 +58,30 @@ const ProductDetail = () => {
 
         <div className="product-info-container">
           <h1 className="product-title">{product.name}</h1>
-          
-          {/* Price */}
-          <p className="product-price">{product.discountPercent > 0 ? (
-            <>
-              <span className="text-muted text-decoration-line-through" style={{ marginRight: 8 }}>
-                ${product.price.toFixed(2)}
-              </span>
-              <span className="text-danger fw-bold">
-                ${(product.price * (1 - product.discountPercent / 100)).toFixed(2)}
-              </span>
-            </>
-          ) : (
-            <span className="text-danger fw-bold">${product.price.toFixed(2)}</span>
-          )}</p>
 
-          <button className="buy-button" onClick={addToCart}>Add to Cart</button>
+          <p className="product-price">
+            {product.discountPercent > 0 ? (
+              <>
+                <span className="text-muted text-decoration-line-through" style={{ marginRight: 8 }}>
+                  ${product.price.toFixed(2)}
+                </span>
+                <span className="text-danger fw-bold">
+                  ${(product.price * (1 - product.discountPercent / 100)).toFixed(2)}
+                </span>
+              </>
+            ) : (
+              <span className="text-danger fw-bold">${product.price.toFixed(2)}</span>
+            )}
+          </p>
+
+          <button
+            className="buy-button"
+            onClick={addToCartHandler}
+            disabled={adding}
+          >
+            {adding ? "添加中..." : "Add to Cart"}
+          </button>
+
           <div className="product-description">
             <h2>Description</h2>
             <p>{product.description}</p>
@@ -84,8 +93,6 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-
-      
     </div>
   );
 };

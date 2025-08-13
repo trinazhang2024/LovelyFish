@@ -1,23 +1,17 @@
-// src/components/ProductList/ProductList.jsx
 import React from 'react';
 import ProductCard from '../ProductCard/ProductCard';
+import { useCart } from '../../contexts/CartContext';
 import './ProductList.css';
 
 const ProductList = ({ products, limit }) => {
+  const { addToCart } = useCart();
+
   if (!products || products.length === 0) {
     return <p>没有产品可显示</p>;
   }
 
-  console.log('products:', products);
-
   // 如果需要限制数量（比如首页显示前 4 个）
   const displayProducts = limit ? products.slice(0, 4) : products;
-
-  console.log('displayProducts', displayProducts); //test displayProducts
-  console.log("Product IDs:", displayProducts.map(p => p.id)); //check the key
-  displayProducts.forEach((p, index) => {
-    console.log(`Product at index ${index}:`, p);
-  });
 
   return (
     <div className="product container">
@@ -26,9 +20,12 @@ const ProductList = ({ products, limit }) => {
         {limit && <a href="/products">查看全部</a>}
       </div>
       <div className="row">
-        
         {displayProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            addToCart={() => addToCart(product.id, 1)} // 默认加1个
+          />
         ))}
       </div>
     </div>

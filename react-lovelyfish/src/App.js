@@ -18,7 +18,7 @@ import ProductDetail from './pages/ProductDetail/ProductDetail';
 import ProductCategoryPage from './pages/ProductCategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import { CartProvider } from './contexts/CartContext';
-import CartPage from './pages/Cart/CartPage'
+import CartPage from './pages/Cart/CartPage/CartPage'
 import CheckoutPage from './pages/Cart/Checkout'
 import PaymentConfirmation from './pages/Cart/PaymentConfirmation'
 import OrderConfirmation from './pages/Cart/OrderConfirmation'

@@ -27,7 +27,8 @@ export const UserProvider = ({ children }) => {
       try {
         const res = await api.get("/account/me");
         setUser(res.data);
-      } catch {
+      } catch(error){
+        console.error("fetchMe error:", error);
         setUser(null);
       }
     };

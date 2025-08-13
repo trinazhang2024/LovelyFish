@@ -1,7 +1,9 @@
 import React,{ useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
-import CartIcon from '../Cart/CartIcon';
+import { useCart } from "../../contexts/CartContext"
+import { FaShoppingCart } from "react-icons/fa";
+//import CartIcon from '../Cart/CartIcon';
 import './Navbar.css'; 
 
 function Navbar() {
@@ -32,6 +34,8 @@ function Navbar() {
           console.error("Logout failed:", error);
         }
       };
+
+    const { totalQuantity } = useCart();
     
 
     return (
@@ -122,7 +126,7 @@ function Navbar() {
                            aria-label="Search" 
                            value={searchQuery} 
                            onChange={(e)=>setSearchQuery(e.target.value)}/>
-                        <button className="btn btn-outline-success" type="submit" disabled={!searchQuery.trim()}>Search</button>
+                        <button className="btn btn-outline-success btn-sm" type="submit" disabled={!searchQuery.trim()}>Search</button>
                         
                     </form>
                     <ul className="navbar-nav">
@@ -160,7 +164,10 @@ function Navbar() {
                         )}
                     </ul>
                      {/* 购物车图标 */}
-                    <CartIcon />
+                    <Link to="/cart" className="cart-icon">
+                        <FaShoppingCart size={20} />
+                        {totalQuantity > 0 && <span className="cart-badge">{totalQuantity}</span>}
+                    </Link>
                 </div>
             </div>           
         </nav>
