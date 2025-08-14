@@ -18,10 +18,8 @@ import ProductDetail from './pages/ProductDetail/ProductDetail';
 import ProductCategoryPage from './pages/ProductCategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import { CartProvider } from './contexts/CartContext';
-import CartPage from './pages/Cart/CartPage/CartPage'
-import CheckoutPage from './pages/Cart/Checkout'
-import PaymentConfirmation from './pages/Cart/PaymentConfirmation'
-import OrderConfirmation from './pages/Cart/OrderConfirmation'
+import CartPage from './pages/Cart/CartPage/CartPage';
+import OrdersPage from './pages/Cart/OrdersPage/OrdersPage';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -60,9 +58,8 @@ const App = () => {
                 {/* 分类页面 */}
                 <Route path="/products/:category" element={<ProductCategoryPage />} />             
                 <Route path="/cart" element={<CartPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/payment-confirmation" element={<PaymentConfirmation />} />
-                <Route path="/order-confirmation" element={<OrderConfirmation />} />
+                <Route path="/orders" element={<OrdersPage />} />
+                
                 {/* Recommended */}
                 <Route path="/products/:category" element={<ProductList />} />
 

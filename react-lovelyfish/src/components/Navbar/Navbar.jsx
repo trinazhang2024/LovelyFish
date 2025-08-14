@@ -136,16 +136,25 @@ function Navbar() {
                                     {/* 如果没有 name，显示 email，否则显示“User” */}
                                     <span className="nav-link">Welcome, {user.name || user.email || 'User'}</span>
                                 </li>
-                                <li className="nav-item">
-                                    {/* Profile 按钮 */}
-                                    <Link className="nav-link" to="/profile">
-                                        Profile
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <button className="btn btn-link nav-link" onClick={handleLogout}>
-                                        Logout
-                                    </button>
+
+                                <li className="nav-item dropdown settings-dropdown">
+                                    <span className="nav-link dropdown-toggle">
+                                        Settings
+                                    </span>
+                                    <ul className="dropdown-menu">
+                                        <li>
+                                            <Link className="dropdown-item" to="/profile">Profile</Link>
+                                        </li>
+                                        <li>
+                                            <Link className="dropdown-item" to="/orders">Orders</Link>
+                                        </li>
+                                        <li>
+                                            <hr className="dropdown-divider" />
+                                        </li>
+                                        <li>
+                                            <button className="dropdown-item" onClick={handleLogout}>Logout</button>
+                                        </li>
+                                    </ul>
                                 </li>
                             </>
                         ) : (
