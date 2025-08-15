@@ -31,3 +31,39 @@
   height: 50px;
 }
 
+.alert-wrapper {
+  position: fixed;
+  top: 50%; /* 距离屏幕顶部 */
+  left: 50%; /* 居中对齐 */
+  transform: translateX(-50%); /* 把自己宽度一半向左偏移，实现水平居中 */
+  z-index: 9999;
+}
+
+.custom-alert {
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  min-width: 200px;
+  text-align: center;
+  animation: fadein 0.3s, fadeout 0.5s 2.5s;
+}
+
+.custom-alert.success { background-color: #28a745; }
+.custom-alert.danger { background-color: #dc3545; }
+.custom-alert.info { background-color: #17a2b8; }
+
+/* 动画 */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-10px); }
+}
+
+

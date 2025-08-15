@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext'; //useCart 是自定义 Hook，从购物车上下文拿到 dispatch 方法，操作购物车。
 import { Container, Row, Col, Card, Button, Badge, Alert, Spinner } from 'react-bootstrap'; //React-Bootstrap 的 UI 组件，用于布局和样式。
 import { BsStarFill, BsArrowRight } from 'react-icons/bs'; //react-icons 提供的图标。
-import axios from 'axios'; //For sending network requests.
+import api from '../../API/axios'; //For sending network requests.
 import './NewArrivals.css';
 
 function NewArrivals() {
@@ -11,11 +11,11 @@ function NewArrivals() {
   const [visibleCount, setVisibleCount] = useState(8); //Number of products currently displayed, initially 4 items
   const [loading, setLoading] = useState(true); //Loading status
   const [error, setError] = useState(null); //error info
-  const { dispatch } = useCart(); //Use dispatch from the cart context to update the shopping cart. 从购物车上下文获取dispatch，操作购物车
+  const { addToCart } = useCart(); //Use addTocart from the cart context to update the shopping cart.
 
   useEffect(() => {
     // Fetch product data from the backend API
-    axios.get('https://localhost:7148/api/Product')
+    api.get('/product')
       .then(response => {
         console.log('products:', response.data); 
         const allProducts = response.data;
@@ -36,19 +36,13 @@ function NewArrivals() {
   }, []);
 
   const loadMore = () => setVisibleCount(prev => prev + 4); //点击“加载更多”按钮时，visibleCount 增加4，展示更多商品。
-
-  const addToCart = (product) => {
-    dispatch({
-      type: 'ADD_ITEM',
-      product: {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image
-      }
-    });
-    alert(`${product.name} Added to Cart`); //点击按钮时，向购物车上下文发送 ADD_ITEM 动作，把选中商品加入购物车并且弹窗提示商品已加入。
-    
+  
+  const [cartAlert, setCartAlert] = useState(null); //美化alert
+  const handleAddToCart = (product) => {
+    addToCart(product.id, 1);
+    setCartAlert(`${product.name} Added to Cart`);
+    // 3秒后自动隐藏
+    setTimeout(() => setCartAlert(null), 3000);
   };
 
   if (loading) {
@@ -69,7 +63,15 @@ function NewArrivals() {
   } //请求失败显示错误提示框。
 
   return (
-    <Container className="my-5 new-arrivals-section">
+    <Container className="my-5 new-arrivals-section position-relative">
+
+      {/* 浮动提示框 美化alert*/}
+      {cartAlert && (
+        <div className="alert-wrapper">
+          <div className="custom-alert success">{cartAlert}</div>
+        </div>
+      )}
+
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="m-0">
           {/*顶部标题带星星图标“New Arrivals”} */}
@@ -108,7 +110,7 @@ function NewArrivals() {
                       variant="outline-primary"
                       style={{ cursor: 'pointer' }}
                       className="w-100 mt-auto"
-                      onClick={() => addToCart(product)}
+                      onClick={() => handleAddToCart(product)}
                     >
                       Add to Cart
                     </Button>

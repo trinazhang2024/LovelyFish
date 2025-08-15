@@ -20,6 +20,16 @@ export const UserProvider = ({ children }) => {
     setUser(null);
   };
 
+  // 更新用户资料（刷新整个 user 对象）
+  const updateUser = async () => {
+    try {
+      const res = await api.get("/account/me");
+      setUser(res.data);
+    } catch (error) {
+      console.error("updateUser error:", error);
+    }
+  };
+
 
   // ✅ 刷新页面时自动获取用户信息
   useEffect(() => {
@@ -36,7 +46,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </UserContext.Provider>
   );

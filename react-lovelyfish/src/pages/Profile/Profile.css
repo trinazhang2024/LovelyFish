@@ -1,159 +1,196 @@
+/* Profile.css */
+
+/* ===== 容器布局 ===== */
 .profile-container {
-  max-width: 900px;       /* 最大宽度，不要太宽 */
-  margin: 50px auto;      /* 上下 50px 空间，左右自动居中 */
-  padding: 30px 40px;     /* 内边距，内容不紧贴边缘 */
-  background-color: #fff; /* 白底 */
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1); /* 轻微阴影 */
-  border-radius: 12px;    /* 圆角 */
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  max-width: 800px;
+  margin: 40px auto; /* 居中，两边留空 */
+  padding: 30px 40px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* ===== 标题 ===== */
 .profile-container h2 {
   text-align: center;
   font-weight: 700;
-  font-size: 2.4rem;
-  margin-bottom: 30px;
-  color: #007bff;
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
 }
 
-.profile-info p {
-  font-size: 1.2rem;
-  margin-bottom: 16px;
+/* ===== 表单结构 ===== */
+.profile-form,
+.change-password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.profile-info strong {
-  color: #555;
+/* ===== 表单字段 ===== */
+.profile-field {
+  display: flex;
+  flex-direction: column;
 }
 
-.password-requirements {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 12px;
-  background-color: #f0f8ff;
-  padding: 10px 15px;
-  border-left: 4px solid #007bff;
-  border-radius: 4px;
-}
-
-.change-password-button {
-  background-color: #007bff;    /* 蓝色背景 */
-  color: white;                 /* 白字 */
-  border: none;                 /* 去掉边框 */
-  padding: 12px 24px;           /* 内边距 */
-  border-radius: 8px;           /* 圆角 */
+.profile-field label {
   font-weight: 600;
-  font-size: 1.1rem;
+  color: #34495e;
+  margin-bottom: 6px;
+}
+
+.profile-field p {
+  font-weight: 500;
+  color: #555;
+}
+
+/* ===== 输入框 ===== */
+.profile-field input,
+.change-password-form input {
+  padding: 10px 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+
+.profile-field input:focus,
+.change-password-form input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* ===== 提示信息 ===== */
+.alert {
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.alert-success {
+  background-color: #e9f9f0;
+  color: #1e8449;
+  border: 1px solid #b2dfbc;
+}
+
+.alert-danger {
+  background-color: #fcebea;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+}
+
+/* ===== 按钮公共样式 ===== */
+button {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 18px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgb(0 123 255 / 0.3);
-}
-
-.change-password-button:hover {
-  background-color: #0056b3;  /* 深蓝色hover */
-  transform: translateY(-2px); /* 悬浮上移效果 */
-  box-shadow: 0 6px 12px rgb(0 86 179 / 0.5);
-}
-
-.change-password-button:active {
-  background-color: #003d80;
-  transform: translateY(0);
-  box-shadow: 0 3px 6px rgb(0 61 128 / 0.4);
-}
-
-.change-password-section {
-  width: 40%;
-}
-
-.change-password-section,
-.orders-section {
-  margin-top: 40px;
-  border-top: 1px solid #ddd;
-  padding-top: 30px;
-}
-
-.toggle-password-btn {
-  background-color: #007bff;
-  color: white;
   border: none;
-  padding: 12px 22px;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom: 20px;
-  display: inline-block;
+  transition: all 0.2s ease-in-out;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ===== 保存资料按钮 ===== */
+.profile-form button[type="submit"] {
+  align-self: flex-start;
+  background-color: #3498db;
+  color: #fff;
+}
+
+.profile-form button[type="submit"]:hover {
+  background-color: #2d89c7;
+}
+
+/* ===== 修改密码按钮（切换） ===== */
+.toggle-password-btn {
+  background-color: #6c757d;
+  color: #fff;
+  padding: 8px 16px;
+  margin-top: 15px;
 }
 
 .toggle-password-btn:hover {
-  background-color: #0056b3;
+  background-color: #5a6268;
 }
 
-.change-password-form input {
-  width: 100%;
-  padding: 10px 14px;
-  margin-bottom: 16px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
-
-.password-requirements {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 16px;
-  background-color: #f0f8ff;
-  padding: 10px 15px;
-  border-left: 4px solid #007bff;
-  border-radius: 4px;
-}
-
+/* ===== 修改密码提交按钮 ===== */
 .change-password-button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
+  background-color: #27ae60;
+  color: #fff;
+  align-self: flex-start;
 }
 
 .change-password-button:hover {
-  background-color: #218838;
+  background-color: #219150;
 }
 
-
-.orders-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.order-item {
+/* ===== 密码说明 ===== */
+.password-requirements {
+  font-size: 13px;
+  color: #7f8c8d;
   background: #f9f9f9;
-  padding: 14px 18px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  box-shadow: 0 2px 6px rgb(0 0 0 / 0.05);
+  padding: 6px 8px;
+  border-radius: 4px;
 }
 
+/* ===== 退出按钮 ===== */
 .logout-button {
-  display: block;
-  margin: 50px auto 0 auto; 
-  padding: 16px 0;
-  background-color: #dc3545;
+  width: 100%;
+  margin-top: 30px;
+  background-color: #e74c3c;
   color: white;
-  border: none;
-  width: 30%;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 10px;
+  font-size: 15px;
 }
 
 .logout-button:hover {
-  background-color: #b52a38;
+  background-color: #c0392b;
 }
+
+/* ===== 按钮居中分布区域 ===== */
+.profile-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* ===== 小屏优化 ===== */
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+
+/* 页面两侧留了空白（max-width+margin auto）。
+
+标题加粗、字体加大、有颜色（#2c3e50）。
+
+输入框和按钮的边距、圆角、阴影都更精致。
+
+按钮配色分区（保存蓝色、修改密码灰色/绿色、退出红色）。
+
+profile-actions 区域让按钮居中排列，两侧留白。
+
+小屏自动按钮竖排，不会挤在一起。 */

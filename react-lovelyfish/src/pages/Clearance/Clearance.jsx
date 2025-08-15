@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { Container, Row, Col, Card, Button, Badge, Alert, Spinner } from 'react-bootstrap';
 import { BsArrowRight, BsTagFill } from 'react-icons/bs';
-import axios from 'axios';
+import api from '../../API/axios';
 import './Clearance.css'; // 你可以自己创建一个对应的 CSS 文件
 
 function Clearance() {
@@ -11,12 +11,12 @@ function Clearance() {
   const [visibleCount, setVisibleCount] = useState(8);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { dispatch } = useCart();
+  const { addToCart } = useCart();
 
   useEffect(() => {
-    axios.get('https://localhost:7148/api/Product')
+    api.get('/product')
       .then(response => {
-        console.log('products:', response.data);
+        //console.log('products:', response.data);
         const allProducts = response.data;
 
         // 你需要定义哪些商品是清仓，比如 price 打折，或者设一个字段 isClearance: true
@@ -34,16 +34,8 @@ function Clearance() {
 
   const loadMore = () => setVisibleCount(prev => prev + 4);
 
-  const addToCart = (product) => {
-    dispatch({
-      type: 'ADD_ITEM',
-      product: {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image
-      }
-    });
+  const handleAddToCart = (product) => {
+    addToCart(product.id, 1);
     alert(`${product.name} Added to Cart`);
   };
 
@@ -119,7 +111,7 @@ function Clearance() {
                           variant="outline-primary"
                           className="w-100 mt-auto"
                           style={{ cursor: 'pointer' }}
-                          onClick={() => addToCart(product)}
+                          onClick={() => handleAddToCart(product)}
                         >
                           Add to Cart
                         </Button>
