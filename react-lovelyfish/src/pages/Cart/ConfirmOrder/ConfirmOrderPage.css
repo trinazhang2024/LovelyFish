@@ -1,0 +1,296 @@
+/* 页面容器 */
+.confirm-order-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 25px 35px;
+  background-color: #fafafa;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 标题 */
+.confirm-order-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2c3e50;
+}
+
+.confirm-order-container h3 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #34495e;
+}
+
+/* 购物车列表 */
+.cart-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 2px solid #ddd;
+  border-bottom: 2px solid #ddd;
+}
+
+.cart-header,
+.cart-item {
+  display: grid;
+  grid-template-columns: 3fr 1fr 2fr 1fr; /* Product | Price | Quantity | Total */
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-header {
+  font-weight: bold;
+  background-color: #f2f4f6;
+  border-bottom: 2px solid #ccc;
+}
+
+/* 产品信息 */
+.cart-product {
+  display: flex;
+  align-items: center;
+}
+
+.cart-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 14px;
+}
+
+/* 数量操作 */
+.cart-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.cart-quantity button {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  padding: 0;
+  border-radius: 6px;
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cart-quantity button:hover {
+  background: linear-gradient(145deg, #2980b9, #1c5980);
+}
+
+.cart-quantity input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 4px 0;
+}
+
+/* 总价 */
+.cart-total {
+  font-weight: bold;
+  text-align: right;
+}
+
+/* 客户信息表单 */
+.confirm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 25px;
+}
+
+.confirm-form input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* 优惠券按钮 */
+.coupon-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.coupon-buttons button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid #007bff;
+  background-color: #fff;
+  color: #038a2c;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.coupon-buttons button.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #0056b3;
+}
+
+.coupon-buttons button:hover:not(:disabled) {
+  background-color: #0056b3;
+  color: white;
+}
+
+.coupon-buttons button:disabled {
+  background-color: #e0e0e0;
+  color: #aaa;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 总价和提交按钮 */
+.cart-summary-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 22px;
+  border-top: 2px solid #ddd;
+}
+
+.cart-summary-left {
+  font-size: 16px;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+.cart-summary-right .checkout-button {
+  padding: 12px 26px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #28a745, #1e7e34);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.cart-summary-right .checkout-button:hover {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.cart-summary-right .checkout-button:disabled {
+  background-color: #b5e2c5;
+  cursor: not-allowed;
+  color: #fff;
+  box-shadow: none;
+}
+
+/* 提交成功提示 */
+.order-success {
+  text-align: center;
+  padding: 32px 22px;
+  background-color: #e6ffed;
+  border: 1px solid #b6f0c2;
+  border-radius: 14px;
+  color: #2c3e50;
+}
+
+.check-orders-link {
+  color: #28a745;
+  text-decoration: underline;
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+.check-orders-link:hover {
+  color: #1e7e34;
+}
+
+.confirm-order-container h5 {
+  margin-bottom: 0;
+  color: #34495e;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .confirm-order-container {
+    padding: 15px 20px;
+  }
+
+  /* 购物车列表改为单列显示，方便手机查看 */
+  .cart-header,
+  .cart-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 0;
+    grid-template-columns: none; /* 取消网格 */
+  }
+
+  .cart-header span,
+  .cart-item div {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+
+  .cart-product {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .cart-item-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .cart-quantity {
+    gap: 4px;
+  }
+
+  /* 优惠券按钮换行排列 */
+  .coupon-buttons {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .coupon-buttons button {
+    flex: 1 1 calc(50% - 10px); /* 每行最多2个 */
+  }
+
+  /* 总价和提交按钮竖排 */
+  .cart-summary-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .cart-summary-right .checkout-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-item-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cart-summary-left {
+    font-size: 14px;
+  }
+
+  .confirm-form input {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .coupon-buttons button {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+}

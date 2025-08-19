@@ -34,7 +34,10 @@ export default function OrdersPage() {
             <p><strong>Total:</strong> ${order.totalPrice.toFixed(2)}</p>
             <p><strong>Customer:</strong> {order.customerName}</p>
             <p><strong>Address:</strong> {order.shippingAddress}</p>
+            <p><strong>Profile Phone:</strong> {order.phoneNumber ?? order.PhoneNumber ?? "N/A"}</p>
+            <p><strong>Contact Phone:</strong> {order.contactPhone ?? order.ContactPhone ?? "N/A"}</p>
           </div>
+
           <div className="order-items">
             {order.orderItems.map(item => (
               <div key={item.id} className="order-item">

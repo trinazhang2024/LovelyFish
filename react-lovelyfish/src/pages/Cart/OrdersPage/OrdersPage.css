@@ -1,57 +1,67 @@
-/* OrdersPage.css */
+/* OrdersPage.css - 美化版 */
 
 .orders-container {
   max-width: 900px;
   margin: 30px auto;
-  padding: 0 20px;
+  padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
 }
 
 .orders-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
   font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #1f3c88; /* 主标题蓝色 */
+  text-align: center;
+  letter-spacing: 1px;
 }
 
 .order-card {
-  background-color: #ffffff;
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   padding: 20px;
-  margin-bottom: 20px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .order-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .order-header {
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+  flex-direction: column; /* 竖向排列 */
+  gap: 6px; /* 每行间距 */
 }
 
 .order-header p {
-  margin: 5px 0;
-  font-weight: 500;
-  color: #444;
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.order-header p strong {
+  color: #1f3c88; /* 重点字段颜色 */
 }
 
 .order-items {
   margin-top: 10px;
+  background-color: #f0f4f8;
+  border-radius: 8px;
+  padding: 10px;
 }
 
 .order-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px dashed #ddd;
+  padding: 10px 0;
+  border-bottom: 1px dashed #c0c4cc;
+  font-size: 14px;
+  color: #333;
 }
 
 .order-item:last-child {
@@ -60,12 +70,13 @@
 
 .order-item p {
   margin: 0;
-  color: #555;
 }
 
-.loading, .empty-orders {
+.loading,
+.empty-orders {
   text-align: center;
+  font-size: 16px;
+  margin-top: 50px;
   color: #888;
-  font-size: 18px;
-  margin-top: 40px;
+  font-style: italic;
 }

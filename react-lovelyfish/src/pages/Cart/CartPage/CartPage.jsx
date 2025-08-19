@@ -1,141 +1,100 @@
+// CartPage.jsx
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
 import { useCart } from "../../../contexts/CartContext";
-import api from '../../../API/axios'
+import { useNavigate } from "react-router-dom";
 import './CartPage.css';
 
 export default function CartPage() {
-  const { cartItems, loading, updateCartItem, incrementItem, decrementItem, removeCartItem, fetchCart} = useCart();
+  const { cartItems, loading, removeCartItem } = useCart();
+  const [selectedItems, setSelectedItems] = useState([]);
   const [localQuantities, setLocalQuantities] = useState({});
-  const [processing, setProcessing] = useState(false);
-  const [lastOrderId, setLastOrderId] = useState(null);
-  const [selectedItems, setSelectedItems] = useState([]); // 新增勾选状态
-  
-  // 计算已选商品总数量和总价
-  const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.id));
-  const selectedTotalQuantity = selectedCartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const selectedTotalPrice = selectedCartItems.reduce((sum, item) => sum + item.quantity * item.product.price, 0);
-
-  // 新增收货人姓名和地址状态
-  const [customerName, setCustomerName] = useState("");
-  const [shippingAddress, setShippingAddress] = useState("");
-
+  const navigate = useNavigate();
 
   if (loading) return <p>Loading...</p>;
 
-  const handleQuantityChange = (itemId, value) => {
-    setLocalQuantities((prev) => ({ ...prev, [itemId]: value }));
-  };
-
-  const handleQuantityBlur = (itemId) => {
-    const quantity = parseInt(localQuantities[itemId], 10);
-    if (!isNaN(quantity) && quantity > 0) {
-      updateCartItem(itemId, quantity);
-    }
-  };
-
-  // 切换勾选状态
-  const toggleSelect = (itemId) => {
+  // 选择单个商品
+  const toggleSelect = (id) => {
     setSelectedItems((prev) =>
-      prev.includes(itemId) ? prev.filter(id => id !== itemId) : [...prev, itemId]
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     );
   };
 
-  // 全选 / 全取消
+  // 全选 / 全不选
   const toggleSelectAll = () => {
     if (selectedItems.length === cartItems.length) {
-      setSelectedItems([]); // 全取消
+      setSelectedItems([]);
     } else {
-      setSelectedItems(cartItems.map(item => item.id)); // 全选
+      setSelectedItems(cartItems.map(i => i.id));
     }
   };
 
-  const handleCheckout = async () => {
+  // 数量加减
+  const incrementItem = (id) => {
+    setLocalQuantities(prev => ({
+      ...prev,
+      [id]: (prev[id] ?? cartItems.find(i => i.id === id)?.quantity) + 1
+    }));
+  };
 
-    // if (cartItems.length === 0) {
-    //   alert("Your cart is empty!");
-    //   return; }
+  const decrementItem = (id) => {
+    setLocalQuantities(prev => {
+      const current = prev[id] ?? cartItems.find(i => i.id === id)?.quantity;
+      return { ...prev, [id]: current > 1 ? current - 1 : 1 };
+    });
+  };
 
-    // if (cartItems.length !== 0 && selectedItems.length === 0) {
-    //   alert("Please select items to checkout!");
-    //   return; } 
+  const handleQuantityChange = (id, value) => {
+    const num = parseInt(value, 10);
+    if (!isNaN(num) && num > 0) {
+      setLocalQuantities(prev => ({ ...prev, [id]: num }));
+    }
+  };
 
+  const handleQuantityBlur = (id) => {
+    // 可在这里调用后端接口更新购物车数量
+    console.log("Update quantity for", id, "to", localQuantities[id]);
+  };
+
+  const caculateOrder = () => {
     if (selectedItems.length === 0) {
-      alert("Please select items to checkout!");
+      alert("Please select items first!");
       return;
     }
-
-    if (!customerName || !shippingAddress) 
-      {alert("Please enter your name and shipping address.");
-        return; }
-
-    try {
-
-      setProcessing(true);
-      const selectedCartData = cartItems.filter(item => selectedItems.includes(item.id));
-      console.log(selectedCartData);
-
-      const res = await api.post("/cart/checkout", {
-        customerName,
-        shippingAddress,
-        cartItemIds: selectedItems // 传选中的购物车项ID
-    }); // 调用刚才新增的接口 submit order
-
-      const orderId = res.data.orderId;
-      setLastOrderId(orderId);
-      fetchCart();          // 前端清空购物车
-      alert(
-        `Order submitted! Your Order ID: ${orderId}.
-Shipping cost will be emailed to you.`
-      );
-      setCustomerName("");
-      setShippingAddress("");
-      setProcessing(false);
-
-    } catch (err) {
-      console.error(err);
-      alert("Failed to submit order");
-      setProcessing(false);
-    }
+    navigate("/confirm-order", { state: { selectedItems,quantities: localQuantities } });
   };
 
-  
-  
+    // 计算选中商品总数量
+  const selectedTotalQuantity = selectedItems.reduce(
+    (sum, id) => {
+      const item = cartItems.find(i => i.id === id);
+      const quantity = localQuantities[id] ?? item.quantity;
+      return sum + (item ? quantity : 0);
+    },
+    0
+  );
+
+  // 计算选中商品原价总和
+  const originalTotalPrice = selectedItems.reduce(
+    (sum, id) => {
+      const item = cartItems.find(i => i.id === id);
+      const quantity = localQuantities[id] ?? item.quantity;
+      return sum + (item ? quantity * item.product.price : 0);
+    },
+    0
+  );
+
   return (
     <div className="cart-container">
       <h2>Shopping Cart</h2>
-
-      {/* Select All */}
-      {cartItems.length > 0 && (
-        <div className="select-all-container"> 
-          <button className="select-all-btn" onClick={toggleSelectAll}>
-            {selectedItems.length === cartItems.length ? "Unselect All" : "Select All"}
-          </button>
-        </div>
-      )}
-
-      {lastOrderId && (
-        <div className="order-success">
-          <p>
-            🎉 Your order has been submitted! Order ID: <strong>{lastOrderId}</strong>
-          </p>
-          <p>Shipping cost will be emailed to you.</p>
-          <p>Any question or payment instruction, please check 
-            <Link to="/about" className="check-orders-link">
-              About Us
-            </Link>
-            </p>
-          <p>THANKS FOR YOUR SHOPPING!</p>
-          <Link to="/orders" className="check-orders-link">
-            Check my orders
-          </Link>
-        </div>
-      )}
 
       {cartItems.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
         <>
+          <button onClick={toggleSelectAll}>
+            {selectedItems.length === cartItems.length ? "Unselect All" : "Select All"}
+          </button>
+
           <ul className="cart-list">
             <li className="cart-header">
               <span>Select</span>
@@ -185,10 +144,10 @@ Shipping cost will be emailed to you.`
 
                 {/* Total Price */}
                 <div className="cart-total">
-                  ${(item.product?.price * item.quantity).toFixed(2)}
+                  ${(item.product?.price * (localQuantities[item.id] ?? item.quantity)).toFixed(2)}
                 </div>
-                
-                {/* Delete button */}
+
+                {/* action */}
                 <div className="cart-action">
                   <button
                     className="delete-btn"
@@ -201,38 +160,18 @@ Shipping cost will be emailed to you.`
             ))}
           </ul>
 
-          {/* 输入姓名和收货地址 */}
-          <div className="checkout-info">
-            <input
-              type="text"
-              placeholder="Your Name"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Shipping Address"
-              value={shippingAddress}
-              onChange={(e) => setShippingAddress(e.target.value)}
-            />
+          {/* 总价和下一步按钮 */}
+          <div className="cart-summary-container">
+            <div className="cart-summary-left">
+              <strong>Total Items:</strong> {selectedTotalQuantity}
+              <br />
+              <strong>Original Total Price:</strong> ${originalTotalPrice.toFixed(2)}
+              <br />
+            </div>
+            <div className="cart-summary-right">
+              <button onClick={caculateOrder}>Calculate Order</button>
+            </div>
           </div>
-
-          <div className="cart-summary">
-            <strong>Total Items:</strong> {selectedTotalQuantity}
-            <br />
-            <strong>Total Price:</strong> ${selectedTotalPrice.toFixed(2)}
-          </div>
-          
-           <div className="checkout-container">
-            <button
-              className="checkout-button"
-              onClick={handleCheckout}
-              disabled={processing}
-            >
-              {processing ? "Submitting..." : "Submit Order"}
-            </button>
-          </div>
-
         </>
       )}
     </div>

@@ -19,6 +19,7 @@ import ProductCategoryPage from './pages/ProductCategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import { CartProvider } from './contexts/CartContext';
 import CartPage from './pages/Cart/CartPage/CartPage';
+import ConfirmOrderPage from "./pages/Cart/ConfirmOrder/ConfirmOrderPage";
 import OrdersPage from './pages/Cart/OrdersPage/OrdersPage';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
@@ -58,6 +59,7 @@ const App = () => {
                 {/* 分类页面 */}
                 <Route path="/products/:category" element={<ProductCategoryPage />} />             
                 <Route path="/cart" element={<CartPage />} />
+                <Route path="/confirm-order" element={<ConfirmOrderPage />} />
                 <Route path="/orders" element={<OrdersPage />} />
                 
                 {/* Recommended */}
