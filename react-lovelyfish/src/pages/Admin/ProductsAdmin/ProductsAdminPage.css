@@ -1,0 +1,122 @@
+/* src/pages/admin/ProductsAdminPage.css */
+
+/* 页面标题 */
+.products-page-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* 表单样式 */
+.products-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.products-form input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.products-form input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+.products-form button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #3b82f6;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.products-form button:hover {
+  background-color: #2563eb;
+}
+
+/* 表格容器 */
+.products-table-container {
+  overflow-x: auto;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+}
+
+/* 表格 */
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 1rem;
+  text-align: center;
+}
+
+/* 表头 */
+.products-table thead {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+
+/* 表体行 hover */
+.products-table tbody tr {
+  background-color: #ffffff;
+  transition: background-color 0.2s;
+}
+
+.products-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* 编辑/删除按钮 */
+.products-table button {
+  padding: 0.25rem 0.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.products-table button:first-child {
+  background-color: #10b981; /* 绿色编辑 */
+  color: #ffffff;
+}
+
+.products-table button:first-child:hover {
+  background-color: #059669;
+}
+
+.products-table button:last-child {
+  background-color: #ef4444; /* 红色删除 */
+  color: #ffffff;
+  margin-left: 0.5rem;
+}
+
+.products-table button:last-child:hover {
+  background-color: #b91c1c;
+}
+
+/* 空表格提示 */
+.products-empty {
+  text-align: center;
+  font-style: italic;
+  color: #6b7280;
+  margin-top: 1rem;
+}

@@ -23,6 +23,7 @@ import ConfirmOrderPage from "./pages/Cart/ConfirmOrder/ConfirmOrderPage";
 import OrdersPage from './pages/Cart/OrdersPage/OrdersPage';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
+import Dashboard from './pages/Admin/Dashboard/Dashboard'
 import "bootstrap/dist/css/bootstrap.min.css";
 import './styles/global.css';
 
@@ -35,6 +36,7 @@ const App = () => {
               <Navbar/>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/admin" element={<Dashboard />} />
                 {/* user login & register */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />

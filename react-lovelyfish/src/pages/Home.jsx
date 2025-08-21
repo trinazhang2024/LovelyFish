@@ -4,6 +4,7 @@ import Carousel from "../components/Carousel/Carousel";
 import DiscountNew from "../components/DiscountNew/DiscountNew";
 import Recommend from "../components/Recommend/Recommend";
 import ProductList from '../components/ProductList/ProductList';
+import Reviews from "../components/Reviews/Reviews";
 import axios from 'axios';
 
 function Home() {
@@ -25,6 +26,7 @@ function Home() {
             <DiscountNew />
             <Recommend />
             <ProductList products={products} limit={true} />
+            <Reviews /> 
         </div>
     );
 }
