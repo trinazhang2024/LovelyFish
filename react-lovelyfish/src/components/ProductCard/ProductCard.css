@@ -1,23 +1,79 @@
-.product {
-  margin-top: 60px;
+.product-card {
+  flex: 1 1 calc(25% - 20px);
+  max-width: 250px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.title {
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.product-card-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.product-card-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-card-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.product-card-category {
+  font-size: 14px;
+  color: #666;
+}
+
+.product-card-price {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 6px;
+}
+
+.discount-price {
+  color: #00a4ff;
+}
+
+.product-card-actions {
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
+  gap: 8px;
 }
 
-.title h3 {
-  font-size: 20px;
-  font-weight: 400;
-}
-
-.title .more {
+.product-card-actions .btn {
+  flex: 1;
   font-size: 14px;
-  color: #999;
+  padding: 6px 0;
 }
 
-.row div {
-  margin-bottom: 10px;
-  /* height: 500px; */
+/* 响应式 */
+@media (max-width: 768px) {
+  .product-card {
+    flex: 1 1 calc(50% - 15px);
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    flex: 1 1 100%;
+  }
 }

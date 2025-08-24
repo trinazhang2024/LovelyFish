@@ -1,154 +1,129 @@
+// src/pages/NewArrivals/NewArrivals.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../../contexts/CartContext'; //useCart 是自定义 Hook，从购物车上下文拿到 dispatch 方法，操作购物车。
-import { Container, Row, Col, Card, Button, Badge, Alert, Spinner } from 'react-bootstrap'; //React-Bootstrap 的 UI 组件，用于布局和样式。
-import { BsStarFill, BsArrowRight } from 'react-icons/bs'; //react-icons 提供的图标。
-import api from '../../API/axios'; //For sending network requests.
+import { useCart } from '../../contexts/CartContext';
+import api from '../../API/axios';
 import './NewArrivals.css';
 
 function NewArrivals() {
-  const [products, setProducts] = useState([]); // New product list returned from the backend
-  const [visibleCount, setVisibleCount] = useState(8); //Number of products currently displayed, initially 4 items
-  const [loading, setLoading] = useState(true); //Loading status
-  const [error, setError] = useState(null); //error info
-  const { addToCart } = useCart(); //Use addTocart from the cart context to update the shopping cart.
+  const [products, setProducts] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(8);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { addToCart } = useCart();
+  const [addingIds, setAddingIds] = useState([]);
+  const [cartAlert, setCartAlert] = useState(null);
 
   useEffect(() => {
-    // Fetch product data from the backend API
     api.get('/product')
       .then(response => {
-        console.log('products:', response.data); 
         const allProducts = response.data;
-
-        // New arrivals are assumed to be the 8 products with the highest IDs, or selected based on a specific field.
-        const newProducts = allProducts //组件挂载后，调用后端接口获取所有商品。
-          .sort((a, b) => b.id - a.id) // Order by ID descending
-          .slice(0, 8);               // Display the latest 8 items
-
+        const newProducts = allProducts
+          .sort((a, b) => b.id - a.id)
+          .map(p => ({
+            ...p,
+            mainImageUrl: p.mainImageUrl || (p.imageUrls && p.imageUrls[0]) || ''
+          }));
         setProducts(newProducts);
-        setLoading(false); //数据请求成功后保存到 products，关闭加载状态。
+        setLoading(false);
       })
       .catch(err => {
         console.error('Failed to load new products:', err);
         setError('Error loading new product data.');
-        setLoading(false); //请求失败时，记录错误信息，并关闭加载状态。
+        setLoading(false);
       });
   }, []);
 
-  const loadMore = () => setVisibleCount(prev => prev + 4); //点击“加载更多”按钮时，visibleCount 增加4，展示更多商品。
-  
-  const [cartAlert, setCartAlert] = useState(null); //美化alert
-  const handleAddToCart = (product) => {
-    addToCart(product.id, 1);
-    setCartAlert(`${product.name} Added to Cart`);
-    // 3秒后自动隐藏
-    setTimeout(() => setCartAlert(null), 3000);
+  const loadMore = () => setVisibleCount(prev => prev + 4);
+
+  const handleAddToCart = async (product) => {
+    if (addingIds.includes(product.id)) return;
+    setAddingIds(prev => [...prev, product.id]);
+    try {
+      await addToCart(product.id, 1);
+      setCartAlert(`${product.name} 已添加到购物车`);
+      setTimeout(() => setCartAlert(null), 3000);
+    } catch (err) {
+      alert('添加购物车失败，请稍后重试');
+    } finally {
+      setAddingIds(prev => prev.filter(id => id !== product.id));
+    }
   };
 
-  if (loading) {
-    return (
-      <Container className="my-5 text-center">
-        <Spinner animation="border" variant="primary" />
-        <p className="mt-3">Loading new products...</p>
-      </Container>
-    );
-  } //加载中显示旋转加载动画和提示。
-
-  if (error) {
-    return (
-      <Container className="my-5">
-        <Alert variant="danger">{error}</Alert>
-      </Container>
-    );
-  } //请求失败显示错误提示框。
+  if (loading) return <div className="na-loading">Loading new products...</div>;
+  if (error) return <div className="na-error">{error}</div>;
 
   return (
-    <Container className="my-5 new-arrivals-section position-relative">
+    <div className="newarrivals-section">
+      {cartAlert && <div className="na-alert">{cartAlert}</div>}
 
-      {/* 浮动提示框 美化alert*/}
-      {cartAlert && (
-        <div className="alert-wrapper">
-          <div className="custom-alert success">{cartAlert}</div>
-        </div>
-      )}
-
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="m-0">
-          {/*顶部标题带星星图标“New Arrivals”} */}
-          <BsStarFill className="text-warning me-2" />  
-          New Arrivals
-        </h2>
+      <div className="newarrivals-header">
+        <h2>New Arrivals</h2>
       </div>
 
       {products.length === 0 ? (
-        <Alert variant="info">No new arrivals at the moment. Thanks！</Alert> //如果没新商品，显示提示“当前暂无新品”。
+        <div className="na-empty">No new arrivals at the moment.</div>
       ) : (
-        <> 
-          {/* {有新商品时，按网格布局（响应式）显示前 visibleCount 个商品卡片。} */}
-          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-            {products.slice(0, visibleCount).map(product => (
-              <Col key={product.id}>
-                <Card className="h-100 d-flex flex-column position-relative">
-                  {/* If the backend does not have an isNew field, it can be determined whether to display "NEW" based on logic. */}
-                  <Badge bg="danger" className="position-absolute top-0 start-0 m-2">
-                    NEW
-                  </Badge>
+        <>
+          <div className="newarrivals-grid">
+            {products.slice(0, visibleCount).map(product => {
+              const discountedPrice = product.discountPercent
+                ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
+                : product.price.toFixed(2);
 
-                  <Link to={`/product/${product.id}`} className="text-decoration-none">
-                    <Card.Img
-                      variant="top"
-                      src={product.image}
-                      style={{ height: '250px', objectFit: 'cover', marginTop: '20px' }} 
-                    />
+              return (
+                <div key={product.id} className="newarrivals-card">
+                  {product.isClearance && product.discountPercent > 0 ? (
+                    <div className="na-badge na-sale">{product.discountPercent}% OFF</div>
+                  ) : (
+                    <div className="na-badge na-new">NEW</div>
+                  )}
+
+                  <Link to={`/product/${product.id}`} className="na-link">
+                    <img src={product.mainImageUrl} alt={product.name} className="na-img" />
                   </Link>
-                  <Card.Body className="d-flex flex-column flex-grow-1 text-center">
-                    <Card.Title className="h6">{product.name}</Card.Title>
-                    <Card.Text className="text-danger fw-bold mt-1">
-                      ${product.price}
-                    </Card.Text>
-                    <Button
-                      variant="outline-primary"
-                      style={{ cursor: 'pointer' }}
-                      className="w-100 mt-auto"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      Add to Cart
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+
+                  <div className="na-body">
+                    <div className="na-title">{product.name}</div>
+
+                    {product.isClearance && product.discountPercent > 0 ? (
+                      <>
+                        <div className="na-oldprice">${product.price.toFixed(2)}</div>
+                        <div className="na-newprice">${discountedPrice}</div>
+                      </>
+                    ) : (
+                      <div className="na-price">${product.price.toFixed(2)}</div>
+                    )}
+
+                    <div className="na-actions">
+                      <button
+                        className="na-btn na-add"
+                        onClick={() => handleAddToCart(product)}
+                        disabled={addingIds.includes(product.id)}
+                      >
+                        {addingIds.includes(product.id) ? '添加中...' : 'Add to Cart'}
+                      </button>
+                      <Link to={`/product/${product.id}`} className="na-btn na-shop">
+                        Shop Now
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
           {visibleCount < products.length && (
-            <div className="text-center mt-4">
-              <Button
-                variant="outline-primary"
-                onClick={loadMore}
-                className="px-4"
-              >
-                Loading more <BsArrowRight className="ms-1" />
-              </Button>
+            <div className="na-loadmore">
+              <button className="na-btn na-load" onClick={loadMore}>
+                Load More
+              </button>
             </div>
           )}
         </>
       )}
-    </Container>
+    </div>
   );
 }
 
 export default NewArrivals;
-
-// 这个 NewArrivals 组件实现了：
-
-// 从后端拉取最新的商品数据
-
-// 显示最新的8个新品，默认先显示4个
-
-// 支持“加载更多”分页展示
-
-// 购物车功能：能将商品添加到购物车
-
-// 友好的加载和错误状态展示
-
-// 使用响应式 Bootstrap 网格布局展示商品卡片

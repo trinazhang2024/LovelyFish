@@ -1,23 +1,26 @@
-.product {
-  margin-top: 60px;
+.products-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.title {
+.products-list-title {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.title h3 {
-  font-size: 20px;
-  font-weight: 400;
+.products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
-.title .more {
-  font-size: 14px;
-  color: #999;
-}
-
-.row div {
-  margin-bottom: 10px;
-  /* height: 500px; */
+/* 响应式 */
+@media (max-width: 768px) {
+  .products-grid {
+    gap: 15px;
+  }
 }

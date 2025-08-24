@@ -1,4 +1,3 @@
-// src/pages/admin/OrdersAdminPage.jsx
 import React, { useEffect, useState } from "react";
 import api from "../../../API/axios";
 import "./OrdersAdminPage.css";
@@ -6,6 +5,7 @@ import "./OrdersAdminPage.css";
 export default function OrdersAdminPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [savedFields, setSavedFields] = useState({}); // 保存已修改的字段状态
 
   useEffect(() => {
     fetchOrders();
@@ -13,7 +13,7 @@ export default function OrdersAdminPage() {
 
   const fetchOrders = async () => {
     try {
-      const res = await api.get("/orders/admin"); // 管理员接口
+      const res = await api.get("/orders/admin");
       setOrders(res.data || []);
     } catch (err) {
       console.error("获取订单失败:", err);
@@ -22,116 +22,129 @@ export default function OrdersAdminPage() {
     }
   };
 
-  // 修改订单状态
+  const flashSaved = (orderId, field) => {
+    const key = `${orderId}-${field}`;
+    setSavedFields((prev) => ({ ...prev, [key]: true }));
+    setTimeout(() => {
+      setSavedFields((prev) => ({ ...prev, [key]: false }));
+    }, 2000);
+  };
+
   const updateStatus = async (id, status) => {
+    console.log("点击更新状态:", id, status);
     try {
-      await api.put(`/orders/${id}/status`, JSON.stringify(status), {
+      await api.put(`/orders/${id}/status`,  status , {
         headers: { "Content-Type": "application/json" },
       });
-      fetchOrders();
+      setOrders((prev) =>
+        prev.map((o) => (o.id === id ? { ...o, status } : o))
+      );
+      flashSaved(id, "status");
     } catch (err) {
       console.error("更新状态失败", err);
     }
   };
 
-  // 修改快递信息
   const updateShipping = async (id, courier, trackingNumber) => {
     try {
       await api.put(`/orders/${id}/shipping`, { courier, trackingNumber });
-      fetchOrders();
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id === id ? { ...o, courier, trackingNumber } : o
+        )
+      );
+      flashSaved(id, "courier");
+      flashSaved(id, "trackingNumber");
     } catch (err) {
       console.error("更新快递信息失败", err);
     }
+  };
+
+  // 临时更新输入框值，不触发接口
+  const updateOrderField = (id, field, value) => {
+    setOrders((prev) =>
+      prev.map((o) => (o.id === id ? { ...o, [field]: value } : o))
+    );
   };
 
   if (loading) return <p>加载中...</p>;
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">订单管理</h1>
+      <h1 className="orders-page-title">订单管理</h1>
 
       {orders.length === 0 ? (
-        <p>暂无订单</p>
+        <p className="orders-empty">暂无订单</p>
       ) : (
-        <div className="overflow-x-auto bg-white rounded-lg shadow">
-          <table className="min-w-full border border-gray-200">
-            <thead className="bg-gray-100">
+        <div className="orders-table-container">
+          <table className="orders-table">
+            <thead>
               <tr>
-                <th className="px-4 py-2 border">订单ID</th>
-                <th className="px-4 py-2 border">客户姓名</th>
-                <th className="px-4 py-2 border">电话</th>
-                <th className="px-4 py-2 border">收货地址</th>
-                <th className="px-4 py-2 border">总价</th>
-                <th className="px-4 py-2 border">状态</th>
-                <th className="px-4 py-2 border">快递公司</th>
-                <th className="px-4 py-2 border">快递单号</th>
-                <th className="px-4 py-2 border">创建时间</th>
+                <th>订单ID</th>
+                <th>客户姓名</th>
+                <th>电话</th>
+                <th>收货地址</th>
+                <th>总价</th>
+                <th>状态</th>
+                <th>快递公司</th>
+                <th>快递单号</th>
+                <th>创建时间</th>
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
-                <tr key={order.id} className="text-center">
-                  <td className="px-4 py-2 border">{order.id}</td>
-                  <td className="px-4 py-2 border">{order.customerName}</td>
-                  <td className="px-4 py-2 border">{order.phoneNumber || order.contactPhone}</td>
-                  <td className="px-4 py-2 border">{order.shippingAddress}</td>
-                  <td className="px-4 py-2 border">${order.totalPrice.toFixed(2)}</td>
-                  
-                  {/* 状态下拉框 */}
-                  <td className="px-4 py-2 border">
-                    <select
-                      value={order.status || "pending"}
-                      onChange={(e) => updateStatus(order.id, e.target.value)}
-                      className="border px-2 py-1 rounded"
-                    >
-                      <option value="pending">待付款</option>
-                      <option value="paid">已付款</option>
-                      <option value="shipped">已发货</option>
-                      <option value="completed">已完成</option>
-                    </select>
-                  </td>
+              {orders.map((order) => {
+                const statusSaved = savedFields[`${order.id}-status`];
+                const courierSaved = savedFields[`${order.id}-courier`];
+                const trackingSaved = savedFields[`${order.id}-trackingNumber`];
 
-                  {/* 快递公司 */}
-                  <td className="px-4 py-2 border">
-                    <input
-                      value={order.courier || ""}
-                      onChange={(e) =>
-                        setOrders((prev) =>
-                          prev.map((o) =>
-                            o.id === order.id ? { ...o, courier: e.target.value } : o
-                          )
-                        )
-                      }
-                      onBlur={(e) =>
-                        updateShipping(order.id, e.target.value, order.trackingNumber || "")
-                      }
-                      className="border px-2 py-1 rounded w-full"
-                    />
-                  </td>
+                return (
+                  <tr key={order.id}>
+                    <td>{order.id}</td>
+                    <td>{order.customerName}</td>
+                    <td>{order.phoneNumber || order.contactPhone}</td>
+                    <td>{order.shippingAddress}</td>
+                    <td>${order.totalPrice.toFixed(2)}</td>
 
-                  {/* 快递单号 */}
-                  <td className="px-4 py-2 border">
-                    <input
-                      value={order.trackingNumber || ""}
-                      onChange={(e) =>
-                        setOrders((prev) =>
-                          prev.map((o) =>
-                            o.id === order.id ? { ...o, trackingNumber: e.target.value } : o
-                          )
-                        )
-                      }
-                      onBlur={(e) =>
-                        updateShipping(order.id, order.courier || "", e.target.value)
-                      }
-                      className="border px-2 py-1 rounded w-full"
-                    />
-                  </td>
+                    <td className={statusSaved ? "saved-flash" : ""}>
+                      <select
+                        value={order.status || "pending"}
+                        onChange={(e) => updateStatus(order.id, e.target.value)}
+                      >
+                        <option value="pending">待付款</option>
+                        <option value="paid">已付款</option>
+                        <option value="shipped">已发货</option>
+                        <option value="completed">已完成</option>
+                      </select>
+                    </td>
 
-                  <td className="px-4 py-2 border">
-                    {new Date(order.createdAt).toLocaleString()}
-                  </td>
-                </tr>
-              ))}
+                    <td className={courierSaved ? "saved-flash" : ""}>
+                      <input
+                        value={order.courier || ""}
+                        onChange={(e) =>
+                          updateOrderField(order.id, "courier", e.target.value)
+                        }
+                        onBlur={(e) =>
+                          updateShipping(order.id, e.target.value, order.trackingNumber || "")
+                        }
+                      />
+                    </td>
+
+                    <td className={trackingSaved ? "saved-flash" : ""}>
+                      <input
+                        value={order.trackingNumber || ""}
+                        onChange={(e) =>
+                          updateOrderField(order.id, "trackingNumber", e.target.value)
+                        }
+                        onBlur={(e) =>
+                          updateShipping(order.id, order.courier || "", e.target.value)
+                        }
+                      />
+                    </td>
+
+                    <td>{new Date(order.createdAt).toLocaleString()}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -139,12 +152,3 @@ export default function OrdersAdminPage() {
     </div>
   );
 }
-
-
-// ✅ 功能说明
-
-// 状态修改：下拉框选择状态，会调用 /orders/{id}/status 更新数据库。
-
-// 快递公司 / 单号：在输入框里修改，onBlur（失去焦点）时调用 /orders/{id}/shipping 更新。
-
-// 数据同步：修改后会重新拉取订单列表，保证表格显示最新数据。

@@ -1,59 +1,160 @@
-.new-arrivals-section .card {
+/* Container */
+.newarrivals-section {
+  padding: 2rem 1rem;
+}
+
+/* 卡片 */
+.newarrivals-card {
   border-radius: 0.5rem;
   overflow: hidden;
+  display: flex;
   flex-direction: column;
   height: 100%;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
 }
 
-.new-arrivals-section .card:hover {
+.newarrivals-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-.new-arrivals-section .card-body {
+/* 图片 */
+.na-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+/* 卡片主体 */
+.na-body {
   padding: 1rem;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  text-align: center;
 }
 
-.new-arrivals-section .card-text {
+/* 标题 */
+.na-title {
+  font-size: 1rem;
+  font-weight: 600;
+  height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 0.5rem;
+}
+
+/* 原价 / 折扣价 / 正价 */
+.na-oldprice {
+  font-size: 1rem;
+  color: #6c757d;
+  text-decoration: line-through;
+  margin: 0.5rem 0 0;
+}
+
+.na-newprice, .na-price {
   font-size: 1.1rem;
   color: #dc3545; /* bootstrap danger */
-  margin-top: auto; /* 价格推到底部 */
-  height: 50px;
-  line-height: 50px;   
+  font-weight: bold;
+  margin: 0.5rem 0 0;
 }
 
-.new-arrivals-section .card-title {
-  height: 50px;
+/* 底部按钮 */
+.na-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
 }
 
-.alert-wrapper {
+.na-btn {
+  flex: 1;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.5rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+.na-btn.na-add {
+  background-color: transparent;
+  border: 1px solid #0d6efd;
+  color: #0d6efd;
+}
+
+.na-btn.na-add:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.na-btn.na-shop {
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+}
+
+/* Badge */
+.na-badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.na-badge.na-new {
+  background-color: #ffc107; /* warning */
+}
+
+.na-badge.na-sale {
+  background-color: #dc3545; /* danger */
+}
+
+/* Header */
+.newarrivals-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Load more 按钮 */
+.na-loadmore {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.na-btn.na-load {
+  border: 1px solid #0d6efd;
+  background-color: transparent;
+  color: #0d6efd;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+/* 浮动提示框 */
+.na-alert {
   position: fixed;
-  top: 50%; /* 距离屏幕顶部 */
-  left: 50%; /* 居中对齐 */
-  transform: translateX(-50%); /* 把自己宽度一半向左偏移，实现水平居中 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 9999;
-}
-
-.custom-alert {
   padding: 12px 20px;
   border-radius: 12px;
   font-size: 18px;
   font-weight: 600;
   color: #fff;
+  background-color: #28a745;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  min-width: 200px;
+  min-width: 220px;
   text-align: center;
   animation: fadein 0.3s, fadeout 0.5s 2.5s;
 }
-
-.custom-alert.success { background-color: #28a745; }
-.custom-alert.danger { background-color: #dc3545; }
-.custom-alert.info { background-color: #17a2b8; }
 
 /* 动画 */
 @keyframes fadein {
@@ -66,4 +167,10 @@
   to { opacity: 0; transform: translateY(-10px); }
 }
 
-
+/* Grid 响应式 */
+@media (max-width: 576px) {
+  .na-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

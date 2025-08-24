@@ -14,17 +14,17 @@ const ProductList = ({ products, limit }) => {
   const displayProducts = limit ? products.slice(0, 4) : products;
 
   return (
-    <div className="product container">
-      <div className="title">
+    <div className="products-list-container">
+      <div className="products-list-title">
         <h3>All Products</h3>
         {limit && <a href="/products">查看全部</a>}
       </div>
-      <div className="row">
-        {displayProducts.map((product) => (
+      <div className="products-grid">
+        {displayProducts.map(product => (
           <ProductCard
             key={product.id}
             product={product}
-            addToCart={() => addToCart(product.id, 1)} // 默认加1个
+            addToCart={() => addToCart(product.id, 1)}
           />
         ))}
       </div>

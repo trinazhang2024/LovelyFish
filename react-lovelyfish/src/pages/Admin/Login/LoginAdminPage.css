@@ -1,0 +1,124 @@
+/* AdminLogin.css */
+
+/* 背景渐变全屏 */
+.admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+  padding: 1rem;
+}
+
+/* 登录表单容器 */
+.admin-login-form {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* 标题 */
+.admin-login-form h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #111827;
+}
+
+/* 输入框 */
+.admin-login-form input[type="email"],
+.admin-login-form input[type="password"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.admin-login-form input[type="email"]:focus,
+.admin-login-form input[type="password"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.2);
+}
+
+/* 按钮 */
+.admin-login-form button {
+  width: 100%;
+  background-color: #3b82f6;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.admin-login-form button:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* 错误信息 */
+.admin-login-form p.error {
+  color: #ef4444;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* 忘记密码链接 */
+.admin-login-form .forgot-password {
+  display: block;
+  text-align: right;
+  font-size: 0.875rem;
+  color: #3b82f6;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  transition: color 0.3s;
+}
+
+.admin-login-form .forgot-password:hover {
+  text-decoration: underline;
+  color: #2563eb;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .admin-login-form {
+    max-width: 90%;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .admin-login-form h2 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .admin-login-page {
+    padding: 2rem 1rem;
+    align-items: flex-start; /* 顶部留白 */
+  }
+
+  .admin-login-form {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 2rem; /* 顶部间距 */
+    margin-bottom: 2rem; /* 底部留白 */
+  }
+
+  .admin-login-form h2 {
+    font-size: 1.5rem;
+  }
+}

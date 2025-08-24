@@ -1,0 +1,35 @@
+.products-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.products-container h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* 如果 ProductList 使用 flex 网格，需要保证间距 */
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 40px; /* 卡片底部间距 */
+}
+
+@media (max-width: 768px) {
+  .products-container {
+    padding: 10px;
+  }
+
+  .product-list {
+    gap: 15px; /* 缩小间距 */
+  }
+
+  .product-list > div {
+    flex: 1 1 100%; /* 小屏幕单列显示 */
+  }
+}

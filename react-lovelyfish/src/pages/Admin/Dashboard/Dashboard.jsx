@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ProductsAdminPage from '../ProductsAdmin/ProductsAdminPage';
 import OrdersAdminPage from "../OrdersAdmin/OrdersAdminPage";
 import UsersAdminPage from "../UsersAdmin/UsersAdminPage";
+import AdminChangePassword from '../ChangePassword/AdminChangePassword'
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -22,33 +23,25 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="dashboard">
       {/* 左侧导航 */}
-      <aside className="w-64 bg-gray-800 text-white flex flex-col">
-        <div className="p-4 text-xl font-bold border-b border-gray-700">
-          Admin Dashboard
-        </div>
-        <nav className="flex-1 p-2 space-y-2">
+      <aside className="dashboard-aside">
+        <div className="title">Admin Dashboard</div>
+        <nav>
           <button
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activePage === "orders" ? "bg-gray-700" : "hover:bg-gray-700"
-            }`}
+            className={activePage === "orders" ? "active" : ""}
             onClick={() => setActivePage("orders")}
           >
             订单管理
           </button>
           <button
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activePage === "products" ? "bg-gray-700" : "hover:bg-gray-700"
-            }`}
+            className={activePage === "products" ? "active" : ""}
             onClick={() => setActivePage("products")}
           >
             产品管理
           </button>
           <button
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activePage === "users" ? "bg-gray-700" : "hover:bg-gray-700"
-            }`}
+            className={activePage === "users" ? "active" : ""}
             onClick={() => setActivePage("users")}
           >
             用户管理
@@ -56,10 +49,15 @@ export default function Dashboard() {
         </nav>
       </aside>
 
-      {/* 右侧内容区 */}
-      <main className="flex-1 bg-gray-100 p-6 overflow-y-auto">
-        {renderPage()}
-      </main>
+      {/* 右侧内容 */}
+      <div className="dashboard-main">
+        <div className="dashboard-header">
+          <button className="change-password-btn" onClick={() => setActivePage("changePassword")}>
+            修改密码
+          </button>
+        </div>
+        {activePage === "changePassword" ? <AdminChangePassword /> : renderPage()}
+      </div>
     </div>
   );
 }

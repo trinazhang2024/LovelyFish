@@ -1,5 +1,3 @@
-/* src/pages/admin/OrdersAdminPage.css */
-
 /* 页面标题 */
 .orders-page-title {
   font-size: 1.75rem; /* text-2xl */
@@ -52,7 +50,7 @@
 }
 
 .orders-table tbody tr:hover {
-  background-color: #f9fafb; /* hover灰色 */
+  background-color: #f9fafb;
 }
 
 .orders-table td {
@@ -63,16 +61,17 @@
 
 /* 下拉框样式 */
 .orders-table select {
-  border: 1px solid #d1d5db; /* gray-300 */
+  border: 1px solid #d1d5db;
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   background-color: #ffffff;
+  width: 100%;
   outline: none;
 }
 
 .orders-table select:focus {
-  border-color: #3b82f6; /* blue-500 */
+  border-color: #3b82f6;
   box-shadow: 0 0 0 1px #3b82f6;
 }
 
@@ -89,4 +88,17 @@
 .orders-table input:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 1px #3b82f6;
+}
+
+/* 修改成功时绿色闪烁动画 */
+.saved-flash {
+  animation: flash-green 2s ease-in-out;
+  border-color: #22c55e !important;
+  background-color: #d1fae5;
+}
+
+@keyframes flash-green {
+  0% { background-color: #d1fae5; }
+  50% { background-color: #a7f3d0; }
+  100% { background-color: transparent; }
 }

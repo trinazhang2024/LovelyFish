@@ -1,4 +1,4 @@
-.clearance-section .card {
+.clearance-section .clearance-card {
   border-radius: 0.5rem;
   overflow: hidden;
   display: flex;
@@ -7,13 +7,12 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.clearance-section .card:hover {
+.clearance-section .clearance-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-.clearance-section .card-body {
+.clearance-section .clearance-body {
   padding: 1rem;
   flex: 1;
   display: flex;
@@ -21,15 +20,63 @@
   justify-content: space-between;
 }
 
-.clearance-section .card-title {
-  height: 50px
+.clearance-section .clearance-title {
+  font-size: 1rem;
+  font-weight: 600;
+  height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 0.5rem;
 }
 
-.clearance-section .card-text {
-  font-size: 1.1rem;
-  color: #dc3545; 
-  /* margin-top: 20px; */
+.clearance-section .clearance-oldprice {
+  text-decoration: line-through;
+  color: #6c757d;
+  font-size: 0.9rem;
 }
 
+.clearance-section .clearance-newprice {
+  font-size: 1.2rem;
+  color: #dc3545;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
 
+.clearance-section .clearance-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
 
+.clearance-section .clearance-btn {
+  flex: 1;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.5rem;
+  cursor: pointer;
+}
+
+.clearance-section .clearance-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.clearance-section .clearance-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.8rem;
+  padding: 0.4rem 0.6rem;
+}
+
+.clearance-loadmore {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+/* 响应式 */
+@media (max-width: 576px) {
+  .clearance-section .clearance-actions {
+    flex-direction: column;
+  }
+}

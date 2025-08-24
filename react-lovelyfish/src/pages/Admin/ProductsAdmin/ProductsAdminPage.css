@@ -1,58 +1,115 @@
-/* src/pages/admin/ProductsAdminPage.css */
+/* ProductsAdminPage.css */
 
-/* 页面标题 */
-.products-page-title {
-  font-size: 1.75rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
+/* 页面容器 */
+.products-admin-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* 表单样式 */
+/* 标题 */
+.products-admin-page h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  text-align: center;
+}
+
+/* 表单 */
 .products-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 输入框和选择框 */
+.products-form input[type="text"],
+.products-form input[type="number"],
+.products-form select,
+.products-form textarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* 上传图片按钮 */
+.products-form input[type="file"] {
+  margin-top: 10px;
+}
+
+/* 图片预览容器 */
+.image-preview {
+  display: flex;
   flex-wrap: wrap;
+  margin-top: 10px;
 }
 
-.products-form input {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  outline: none;
+/* 单张图片容器 */
+.image-preview > div {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #ddd;
 }
 
-.products-form input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6;
+/* 图片 */
+.image-preview img {
+  display: block;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
 }
 
-.products-form button {
-  padding: 0.5rem 1rem;
+/* 删除按钮 */
+.image-preview button {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: #fff;
   border: none;
-  border-radius: 0.25rem;
-  background-color: #3b82f6;
-  color: #ffffff;
-  font-weight: 500;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.products-form button:hover {
-  background-color: #2563eb;
+/* 提交按钮 */
+.products-form button[type="submit"] {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1d72b8;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-/* 表格容器 */
+.products-form button[type="submit"]:hover {
+  background-color: #155a8a;
+}
+
+/* 产品表格 */
 .products-table-container {
   overflow-x: auto;
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem;
 }
 
-/* 表格 */
 .products-table {
   width: 100%;
   border-collapse: collapse;
@@ -60,63 +117,61 @@
 
 .products-table th,
 .products-table td {
-  border: 1px solid #e5e7eb;
-  padding: 0.5rem 1rem;
-  text-align: center;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
-/* 表头 */
-.products-table thead {
-  background-color: #f3f4f6;
-  color: #374151;
-  font-size: 0.875rem;
-  text-transform: uppercase;
+.products-table th {
+  background: #f5f5f5;
 }
 
-/* 表体行 hover */
-.products-table tbody tr {
-  background-color: #ffffff;
-  transition: background-color 0.2s;
+/* 表格缩略图 */
+.products-table td img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 8px;
 }
 
-.products-table tbody tr:hover {
-  background-color: #f9fafb;
+/* 响应式 */
+@media (max-width: 768px) {
+  .products-form {
+    padding: 15px;
+  }
+
+  .image-preview img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .products-form button[type="submit"] {
+    width: 100%;
+  }
+
+  .products-table td img {
+    width: 50px;
+    height: 50px;
+  }
 }
 
-/* 编辑/删除按钮 */
-.products-table button {
-  padding: 0.25rem 0.5rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
+@media (max-width: 480px) {
+  .products-admin-page {
+    padding: 10px;
+  }
 
-.products-table button:first-child {
-  background-color: #10b981; /* 绿色编辑 */
-  color: #ffffff;
-}
+  .products-form {
+    gap: 10px;
+  }
 
-.products-table button:first-child:hover {
-  background-color: #059669;
-}
+  .image-preview img {
+    width: 50px;
+    height: 50px;
+  }
 
-.products-table button:last-child {
-  background-color: #ef4444; /* 红色删除 */
-  color: #ffffff;
-  margin-left: 0.5rem;
-}
-
-.products-table button:last-child:hover {
-  background-color: #b91c1c;
-}
-
-/* 空表格提示 */
-.products-empty {
-  text-align: center;
-  font-style: italic;
-  color: #6b7280;
-  margin-top: 1rem;
+  .products-table td img {
+    width: 40px;
+    height: 40px;
+  }
 }

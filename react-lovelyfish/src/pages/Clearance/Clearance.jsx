@@ -4,7 +4,7 @@ import { useCart } from '../../contexts/CartContext';
 import { Container, Row, Col, Card, Button, Badge, Alert, Spinner } from 'react-bootstrap';
 import { BsArrowRight, BsTagFill } from 'react-icons/bs';
 import api from '../../API/axios';
-import './Clearance.css'; // 你可以自己创建一个对应的 CSS 文件
+import './Clearance.css';
 
 function Clearance() {
   const [products, setProducts] = useState([]);
@@ -12,17 +12,12 @@ function Clearance() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
+  const [addingIds, setAddingIds] = useState([]);
 
   useEffect(() => {
     api.get('/product')
       .then(response => {
-        //console.log('products:', response.data);
-        const allProducts = response.data;
-
-        // 你需要定义哪些商品是清仓，比如 price 打折，或者设一个字段 isClearance: true
-        const clearanceProducts = allProducts.filter(p => p.isClearance); // ✅ 后端数据里要有 isClearance 字段
-
-        setProducts(clearanceProducts);
+        setProducts(response.data.filter(p => p.isClearance));
         setLoading(false);
       })
       .catch(err => {
@@ -34,33 +29,37 @@ function Clearance() {
 
   const loadMore = () => setVisibleCount(prev => prev + 4);
 
-  const handleAddToCart = (product) => {
-    addToCart(product.id, 1);
-    alert(`${product.name} Added to Cart`);
+  const handleAddToCart = async (product) => {
+    if (addingIds.includes(product.id)) return;
+    setAddingIds(prev => [...prev, product.id]);
+    try {
+      await addToCart(product.id, 1);
+      alert(`${product.name} 已添加到购物车`);
+    } catch (err) {
+      alert('添加购物车失败，请稍后重试');
+    } finally {
+      setAddingIds(prev => prev.filter(id => id !== product.id));
+    }
   };
 
-  if (loading) {
-    return (
-      <Container className="my-5 text-center">
-        <Spinner animation="border" variant="primary" />
-        <p className="mt-3">Loading clearance products...</p>
-      </Container>
-    );
-  }
+  if (loading) return (
+    <Container className="clearance-loading">
+      <Spinner animation="border" variant="primary" />
+      <p>Loading clearance products...</p>
+    </Container>
+  );
 
-  if (error) {
-    return (
-      <Container className="my-5">
-        <Alert variant="danger">{error}</Alert>
-      </Container>
-    );
-  }
+  if (error) return (
+    <Container className="clearance-error">
+      <Alert variant="danger">{error}</Alert>
+    </Container>
+  );
 
   return (
-    <Container className="my-5 clearance-section">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="m-0">
-          <BsTagFill className="text-danger me-2" />
+    <Container className="clearance-section">
+      <div className="clearance-header">
+        <h2>
+          <BsTagFill className="clearance-icon" />
           Clearance Sale
         </h2>
       </div>
@@ -69,66 +68,71 @@ function Clearance() {
         <Alert variant="info">No clearance items available right now.</Alert>
       ) : (
         <>
-          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-            {products.slice(0, visibleCount).map(product => (
-              <Col key={product.id}>
-                <Card className="h-100 d-flex flex-column position-relative">
-                  {product.discountPercent > 0 && (
-                    <Badge bg="danger" className="position-absolute top-0 start-0 m-2">
-                      {product.discountPercent}% OFF
-                    </Badge>
-                  )}
-                  {/*如果折扣大于0，就显示一个红色的折扣标签，比如“30% OFF”。*/}
+          <Row className="clearance-grid">
+            {products.slice(0, visibleCount).map(product => {
+              const discountedPrice = product.discountPercent
+                ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
+                : product.price.toFixed(2);
 
-                    <Link to={`/product/${product.id}`} className="text-decoration-none text-dark">
-                          <Card.Img
-                            variant="top"
-                            src={product.image}
-                            style={{ height: '250px', objectFit: 'cover' ,marginTop: '20px'}}
-                          />
+              return (
+                <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="clearance-col">
+                  <Card className="clearance-card">
+                    {product.discountPercent > 0 && (
+                      <Badge bg="danger" className="clearance-badge">
+                        {product.discountPercent}% OFF
+                      </Badge>
+                    )}
+
+                    <Link to={`/product/${product.id}`} className="clearance-link">
+                      <Card.Img
+                        variant="top"
+                        src={product.mainImageUrl || (product.imageUrls && product.imageUrls[0]) || ''}
+                        className="clearance-img"
+                      />
                     </Link>
-                    <Card.Body className="text-center flex-grow-1 d-flex flex-column" >
-                      <div>
-                        <Card.Title className="h6" mt-2>{product.name}</Card.Title>
 
-                        {product.discountPercent > 0 ? (
-                          <>
-                            <Card.Text className="text-muted text-decoration-line-through mt-1">
-                              ${product.price.toFixed(2)}
-                            </Card.Text>
-                            <Card.Text className="text-danger fw-bold mt-2">
-                              ${(product.price * (1 - product.discountPercent / 100)).toFixed(2)}
-                            </Card.Text>
-                          </>
-                        ) : (
-                          <Card.Text className="text-danger fw-bold mt-2">
+                    <Card.Body className="clearance-body">
+                      <Card.Title className="clearance-title">{product.name}</Card.Title>
+
+                      {product.discountPercent > 0 ? (
+                        <>
+                          <Card.Text className="clearance-oldprice">
                             ${product.price.toFixed(2)}
                           </Card.Text>
-                        )}
-                      
-                  
+                          <Card.Text className="clearance-newprice">
+                            ${discountedPrice}
+                          </Card.Text>
+                        </>
+                      ) : (
+                        <Card.Text className="clearance-newprice">
+                          ${discountedPrice}
+                        </Card.Text>
+                      )}
+
+                      <div className="clearance-actions">
                         <Button
                           variant="outline-primary"
-                          className="w-100 mt-auto"
-                          style={{ cursor: 'pointer' }}
+                          className="clearance-btn"
                           onClick={() => handleAddToCart(product)}
+                          disabled={addingIds.includes(product.id)}
                         >
-                          Add to Cart
+                          {addingIds.includes(product.id) ? '添加中...' : 'Add to Cart'}
                         </Button>
+
+                        <Link to={`/product/${product.id}`} className="btn btn-primary clearance-btn">
+                          Shop Now
+                        </Link>
                       </div>
                     </Card.Body>
-                </Card>
-              </Col>
-            ))}
+                  </Card>
+                </Col>
+              );
+            })}
           </Row>
 
           {visibleCount < products.length && (
-            <div className="text-center mt-4">
-              <Button
-                variant="outline-primary"
-                onClick={loadMore}
-                className="px-4"
-              >
+            <div className="clearance-loadmore">
+              <Button variant="outline-primary" onClick={loadMore}>
                 Loading more <BsArrowRight className="ms-1" />
               </Button>
             </div>

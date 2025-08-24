@@ -1,7 +1,14 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, {useState,useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route,Navigate } from "react-router-dom";
+import api from './API/axios'
 import { UserProvider } from "./contexts/UserContext";
 import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import AdminLogin from './pages/Admin/Login/LoginAdminPage'
+import Dashboard from "./pages/Admin/Dashboard/Dashboard";
+import AdminForgotPassword from './pages/Admin/ForgotPassword/AdminForgotPassword'
+import AdminResetPassword from "./pages/Admin/ResetPassword/AdminResetPassword";
+import AdminChangePassword from "./pages/Admin/ChangePassword/AdminChangePassword";
 import Navbar from './components/Navbar/Navbar';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
@@ -23,11 +30,28 @@ import ConfirmOrderPage from "./pages/Cart/ConfirmOrder/ConfirmOrderPage";
 import OrdersPage from './pages/Cart/OrdersPage/OrdersPage';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
-import Dashboard from './pages/Admin/Dashboard/Dashboard'
 import "bootstrap/dist/css/bootstrap.min.css";
 import './styles/global.css';
 
 const App = () => {
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
+  // 刷新页面时检查后端 Cookie
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const res = await api.get("/admin/me"); // 返回当前管理员信息
+        if (res.status === 200) {
+          setIsAdminLoggedIn(true);
+          localStorage.setItem("isAdminLoggedIn", "true");}
+      } catch {
+        setIsAdminLoggedIn(false);
+        //localStorage.removeItem("isAdminLoggedIn");
+      }
+    };
+    checkAdmin();
+  }, []);
+
   return (
     <UserProvider> 
       <CartProvider>
@@ -35,22 +59,38 @@ const App = () => {
             <div className="App">
               <Navbar/>
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/admin" element={<Dashboard />} />
-                {/* user login & register */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/profile" element={<Profile />} />
+                  <Route path="/" element={<Home />} />
+                  
+                  {/* customers routes */}
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                  <Route path="/reset-password" element={<ResetPasswordPage />} />
+                  <Route path="/profile" element={<Profile />} />               
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <Profile />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                {/* Admin routes */}
+                <Route path="/admin/login" element={<AdminLogin setIsAdminLoggedIn={setIsAdminLoggedIn} />} />
+                <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+                <Route path="/admin/reset-password" element={<AdminResetPassword />} />
+                <Route path="/admin/change-password" element={<AdminChangePassword />} />
+
+                {/* 受保护后台页面 */}
                 <Route
-                  path="/profile"
+                  path="/admin/dashboard"
                   element={
-                    <ProtectedRoute>
-                      <Profile />
-                    </ProtectedRoute>
+                    <ProtectedAdminRoute isAdminLoggedIn={isAdminLoggedIn}>
+                      <Dashboard />
+                    </ProtectedAdminRoute>
                   }
                 />
-                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                <Route path="/reset-password" element={<ResetPasswordPage />} />
 
                 {/* 在路由配置中添加 */}
                 <Route path="/search" element={<SearchResultsPage />} />

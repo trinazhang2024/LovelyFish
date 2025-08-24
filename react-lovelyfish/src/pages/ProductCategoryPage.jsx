@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../API/axios'; 
 import ProductList from '../components/ProductList/ProductList';
-import '../hooks/SortControls.css'; // 样式文件
+import './Products.css'; // 公共样式文件
+import './SortControls.css'; // 排序控件样式
 
 const ProductCategoryPage = () => {
-  const { category } = useParams(); // ⬅️ 从 URL 中读取分类
+  const { category } = useParams(); // 从 URL 获取分类
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [sortBy, setSortBy] = useState('default'); // 排序字段
   const [sortOrder, setSortOrder] = useState('asc'); // 升序/降序
 
-  const showWattageSort = ['heaters', 'waterpumps', 'wavemakers', 'ledlights', 'filters', 'airpumps'].includes(category.toLowerCase());
-
   useEffect(() => {
-    axios.get('https://localhost:7148/api/Product')
+    setLoading(true);
+    api.get('/Product')
       .then(response => {
-        console.log('接口返回所有产品:', response.data);
-        // 筛选出当前分类的产品
-        const filtered = response.data.filter(p => p.category.toLowerCase() === category.toLowerCase());
-        console.log(`筛选后${category}分类产品:`, filtered);
-        setProducts(filtered);
+        // 先筛选当前分类
+        const filtered = response.data.filter(
+          p => p.category?.title?.toLowerCase() === category.toLowerCase()
+        );
+
+        // 取主图
+        const filteredWithImage = filtered.map(p => ({
+          ...p,
+          mainImage: p.images && p.images.length > 0 ? p.images[0].url : '',
+        }));
+
+        setProducts(filteredWithImage);
         setLoading(false);
       })
       .catch(err => {
@@ -40,25 +47,19 @@ const ProductCategoryPage = () => {
     return sortOrder === 'asc' ? aVal - bVal : bVal - aVal;
   });
 
-  // 动态生成可用排序选项
+  // 动态排序控件
   const availableSortOptions = ['price'];
-  if (showWattageSort && products.some(p => p.wattage !== undefined)) {
+  if (products.some(p => p.wattage !== undefined)) {
     availableSortOptions.push('wattage');
   }
-
-  console.log('传给ProductList的产品数组:', sortedProducts);
 
   if (loading) return <p>正在加载 {category} 产品...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="container">
-      
-      {/* eg: heaters → Heaters */}
-      <h1>{category.charAt(0).toUpperCase() + category.slice(1)}</h1> 
-      
-      
-      {/* 排序控件 */}
+    <div className="products-container">
+      <h1>{category.charAt(0).toUpperCase() + category.slice(1)}</h1>
+
       <div className={`sort-controls ${availableSortOptions.length === 1 ? 'single-option' : ''}`}>
         {availableSortOptions.length > 1 ? (
           <>
@@ -66,7 +67,7 @@ const ProductCategoryPage = () => {
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <option value="default">默认</option>
               <option value="price">价格</option>
-              <option value="wattage">瓦数</option>
+              {availableSortOptions.includes('wattage') && <option value="wattage">瓦数</option>}
             </select>
           </>
         ) : (

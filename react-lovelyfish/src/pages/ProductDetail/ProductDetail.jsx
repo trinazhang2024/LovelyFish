@@ -12,12 +12,13 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [adding, setAdding] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
-    //用统一的 api 请求实例，方便管理请求拦截和错误处理
     api.get(`/Product/${id}`)
       .then(response => {
         setProduct(response.data);
+        setSelectedImage(response.data.images?.[0]?.url || '');
         setLoading(false);
       })
       .catch(err => {
@@ -26,13 +27,12 @@ const ProductDetail = () => {
         setLoading(false);
       });
   }, [id]);
-  
-  //购物车调用改为直接用 addToCart(productId, qty)，跟你的 CartContext 设计对接, 添加了按钮 loading 状态，防止多次点“Add to Cart”
+
   const addToCartHandler = async () => {
     setAdding(true);
     try {
       await addToCart(product.id, 1);
-      alert(`${product.name} 已添加到购物车`);
+      alert(`${product.title} 已添加到购物车`);
     } catch (err) {
       alert('添加购物车失败，请稍后重试');
     } finally {
@@ -48,16 +48,27 @@ const ProductDetail = () => {
     <div className="product-detail">
       <div className="breadcrumb">
         <Link to="/">Home</Link> › <Link to="/products">Products</Link> ›{' '}
-        <span>{product.name}</span>
+        <span>{product.title}</span>
       </div>
 
       <div className="product-container">
         <div className="product-image-container">
-          <img src={product.image} alt={product.name} className="product-image" />
+          {selectedImage && <img src={selectedImage} alt={product.title} className="product-image" />}
+          <div className="thumbnail-list">
+            {product.images?.map((img, idx) => (
+              <img
+                key={idx}
+                src={img.url}
+                alt={`thumb-${idx}`}
+                className={`thumbnail ${selectedImage === img.url ? 'selected' : ''}`}
+                onClick={() => setSelectedImage(img.url)}
+              />
+            ))}
+          </div>
         </div>
 
         <div className="product-info-container">
-          <h1 className="product-title">{product.name}</h1>
+          <h1 className="product-title">{product.title}</h1>
 
           <p className="product-price">
             {product.discountPercent > 0 ? (
@@ -82,14 +93,16 @@ const ProductDetail = () => {
             {adding ? "添加中..." : "Add to Cart"}
           </button>
 
+          <p>Category: {product.category?.name || 'Uncategorized'}</p>
+
           <div className="product-description">
             <h2>Description</h2>
             <p>{product.description}</p>
-            <ul className="features-list">
-              {Array.isArray(product.features)
-                ? product.features.map((feature, index) => <li key={index}>{feature}</li>)
-                : <li>{product.features}</li>}
-            </ul>
+            {Array.isArray(product.features) && product.features.length > 0 && (
+              <ul className="features-list">
+                {product.features.map((feature, index) => <li key={index}>{feature}</li>)}
+              </ul>
+            )}
           </div>
         </div>
       </div>
