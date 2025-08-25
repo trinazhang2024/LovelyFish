@@ -30,7 +30,9 @@ const Recommend = () => {
       <ul className="recommend-list">
         {categories.map((category, index) => (
           <li key={index}>
-            <Link to={`/products/${category.toLowerCase()}`}>{category}</Link>
+            <Link to={`/products/${category.name?.toLowerCase() || ''}`}>
+              {category.name || 'Unknown'}
+            </Link>
           </li>
         ))}
       </ul>

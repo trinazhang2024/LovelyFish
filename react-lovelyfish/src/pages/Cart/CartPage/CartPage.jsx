@@ -11,7 +11,7 @@ export default function CartPage() {
   const navigate = useNavigate();
 
   if (loading) return <p>Loading...</p>;
-
+  console.log("Cart Items:", cartItems);
   // 选择单个商品
   const toggleSelect = (id) => {
     setSelectedItems((prev) =>
@@ -73,15 +73,16 @@ export default function CartPage() {
     0
   );
 
-  // 计算选中商品原价总和
-  const originalTotalPrice = selectedItems.reduce(
-    (sum, id) => {
-      const item = cartItems.find(i => i.id === id);
-      const quantity = localQuantities[id] ?? item.quantity;
-      return sum + (item ? quantity * item.product.price : 0);
-    },
-    0
-  );
+  // 计算选中商品总价（折扣价）
+  const originalTotalPrice = selectedItems.reduce((sum, id) => {
+    const item = cartItems.find(i => i.id === id);
+    const quantity = localQuantities[id] ?? item.quantity;
+    if (!item) return sum;
+    const discountedPrice = item.product.discountPercent
+      ? item.product.price * (1 - item.product.discountPercent / 100)
+      : item.product.price;
+    return sum + discountedPrice * quantity;
+  }, 0);
 
   return (
     <div className="cart-container">
@@ -104,60 +105,71 @@ export default function CartPage() {
               <span>Total</span>
               <span>Action</span>
             </li>
-            {cartItems.map(item => (
-              <li key={item.id} className="cart-item">
+              {cartItems.map(item => {
+                const discountedPrice = item.product.discountPercent
+                  ? item.product.price * (1 - item.product.discountPercent / 100)
+                  : item.product.price;
+                const quantity = localQuantities[item.id] ?? item.quantity;
+                const totalPrice = discountedPrice * quantity;
 
-                {/* checkbox */}
-                <div className="cart-select">
-                  <input
-                    type="checkbox"
-                    checked={selectedItems.includes(item.id)}
-                    onChange={() => toggleSelect(item.id)}
-                  />
-                </div>
+                return (
+                  <li key={item.id} className="cart-item">
+                    {/* checkbox */}
+                    <div className="cart-select">
+                      <input
+                        type="checkbox"
+                        checked={selectedItems.includes(item.id)}
+                        onChange={() => toggleSelect(item.id)}
+                      />
+                    </div>
 
-                {/* Picture and Name */}
-                <div className="cart-product">
-                  <img
-                    src={item.product?.image}
-                    alt={item.product?.name}
-                    className="cart-item-image"
-                  />
-                  <h4>{item.product?.name}</h4>
-                </div>
+                    {/* Picture and Name */}
+                    <div className="cart-product">
+                      {(() => {
+                        const productImage =
+                          item.product?.image ||
+                          (item.product?.images && item.product.images[0]?.url) ||
+                          '/upload/placeholder.png';
+                        return <img src={productImage} alt={item.product?.title || 'Product'} className="cart-item-image" />;
+                      })()}
+                      <h4>{item.product?.title}</h4>
+                    </div>
 
-                {/* Price */}
-                <div className="cart-price">${item.product?.price.toFixed(2)}</div>
+                    {/* Price */}
+                    <div className="cart-price">
+                      {item.product.discountPercent > 0 ? (
+                        <>
+                          <span className="original-price">${item.product.price.toFixed(2)}</span>
+                          <span className="discount-price">${discountedPrice.toFixed(2)}</span>
+                        </>
+                      ) : (
+                        <span>${discountedPrice.toFixed(2)}</span>
+                      )}
+                    </div>
 
-                {/* Quantity */}
-                <div className="cart-quantity">
-                  <button onClick={() => decrementItem(item.id)}>-</button>
-                  <input
-                    type="number"
-                    min="1"
-                    value={localQuantities[item.id] ?? item.quantity}
-                    onChange={(e) => handleQuantityChange(item.id, e.target.value)}
-                    onBlur={() => handleQuantityBlur(item.id)}
-                  />
-                  <button onClick={() => incrementItem(item.id)}>+</button>
-                </div>
+                    {/* Quantity */}
+                    <div className="cart-quantity">
+                      <button onClick={() => decrementItem(item.id)}>-</button>
+                      <input
+                        type="number"
+                        min="1"
+                        value={quantity}
+                        onChange={(e) => handleQuantityChange(item.id, e.target.value)}
+                        onBlur={() => handleQuantityBlur(item.id)}
+                      />
+                      <button onClick={() => incrementItem(item.id)}>+</button>
+                    </div>
 
-                {/* Total Price */}
-                <div className="cart-total">
-                  ${(item.product?.price * (localQuantities[item.id] ?? item.quantity)).toFixed(2)}
-                </div>
+                    {/* Total Price */}
+                    <div className="cart-total">${totalPrice.toFixed(2)}</div>
 
-                {/* action */}
-                <div className="cart-action">
-                  <button
-                    className="delete-btn"
-                    onClick={() => removeCartItem(item.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
+                    {/* action */}
+                    <div className="cart-action">
+                      <button className="delete-btn" onClick={() => removeCartItem(item.id)}>Delete</button>
+                    </div>
               </li>
-            ))}
+             );
+            })}
           </ul>
 
           {/* 总价和下一步按钮 */}

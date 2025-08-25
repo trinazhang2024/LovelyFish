@@ -1,7 +1,17 @@
 /* Container */
 .newarrivals-section {
-  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
+
+/* 新品区卡片容器 */
+.newarrivals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 自动多列 */
+  gap: 1rem; /* 卡片之间的间距 */
+}
+
 
 /* 卡片 */
 .newarrivals-card {
@@ -167,10 +177,21 @@
   to { opacity: 0; transform: translateY(-10px); }
 }
 
-/* Grid 响应式 */
-@media (max-width: 576px) {
-  .na-actions {
-    flex-direction: column;
-    gap: 0.5rem;
+@media (min-width: 992px) { /* 大屏幕 */
+  .newarrivals-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
+
+@media (min-width: 768px) and (max-width: 991px) { /* 平板 */
+  .newarrivals-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) { /* 手机 */
+  .newarrivals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

@@ -80,11 +80,11 @@ function NewArrivals() {
                   )}
 
                   <Link to={`/product/${product.id}`} className="na-link">
-                    <img src={product.mainImageUrl} alt={product.name} className="na-img" />
+                    <img src={product.mainImageUrl} alt={product.title} className="na-img" />
                   </Link>
 
                   <div className="na-body">
-                    <div className="na-title">{product.name}</div>
+                    <div className="na-title">{product.title}</div>
 
                     {product.isClearance && product.discountPercent > 0 ? (
                       <>

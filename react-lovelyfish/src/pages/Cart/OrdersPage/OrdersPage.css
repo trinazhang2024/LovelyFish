@@ -1,43 +1,43 @@
-/* OrdersPage.css - 美化版 */
+/* OrdersPage.css - 高级美化版 */
 
 .orders-container {
-  max-width: 900px;
-  margin: 30px auto;
+  max-width: 960px;
+  margin: 40px auto;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f7fa;
+  background-color: #f9fbfd;
 }
 
 .orders-container h2 {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 25px;
-  color: #1f3c88; /* 主标题蓝色 */
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1f3c88;
   text-align: center;
   letter-spacing: 1px;
 }
 
 .order-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: linear-gradient(145deg, #ffffff, #f0f4f8);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .order-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
 .order-header {
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 14px;
-  margin-bottom: 14px;
+  border-bottom: 2px solid #e0e3e8;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
   display: flex;
-  flex-direction: column; /* 竖向排列 */
-  gap: 6px; /* 每行间距 */
+  flex-direction: column;
+  gap: 6px;
 }
 
 .order-header p {
@@ -47,19 +47,41 @@
 }
 
 .order-header p strong {
-  color: #1f3c88; /* 重点字段颜色 */
+  color: #1f3c88;
+}
+
+.final-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f3c88;
+  margin-right: 8px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #aaa;
+  margin-right: 6px;
+}
+
+.discount-amount {
+  color: #2e7d32;
+  font-weight: 600;
+  background: #e8f5e9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
 }
 
 .order-items {
-  margin-top: 10px;
-  background-color: #f0f4f8;
-  border-radius: 8px;
-  padding: 10px;
+  margin-top: 12px;
+  background-color: #eef2f7;
+  border-radius: 10px;
+  padding: 12px;
 }
 
 .order-item {
   padding: 10px 0;
-  border-bottom: 1px dashed #c0c4cc;
+  border-bottom: 1px dashed #cbd2d9;
   font-size: 14px;
   color: #333;
 }
@@ -76,42 +98,45 @@
 .empty-orders {
   text-align: center;
   font-size: 16px;
-  margin-top: 50px;
+  margin-top: 60px;
   color: #888;
   font-style: italic;
 }
 
-
 .order-actions {
-  margin-top: 12px;
+  margin-top: 16px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .order-actions button {
-  padding: 6px 12px;
+  padding: 8px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  color: #1f3c88;
-  background: #eee;
-  transition: background 0.2s;
+  font-weight: 500;
+  color: white;
+  background: #1f3c88;
+  transition: all 0.2s;
 }
 
 .order-actions button:hover {
-  background: #ddd;
+  background: #16306b;
+  transform: translateY(-2px);
 }
 
-/* 状态颜色 */
+/* 状态标签 */
 .status {
-  padding: 2px 8px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
   font-size: 12px;
+  font-weight: 600;
   color: white;
+  display: inline-block;
 }
 
-.status.pending { background: orange; }
+.status.pending { background: #ff9800; }
 .status.paid { background: #2196f3; }
 .status.shipped { background: #4caf50; }
-.status.completed { background: gray; }
+.status.completed { background: #607d8b; }

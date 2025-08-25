@@ -1,35 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import api from '../API/axios'; 
+import api from '../API/axios';
 import ProductList from '../components/ProductList/ProductList';
-import './Products.css'; // 公共样式文件
-import './SortControls.css'; // 排序控件样式
+import useSortableProducts from '../pages/useSortableProducts'; 
+import './Products.css';
+import './SortControls.css';
 
 const ProductCategoryPage = () => {
-  const { category } = useParams(); // 从 URL 获取分类
+  const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [sortBy, setSortBy] = useState('default'); // 排序字段
-  const [sortOrder, setSortOrder] = useState('asc'); // 升序/降序
+  // URL 映射到数据库分类
+  const categoryMap = {
+    waterpumps: "Water Pump",
+    filters: "Filter",
+    wavemakers: "Wave Maker",
+    airpumps: "Air Pump",
+    heaters: "Heater",
+    filtration: "Filtration",
+    ledlights: "Led Light",
+    spongefoams: "Foam and Sponge Filter",
+    other: "Other"
+  };
+  const dbCategory = categoryMap[category.toLowerCase()];
 
+  // 获取产品数据
   useEffect(() => {
     setLoading(true);
     api.get('/Product')
       .then(response => {
-        // 先筛选当前分类
-        const filtered = response.data.filter(
-          p => p.category?.title?.toLowerCase() === category.toLowerCase()
-        );
 
-        // 取主图
-        const filteredWithImage = filtered.map(p => ({
-          ...p,
-          mainImage: p.images && p.images.length > 0 ? p.images[0].url : '',
-        }));
+        console.log("原始产品数据:", response.data); // ✅ 查看 FeaturesJson 是字符串还是数组
 
-        setProducts(filteredWithImage);
+        const filtered = response.data
+          .filter(p => p.categoryTitle === dbCategory)
+          .map(p => ({
+            ...p,
+            // 主图占位
+            mainImage: p.mainImageUrl || '/upload/placeholder.png',
+          }));
+
+        setProducts(filtered);
         setLoading(false);
       })
       .catch(err => {
@@ -37,43 +50,34 @@ const ProductCategoryPage = () => {
         setError('无法加载产品');
         setLoading(false);
       });
-  }, [category]);
+  }, [category, dbCategory]);
 
-  // 排序逻辑
-  const sortedProducts = [...products].sort((a, b) => {
-    if (sortBy === 'default') return 0;
-    const aVal = a[sortBy] || 0;
-    const bVal = b[sortBy] || 0;
-    return sortOrder === 'asc' ? aVal - bVal : bVal - aVal;
-  });
+  // 使用 Hook 管理排序
+  const {
+    sortedProducts,
+    sortBy,
+    sortOrder,
+    handleSortChange,
+    handleOrderChange,
+    sortOptions
+  } = useSortableProducts(products);
 
-  // 动态排序控件
-  const availableSortOptions = ['price'];
-  if (products.some(p => p.wattage !== undefined)) {
-    availableSortOptions.push('wattage');
-  }
-
-  if (loading) return <p>正在加载 {category} 产品...</p>;
+  if (loading) return <p>正在加载 {dbCategory} 产品...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="products-container">
-      <h1>{category.charAt(0).toUpperCase() + category.slice(1)}</h1>
+      <h1>{dbCategory}</h1>
 
-      <div className={`sort-controls ${availableSortOptions.length === 1 ? 'single-option' : ''}`}>
-        {availableSortOptions.length > 1 ? (
-          <>
-            <label>排序方式：</label>
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="default">默认</option>
-              <option value="price">价格</option>
-              {availableSortOptions.includes('wattage') && <option value="wattage">瓦数</option>}
-            </select>
-          </>
-        ) : (
-          <span>按价格排序：</span>
-        )}
-        <button onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}>
+      <div className="sort-controls">
+        <label>排序方式：</label>
+        <select value={sortBy} onChange={handleSortChange}>
+          <option value="default">默认</option>
+          {sortOptions.includes('price') && <option value="price">价格</option>}
+          {sortOptions.includes('wattage') && <option value="wattage">瓦数</option>}
+        </select>
+
+        <button onClick={handleOrderChange} disabled={sortBy === 'default'}>
           {sortOrder === 'asc' ? '↑ 升序' : '↓ 降序'}
         </button>
       </div>

@@ -92,7 +92,7 @@ function Clearance() {
                     </Link>
 
                     <Card.Body className="clearance-body">
-                      <Card.Title className="clearance-title">{product.name}</Card.Title>
+                      <Card.Title className="clearance-title">{product.title}</Card.Title>
 
                       {product.discountPercent > 0 ? (
                         <>

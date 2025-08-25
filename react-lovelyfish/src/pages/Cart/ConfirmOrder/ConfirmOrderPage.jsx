@@ -1,5 +1,4 @@
 // ConfirmOrderPage.jsx
-
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useCart } from "../../../contexts/CartContext";
@@ -26,28 +25,25 @@ export default function ConfirmOrderPage() {
   const [localQuantities, setLocalQuantities] = useState({});
   const [selectedCartData, setSelectedCartData] = useState([]);
 
-  // ----------------- Effects -----------------
-  // 等待 user 和 cartItems 加载完成后初始化 selectedCartData 和 localQuantities
-
   const [loadingUser, setLoadingUser] = useState(true);
-  
 
+  // ----------------- Fetch user -----------------
   useEffect(() => {
     async function fetchUser() {
       try {
         const res = await api.get("/Account/me", { withCredentials: true });
-        console.log("User data:", res.data); // 查看返回数据
         setUser(res.data);
       } catch (err) {
         console.error("Failed to load user", err);
-        setUser({ NewUserCouponUsed: false }); // 临时 fallback
+        setUser({ newUserUsed: false }); // fallback
       } finally {
-        setLoadingUser(false); // ✅ 一定要关掉
+        setLoadingUser(false);
       }
     }
     fetchUser();
   }, []);
 
+  // ----------------- Initialize selected items -----------------
   useEffect(() => {
     if (!user || !cartItems.length) return;
 
@@ -77,16 +73,16 @@ export default function ConfirmOrderPage() {
   };
 
   // ----------------- Coupon Logic -----------------
-  
-  
   const canUseNewUserCoupon = user ? !user.newUserUsed : false;
 
-  console.log(canUseNewUserCoupon);
+  const originalTotalPrice = selectedCartData.reduce((sum, item) => {
+    const quantity = localQuantities[item.id] ?? item.quantity;
+    const discountedPrice = item.product.discountPercent
+      ? item.product.price * (1 - item.product.discountPercent / 100)
+      : item.product.price;
+    return sum + discountedPrice * quantity;
+  }, 0);
 
-  const originalTotalPrice = selectedCartData.reduce(
-    (sum, item) => sum + item.product.price * (localQuantities[item.id] ?? item.quantity),
-    0
-  );
   const canUse50Coupon = originalTotalPrice >= 50;
   const canUse100Coupon = originalTotalPrice >= 100;
 
@@ -116,15 +112,20 @@ export default function ConfirmOrderPage() {
 
   // ----------------- Checkout -----------------
   const handleCheckout = async () => {
+
+    if (!customerName.trim() || !phone.trim() || !shippingAddress.trim()) {
+      alert("⚠️ Please fill in your name, phone number and shipping address before submitting the order.");
+      return;
+    }
+    
     try {
       setProcessing(true);
-  
-      // 将每个商品的 id 和数量打包
+
       const itemsToSubmit = selectedCartData.map(item => ({
         id: item.id,
         quantity: localQuantities[item.id] || item.quantity || 1
       }));
-  
+
       const res = await api.post("/cart/checkout", {
         customerName,
         phone,
@@ -134,15 +135,12 @@ export default function ConfirmOrderPage() {
         use50Coupon,
         use100Coupon
       });
-  
-      console.log("Checkout response:", res.data);
-  
+
       setLastOrderId(res.data.orderId);
       fetchCart();
-  
-      // 更新新人卷状态
+
       if (res.data.newUserUsed) {
-        setUser(prev => ({ ...prev, NewUserCouponUsed: true }));
+        setUser(prev => ({ ...prev, newUserUsed: true }));
         setUseNewUserCoupon(false); 
       }
     } catch (err) {
@@ -152,7 +150,6 @@ export default function ConfirmOrderPage() {
       setProcessing(false);
     }
   };
-  
 
   // ----------------- Render -----------------
   if (loadingUser) {
@@ -167,8 +164,7 @@ export default function ConfirmOrderPage() {
         <div className="order-success">
           <p>🎉 Your order has been submitted! Order ID: <strong>{lastOrderId}</strong></p>
           <p>Shipping cost will be emailed to you.</p>
-          <p>
-            Any question or payment instruction, please check{" "}
+          <p>Any question or payment instruction, please check{" "}
             <Link to="/about" className="check-orders-link">About Us</Link>
           </p>
           <p>THANKS FOR YOUR SHOPPING!</p>
@@ -184,28 +180,46 @@ export default function ConfirmOrderPage() {
               <span>Quantity</span>
               <span>Total</span>
             </li>
-            {selectedCartData.map(item => (
-              <li key={item.id} className="cart-item">
-                <div className="cart-product">
-                  <img src={item.product?.image} alt={item.product?.name} className="cart-item-image"/>
-                  <h4>{item.product?.name}</h4>
-                </div>
-                <div className="cart-price">${item.product.price.toFixed(2)}</div>
-                <div className="cart-quantity">
-                  <button onClick={() => decrementItem(item.id)}>-</button>
-                  <input
-                    type="number"
-                    min="1"
-                    value={localQuantities[item.id] ?? 1}
-                    onChange={(e) => handleQuantityChange(item.id, e.target.value)}
-                  />
-                  <button onClick={() => incrementItem(item.id)}>+</button>
-                </div>
-                <div className="cart-total">
-                  ${(item.product.price * (localQuantities[item.id] ?? 1)).toFixed(2)}
-                </div>
-              </li>
-            ))}
+            {selectedCartData.map(item => {
+              const quantity = localQuantities[item.id] ?? item.quantity;
+              const discountedPrice = item.product.discountPercent
+                ? item.product.price * (1 - item.product.discountPercent / 100)
+                : item.product.price;
+              const totalPrice = discountedPrice * quantity;
+
+              return (
+                <li key={item.id} className="cart-item">
+                  <div className="cart-product">
+                    <img src={item.product?.image || '/upload/placeholder.png'} alt={item.product?.title} className="cart-item-image"/>
+                    <h4>{item.product?.title}</h4>
+                  </div>
+
+                  <div className="cart-price">
+                    {item.product.discountPercent > 0 ? (
+                      <>
+                        <span className="original-price">${item.product.price.toFixed(2)}</span>
+                        <span className="discount-price">${discountedPrice.toFixed(2)}</span>
+                      </>
+                    ) : (
+                      <span>${discountedPrice.toFixed(2)}</span>
+                    )}
+                  </div>
+
+                  <div className="cart-quantity">
+                    <button onClick={() => decrementItem(item.id)}>-</button>
+                    <input
+                      type="number"
+                      min="1"
+                      value={quantity}
+                      onChange={(e) => handleQuantityChange(item.id, e.target.value)}
+                    />
+                    <button onClick={() => incrementItem(item.id)}>+</button>
+                  </div>
+
+                  <div className="cart-total">${totalPrice.toFixed(2)}</div>
+                </li>
+              );
+            })}
           </ul>
 
           <h3>Customer Information</h3>
@@ -254,19 +268,3 @@ export default function ConfirmOrderPage() {
     </div>
   );
 }
-
-
-
-
-
-// 改动重点：
-
-// 新人卷按钮灰掉逻辑：!user.NewUserCouponUsed
-
-// 50卷和100卷互斥，互斥时切换时自动取消另一个
-
-// 可以和新人卷组合
-
-// 折扣计算与按钮状态同步，前端显示与后端一致
-
-// 提交订单时传递全部信息，后端直接计算最终总价
