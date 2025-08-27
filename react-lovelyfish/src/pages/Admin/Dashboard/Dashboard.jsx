@@ -3,11 +3,19 @@ import React, { useState } from "react";
 import ProductsAdminPage from '../ProductsAdmin/ProductsAdminPage';
 import OrdersAdminPage from "../OrdersAdmin/OrdersAdminPage";
 import UsersAdminPage from "../UsersAdmin/UsersAdminPage";
-import AdminChangePassword from '../ChangePassword/AdminChangePassword'
+import AdminChangePassword from '../ChangePassword/AdminChangePassword';
+import {useUser} from "../../../contexts/UserContext";
 import './Dashboard.css';
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("orders");
+  const {user, isAdmin} = useUser();
+
+  // user 或 roles 未加载时显示 loading
+  if (!user) return <p>加载中...</p>;
+  if (!isAdmin) {
+    return <p>你没有权限访问此页面</p>;
+  }
 
   const renderPage = () => {
     switch (activePage) {

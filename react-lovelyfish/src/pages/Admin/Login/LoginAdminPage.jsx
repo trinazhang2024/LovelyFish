@@ -1,68 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../../API/axios";
-import "./LoginAdminPage.css"
+import { useUser } from "../../../contexts/UserContext"; // ✅ 引入
+import "./LoginAdminPage.css";
 
-export default function AdminLogin({ setIsAdminLoggedIn }) {
+export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const checkLogin = async () => {
-  //     try {
-  //       const res = await api.get("/admin/me"); // 会自动带 Cookie
-  //       console.log("res is", res);
-  //       if (res.status === 200) {
-  //         setIsAdminLoggedIn(true);
-  //       }
-  //     } catch (err) {
-  //       setIsAdminLoggedIn(false);
-  //     }
-  //   };
-  
-  //   checkLogin();
-  // }, [setIsAdminLoggedIn]);
+  const { login } = useUser(); // ✅ 从上下文拿 login
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/admin/login", { email, password });
+      // 调用后端登录接口
+      const res = await api.post("/account/login", { email, password });
+
       if (res.status === 200) {
+        // 登录成功，获取当前用户信息
+        const meRes = await api.get("/admin/me"); // ✅ 会返回 { name, email, roles: ["Admin"] }
         
-        setIsAdminLoggedIn(true);  // 更新 App 的状态
-        navigate("/admin/dashboard"); // 登录成功跳转后台
-        
+        login(meRes.data); // ✅ 更新 UserContext.user
+        navigate("/admin/dashboard"); // 跳转后台
       }
     } catch (err) {
       setError("登录失败，请检查账号或密码");
-      setIsAdminLoggedIn(false);
     }
   };
 
   return (
-
     <div className="admin-login-page">
-
       <form className="admin-login-form" onSubmit={handleSubmit}>
-
         <h2>管理员登录</h2>
-
         <input type="email" placeholder="邮箱" value={email} onChange={e => setEmail(e.target.value)} />
-        
         <input type="password" placeholder="密码" value={password} onChange={e => setPassword(e.target.value)} />
-        
         <button type="submit">登录</button>
-        
         {error && <p>{error}</p>}
-        
-        {/* 忘记密码链接 */}
-        
-        <Link to="/admin/forgot-password" className="forgot-password">
-          忘记密码？
-        </Link>
-      
+        <Link to="/admin/forgot-password" className="forgot-password">忘记密码？</Link>
       </form>
     </div>
   );

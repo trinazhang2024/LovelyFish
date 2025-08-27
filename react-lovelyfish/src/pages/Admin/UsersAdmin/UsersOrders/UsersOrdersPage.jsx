@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../../../../API/axios";
 import "../../../Admin/AdminPages.css";
+import './UsersOrdersPage.css';
 
 export default function UsersOrdersPage() {
   const { userId } = useParams();
@@ -35,7 +36,7 @@ export default function UsersOrdersPage() {
   return (
     <div className="users-orders-page">
       <nav className="breadcrumb">
-        <Link to="/admin">后台管理</Link> &gt;{" "}
+        <Link to="/admin/dashboard">后台管理</Link> &gt;{" "}
         <Link to="/admin/users">用户管理</Link> &gt; <span>订单列表</span>
       </nav>
 
@@ -73,6 +74,11 @@ export default function UsersOrdersPage() {
           </tbody>
         </table>
       </div>
+
+      {/* 返回按钮 */}
+      <Link to="/admin/users" className="btn return-button">
+        Back to UserList
+      </Link>
 
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, i) => (

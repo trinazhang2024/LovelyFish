@@ -25,6 +25,7 @@ export default function UsersAdminPage() {
       setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.error("获取用户列表失败:", err);
+      //console.error("前端请求失败:", err.response?.data || err.message);
     } finally {
       setLoading(false);
     }
@@ -36,8 +37,12 @@ export default function UsersAdminPage() {
 
   // 切换用户启用/禁用状态
   const toggleActive = async (id, active) => {
+
+    //console.log("前端请求 toggleActive => id:", id, "active:", active);
+
     try {
-      await api.put(`/api/admin/users/${id}/active`, { active });
+      await api.put(`/admin/users/${id}/active`, { active });
+
       fetchUsers(); // 刷新列表
     } catch (err) {
       console.error("修改用户状态失败:", err);
@@ -98,7 +103,9 @@ export default function UsersAdminPage() {
                       {user.orderCount}
                     </Link>
                   </td>
+
                   <td data-label="是否启用">{user.active ? "是" : "否"}</td>
+
                   <td data-label="操作" className="action-buttons">
                     <button
                       onClick={() => toggleActive(user.id, !user.active)}
@@ -106,6 +113,7 @@ export default function UsersAdminPage() {
                     >
                       {user.active ? "禁用" : "启用"}
                     </button>
+
                     <Link
                       to={`/admin/users/${user.id}/orders`}
                       className="btn-view-orders"
@@ -113,6 +121,7 @@ export default function UsersAdminPage() {
                       查看订单
                     </Link>
                   </td>
+
                 </tr>
               ))}
             </tbody>

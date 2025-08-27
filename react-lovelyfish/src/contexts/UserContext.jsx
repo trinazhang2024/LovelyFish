@@ -36,7 +36,11 @@ export const UserProvider = ({ children }) => {
     const fetchMe = async () => {
       try {
         const res = await api.get("/account/me");
-        setUser(res.data);
+
+        console.log("当前用户信息:", res.data); // ✅ 打印查看
+
+        setUser(res.data); // res.data 里已经包含 roles = ["Admin"] 或空数组
+
       } catch(error){
         console.error("fetchMe error:", error);
         setUser(null);
@@ -45,8 +49,10 @@ export const UserProvider = ({ children }) => {
     fetchMe();
   }, []);
 
+  const isAdmin = user?.roles?.includes("Admin") || false;
+
   return (
-    <UserContext.Provider value={{ user, login, logout, updateUser }}>
+    <UserContext.Provider value={{ user, isAdmin, login, logout, updateUser }}>
       {children}
     </UserContext.Provider>
   );
