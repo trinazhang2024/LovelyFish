@@ -1,104 +1,170 @@
-/* 页面标题 */
-.orders-page-title {
-  font-size: 1.75rem; /* text-2xl */
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-/* 空订单提示 */
-.orders-empty {
-  color: #6b7280; /* gray-500 */
-  font-style: italic;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-/* 表格容器 */
-.orders-table-container {
-  overflow-x: auto;
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem;
-}
-
-/* 表格 */
-.orders-table {
-  min-width: 100%;
-  border-collapse: collapse;
-  border: 1px solid #e5e7eb; /* gray-200 */
-}
-
-/* 表头 */
-.orders-table thead {
-  background-color: #f3f4f6; /* gray-100 */
-  color: #374151; /* gray-700 */
-  text-transform: uppercase;
-  font-size: 0.875rem; /* text-sm */
-}
-
-.orders-table th {
-  padding: 0.5rem 1rem;
-  border: 1px solid #e5e7eb;
-  text-align: left;
-}
-
-/* 表体 */
-.orders-table tbody tr {
-  background-color: #ffffff;
-  transition: background-color 0.2s;
-}
-
-.orders-table tbody tr:hover {
+/* ------------------ 页面容器 ------------------ */
+.p-4 {
+  padding: 16px;
   background-color: #f9fafb;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.orders-table td {
-  padding: 0.5rem 1rem;
-  border: 1px solid #e5e7eb;
-  text-align: center;
+/* ------------------ 面包屑 ------------------ */
+.breadcrumb {
+  font-size: 14px;
+  margin-bottom: 15px;
 }
 
-/* 下拉框样式 */
-.orders-table select {
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-  background-color: #ffffff;
+.breadcrumb a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------ 页面标题 ------------------ */
+.text-2xl {
+  font-size: 24px;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.mb-4 {
+  margin-bottom: 16px;
+}
+
+/* ------------------ 搜索框 ------------------ */
+.search-container {
+  margin-bottom: 16px;
+}
+
+.search-input {
   width: 100%;
+  max-width: 300px;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
   outline: none;
 }
 
-.orders-table select:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6;
+/* ------------------ 表格 ------------------ */
+.admin-table-container {
+  overflow-x: auto;
+  margin-bottom: 20px;
 }
 
-/* 输入框样式 */
-.orders-table input {
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
+.admin-table {
   width: 100%;
-  box-sizing: border-box;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.orders-table input:focus {
+.admin-table th,
+.admin-table td {
+  padding: 12px 15px;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+  font-size: 14px;
+}
+
+.admin-table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+.admin-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* ------------------ 输入框 ------------------ */
+.admin-table input,
+.admin-table select {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-table input:focus,
+.admin-table select:focus {
   border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  outline: none;
 }
 
-/* 修改成功时绿色闪烁动画 */
+/* ------------------ 保存闪烁效果 ------------------ */
 .saved-flash {
-  animation: flash-green 2s ease-in-out;
-  border-color: #22c55e !important;
-  background-color: #d1fae5;
+  animation: flashSaved 2s ease-out;
 }
 
-@keyframes flash-green {
+@keyframes flashSaved {
   0% { background-color: #d1fae5; }
-  50% { background-color: #a7f3d0; }
-  100% { background-color: transparent; }
+  50% { background-color: #10b981; color: #fff; }
+  100% { background-color: transparent; color: inherit; }
+}
+
+/* ------------------ 查看详情按钮 ------------------ */
+.order-detail-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #3b82f6;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.order-detail-btn:hover {
+  background-color: #2563eb;
+}
+
+/* ------------------ 分页 ------------------ */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  background-color: #fff;
+  color: #374151;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #3b82f6;
+  color: #fff;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ------------------ 加载/暂无订单提示 ------------------ */
+.loading-text,
+.error-text,
+.admin-table-container p {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 16px;
+  color: #6b7280;
 }

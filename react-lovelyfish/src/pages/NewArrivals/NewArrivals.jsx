@@ -96,6 +96,11 @@ function NewArrivals() {
                     )}
 
                     <div className="na-actions">
+
+                      <Link to={`/product/${product.id}`} className="na-btn na-shop">
+                        Shop Now
+                      </Link>
+
                       <button
                         className="na-btn na-add"
                         onClick={() => handleAddToCart(product)}
@@ -103,9 +108,7 @@ function NewArrivals() {
                       >
                         {addingIds.includes(product.id) ? '添加中...' : 'Add to Cart'}
                       </button>
-                      <Link to={`/product/${product.id}`} className="na-btn na-shop">
-                        Shop Now
-                      </Link>
+                      
                     </div>
                   </div>
                 </div>

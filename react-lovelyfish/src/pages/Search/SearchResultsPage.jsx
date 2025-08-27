@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import ProductList from '../components/ProductList/ProductList';
-import axios from 'axios';
+import ProductList from '../../components/ProductList/ProductList';
+import api from '../../API/axios';
+import './SearchResultsPage.css';
 
 const SearchResultsPage = () => {
   const query = new URLSearchParams(useLocation().search).get('q') || '';
@@ -10,8 +11,9 @@ const SearchResultsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('https://localhost:7148/api/Product')
+    api.get('/Product')
       .then(response => {
+        console.log('products:', response.data);
         setProducts(response.data);
         setLoading(false);
       })
@@ -22,22 +24,34 @@ const SearchResultsPage = () => {
       });
   }, []);
 
-  // 搜索逻辑（在前端过滤）
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(query.toLowerCase()) ||
-    (product.description && product.description.toLowerCase().includes(query.toLowerCase()))
-  );
+  // 统一化函数：字符串小写、去空格、去尾部 s
+  const normalize = str => {
+    if (!str || typeof str !== 'string') return '';
+    return str.toLowerCase().replace(/\s+/g, '').replace(/s$/, '');
+  };
+
+  const keyword = normalize(query);
+
+  const filteredProducts = products.filter(product => {
+    const title = normalize(product.title);
+    const description = normalize(product.description);
+    const category = normalize(product.categoryTitle);
+
+    return title.includes(keyword) || description.includes(keyword) || category.includes(keyword);
+  });
 
   if (loading) return <p>正在加载产品...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="container mt-5 pt-4">
+    <div className="search-results-container">
       <h2 className="mb-4">搜索结果: "{query}"</h2>
       {filteredProducts.length > 0 ? (
-        <ProductList products={filteredProducts} limit={false} />
+        <div className="product-list">
+           <ProductList products={filteredProducts} limit={false} />
+        </div>
       ) : (
-        <div className="text-center py-5">
+        <div className="no-results">
           <h4>未找到匹配商品</h4>
           <p>请尝试其他关键词</p>
         </div>

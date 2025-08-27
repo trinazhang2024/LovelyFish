@@ -1,8 +1,8 @@
 /* ========================== */
-/* UsersAdminPage 样式 */
+/* UsersOrdersPage 样式 */
 /* ========================== */
 
-.users-admin-page {
+.users-orders-page {
   padding: 1rem;
 }
 
@@ -12,20 +12,7 @@
   margin-bottom: 1rem;
 }
 
-.search-box {
-  margin-bottom: 1rem;
-}
-
-.search-input {
-  width: 100%;
-  max-width: 400px;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
-  font-size: 1rem;
-}
-
-.no-users {
+.no-orders {
   text-align: center;
   padding: 1rem;
   color: #6b7280;
@@ -89,41 +76,6 @@
   background-color: #f3f4f6;
 }
 
-.action-buttons {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.btn-enable {
-  background-color: #22c55e;
-  color: #ffffff;
-  border-radius: 0.375rem;
-  padding: 0.5rem 0.75rem;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-disable {
-  background-color: #ef4444;
-  color: #ffffff;
-  border-radius: 0.375rem;
-  padding: 0.5rem 0.75rem;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-view-orders {
-  background-color: #3b82f6;
-  color: #ffffff;
-  border-radius: 0.375rem;
-  padding: 0.5rem 0.75rem;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-}
-
 /* ========================== */
 /* 移动端响应式（卡片风格） */
 /* ========================== */
@@ -168,10 +120,5 @@
     content: attr(data-label);
     font-weight: 600;
     color: #6b7280;
-  }
-
-  .action-buttons {
-    margin-top: 0.5rem;
-    justify-content: flex-start;
   }
 }

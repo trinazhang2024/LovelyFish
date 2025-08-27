@@ -1,5 +1,5 @@
 // src/pages/Admin/ProductsAdminPage.jsx
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import api from "../../../API/axios";
 import "./ProductsAdminPage.css";
 
@@ -7,6 +7,10 @@ export default function ProductsAdminPage() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState("");
+  const searchTimeout = useRef(null);
 
   const [form, setForm] = useState({
     id: null,
@@ -17,81 +21,99 @@ export default function ProductsAdminPage() {
     description: "",
     features: [],
     categoryId: "",
-    imageFiles: [],
-    imageUrls: [],
+    imageUrls: [], // 存文件名
   });
 
-  // 获取所有产品
-  const fetchProducts = async () => {
+  const IMAGE_BASE_URL = "https://localhost:7148/uploads/"; // 部署后改成你的域名
+
+  // ==================== 获取产品 ====================
+  const fetchProducts = useCallback(async (searchTerm = "", pageNum = 1) => {
+    setLoading(true);
     try {
-      const res = await api.get("/Product");
-      setProducts(res.data || []);
+      const res = await api.get("/Product", {
+        params: { search: searchTerm, page: pageNum, pageSize: 10 },
+      });
+      const productsData = res.data.items || res.data || [];
+      // 映射 imageUrls
+      const mappedProducts = productsData.map(p => ({
+        ...p,
+        imageUrls: (p.images || []).map(img =>img.fileName),
+      }));
+      setProducts(mappedProducts);
+      setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.error("获取产品失败", err);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  // 获取所有分类
-  const fetchCategories = async () => {
+  // ==================== 获取分类 ====================
+  const fetchCategories = useCallback(async () => {
     try {
-      const res = await api.get("/api/categories");
+      const res = await api.get("/Product/categories");
       setCategories(res.data || []);
     } catch (err) {
       console.error("获取分类失败", err);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchCategories();
     fetchProducts();
-  }, []);
+  }, [fetchCategories, fetchProducts]);
 
-  // 表单变化
+  // ==================== 搜索防抖 ====================
+  useEffect(() => {
+    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    searchTimeout.current = setTimeout(() => {
+      setPage(1);
+      fetchProducts(search, 1);
+    }, 500);
+    return () => clearTimeout(searchTimeout.current);
+  }, [search, fetchProducts]);
+
+  // ==================== 分页 ====================
+  useEffect(() => {
+    fetchProducts(search, page);
+  }, [page, fetchProducts, search]);
+
+  // ==================== 表单变化 ====================
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  // 特征输入
   const handleFeaturesChange = (e) => {
     setForm({ ...form, features: e.target.value.split(",") });
   };
 
-  // 图片上传
+  // ==================== 图片上传 ====================
   const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
-    const previews = files.map((file) => URL.createObjectURL(file));
-
-    // 上传到服务器
     const formData = new FormData();
     files.forEach((file) => formData.append("files", file));
 
     try {
       const res = await api.post("/upload", formData);
-      const urls = res.data.map((item) => item.url); // 后端返回 { url: "..." }
-      setForm({
-        ...form,
-        imageFiles: [...form.imageFiles, ...files],
-        imageUrls: [...form.imageUrls, ...urls],
-      });
+      const fileNames = res.data.map(item => item.fileName);
+      setForm(prev => ({ ...prev, imageUrls: [...prev.imageUrls, ...fileNames] }));
     } catch (err) {
       console.error("上传图片失败", err);
       alert("上传图片失败");
     }
   };
 
-  // 删除图片
+  // 删除图片只是修改 form.imageUrls，提交时后端会覆盖原有图片
   const removeImage = (index) => {
-    const newFiles = [...form.imageFiles];
-    const newUrls = [...form.imageUrls];
-    newFiles.splice(index, 1);
+  setForm(prev => {
+    const newUrls = [...prev.imageUrls];
     newUrls.splice(index, 1);
-    setForm({ ...form, imageFiles: newFiles, imageUrls: newUrls });
-  };
+    return { ...prev, imageUrls: newUrls };
+  });
+};
 
-  // 表单提交
+  // ==================== 新增/编辑产品 ====================
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -103,7 +125,8 @@ export default function ProductsAdminPage() {
         description: form.description,
         features: form.features,
         categoryId: parseInt(form.categoryId),
-        imageUrls: form.imageUrls,
+        imageUrls: form.imageUrls, // 把图片数组直接传给后端
+        isClearance: form.isClearance || false
       };
 
       if (form.id) {
@@ -114,6 +137,8 @@ export default function ProductsAdminPage() {
         alert("产品新增成功");
       }
 
+    
+
       setForm({
         id: null,
         title: "",
@@ -123,18 +148,18 @@ export default function ProductsAdminPage() {
         description: "",
         features: [],
         categoryId: "",
-        imageFiles: [],
         imageUrls: [],
+        isClearance: false
       });
 
-      fetchProducts();
+      fetchProducts(search, page);
     } catch (err) {
       console.error("保存产品失败", err);
       alert("保存失败");
     }
   };
 
-  // 编辑
+  // ==================== 编辑 ====================
   const handleEdit = (p) => {
     setForm({
       id: p.id,
@@ -145,151 +170,111 @@ export default function ProductsAdminPage() {
       description: p.description,
       features: p.features || [],
       categoryId: p.categoryId,
-      imageFiles: [],
-      imageUrls: p.images?.map((img) => img.url) || [],
+      imageUrls: p.imageUrls || [], // 直接用文件名数组
+      isClearance: p.isClearance || false
     });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // 删除
+  // ==================== 删除 ====================
   const handleDelete = async (id) => {
     if (!window.confirm("确定删除吗？")) return;
     try {
       await api.delete(`/Product/${id}`);
-      fetchProducts();
+      fetchProducts(search, page);
     } catch (err) {
       console.error("删除失败", err);
       alert("删除失败");
     }
   };
 
+  // ==================== JSX ====================
   return (
     <div className="products-admin-page">
       <h2>产品管理</h2>
 
-      <form className="products-form" onSubmit={handleSubmit}>
+      <div className="search-container">
         <input
           type="text"
-          name="title"
-          placeholder="产品标题"
-          value={form.title}
-          onChange={handleChange}
-          required
+          className="search-input"
+          placeholder="搜索产品名称..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <input
-          type="number"
-          name="price"
-          placeholder="价格"
-          value={form.price}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="stock"
-          placeholder="库存"
-          value={form.stock}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="discountPercent"
-          placeholder="折扣百分比"
-          value={form.discountPercent}
-          onChange={handleChange}
-        />
-        <textarea
-          name="description"
-          placeholder="产品描述"
-          value={form.description}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          placeholder="特征（逗号分隔）"
-          value={form.features.join(",")}
-          onChange={handleFeaturesChange}
-        />
+      </div>
 
-        <select
-          name="categoryId"
-          value={form.categoryId}
-          onChange={handleChange}
-          required
-        >
-          <option value="">选择分类</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-
-        <input type="file" multiple onChange={handleImageChange} />
-        <div className="image-preview">
-          {form.imageUrls.map((url, idx) => (
-            <div key={idx}>
-              <img src={url} alt={`预览 ${idx}`} />
-              <button type="button" onClick={() => removeImage(idx)}>
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
-
-        <button type="submit">{form.id ? "更新产品" : "新增产品"}</button>
-      </form>
+      <div className="product-form-container">
+        <h3>{form.id ? "编辑产品" : "新增产品"}</h3>
+        <form className="products-form vertical-form" onSubmit={handleSubmit}>
+          <input name="title" placeholder="Product Title" value={form.title} onChange={handleChange} required />
+          <input name="price" type="number" placeholder="Price" value={form.price} onChange={handleChange} required />
+          <input name="stock" type="number" placeholder="Stock" value={form.stock} onChange={handleChange} required />
+          <input name="discountPercent" type="number" placeholder="discountPercent" value={form.discountPercent} onChange={handleChange} />
+          <textarea name="description" placeholder="Product Description" value={form.description} onChange={handleChange} />
+          <input placeholder="Features (comma-separated). eg, output: 3000, wattage:60," value={form.features.join(",")} onChange={handleFeaturesChange} />
+          <select name="categoryId" value={form.categoryId} onChange={handleChange} required>
+            <option value="">Category</option>
+            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+          <input type="file" multiple onChange={handleImageChange} />
+          <div className="image-preview">
+            {form.imageUrls.map((fileName, idx) => (
+              <div className="preview-item" key={idx}>
+                <img src={IMAGE_BASE_URL + fileName} alt={`预览 ${idx}`} />
+                <button type="button" onClick={() => removeImage(idx)}>×</button>
+              </div>
+            ))}
+          </div>
+          <button type="submit">{form.id ? "更新产品" : "新增产品"}</button>
+        </form>
+      </div>
 
       {loading ? (
         <p>加载中...</p>
       ) : products.length === 0 ? (
         <p>暂无产品</p>
       ) : (
-        <div className="products-table-container">
-          <table className="products-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>图片</th>
-                <th>标题</th>
-                <th>价格</th>
-                <th>库存</th>
-                <th>折扣</th>
-                <th>分类</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.id}</td>
-                  <td>
-                    {p.images?.[0] && (
-                      <img
-                        src={p.images[0].url}
-                        alt={p.title}
-                        style={{ width: 50, height: 50, objectFit: "cover" }}
-                      />
-                    )}
-                  </td>
-                  <td>{p.title}</td>
-                  <td>${p.price}</td>
-                  <td>{p.stock}</td>
-                  <td>{p.discountPercent}%</td>
-                  <td>{p.category?.name}</td>
-                  <td>
-                    <button onClick={() => handleEdit(p)}>编辑</button>
-                    <button
-                      style={{ marginLeft: 8 }}
-                      onClick={() => handleDelete(p.id)}
-                    >
-                      删除
-                    </button>
-                  </td>
+        <div className="products-list-container">
+          <h3>所有产品</h3>
+          <div className="products-table-container">
+            <table className="products-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>图片</th>
+                  <th>标题</th>
+                  <th>价格</th>
+                  <th>库存</th>
+                  <th>折扣</th>
+                  <th>分类</th>
+                  <th>操作</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {products.map(p => (
+                  <tr key={p.id}>
+                    <td>{p.id}</td>
+                    <td>{p.imageUrls?.[0] && <img src={p.imageUrls[0]} alt={p.title} style={{ width: 50, height: 50, objectFit: "cover" }} />}</td>
+                    <td>{p.title}</td>
+                    <td>${p.price}</td>
+                    <td>{p.stock}</td>
+                    <td>{p.discountPercent}%</td>
+                    <td>{p.categoryTitle}</td>
+                    <td>
+                      <button onClick={() => handleEdit(p)}>Edit</button>
+                      <button style={{ marginLeft: 8 }} onClick={() => handleDelete(p.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="pagination">
+            <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Prev Page</button>
+            <span>{page} / {totalPages}</span>
+            <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>Next Page</button>
+          </div>
         </div>
       )}
     </div>

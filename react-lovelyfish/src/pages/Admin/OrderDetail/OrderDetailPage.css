@@ -1,0 +1,117 @@
+/* ------------------ 通用表格样式 ------------------ */
+.admin-table-container {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 15px;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+.admin-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* ------------------ 输入框 ------------------ */
+.admin-table input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-table input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  outline: none;
+}
+
+/* ------------------ 保存闪烁效果 ------------------ */
+.saved-flash {
+  animation: flashSaved 2s ease-out;
+}
+
+@keyframes flashSaved {
+  0% { background-color: #d1fae5; }
+  50% { background-color: #10b981; color: #fff; }
+  100% { background-color: transparent; color: inherit; }
+}
+
+/* ------------------ 状态标签 ------------------ */
+.status-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-block;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.status-pending { background-color: #f97316; }   /* 待付款 */
+.status-paid { background-color: #3b82f6; }      /* 已付款 */
+.status-shipped { background-color: #10b981; }   /* 已发货 */
+.status-completed { background-color: #6b7280; } /* 已完成 */
+
+/* ------------------ 面包屑 ------------------ */
+.breadcrumb {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.breadcrumb a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------ 页面标题 ------------------ */
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* ------------------ 返回按钮 ------------------ */
+.return-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #3b82f6;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.return-button:hover {
+  background-color: #2563eb;
+}
+
+/* ------------------ 加载/错误文字 ------------------ */
+.loading-text,
+.error-text {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 16px;
+  color: #6b7280;
+}

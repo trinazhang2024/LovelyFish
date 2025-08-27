@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../../API/axios";
 import "./LoginAdminPage.css"
@@ -9,12 +9,28 @@ export default function AdminLogin({ setIsAdminLoggedIn }) {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const checkLogin = async () => {
+  //     try {
+  //       const res = await api.get("/admin/me"); // 会自动带 Cookie
+  //       console.log("res is", res);
+  //       if (res.status === 200) {
+  //         setIsAdminLoggedIn(true);
+  //       }
+  //     } catch (err) {
+  //       setIsAdminLoggedIn(false);
+  //     }
+  //   };
+  
+  //   checkLogin();
+  // }, [setIsAdminLoggedIn]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post("/admin/login", { email, password });
       if (res.status === 200) {
-        //localStorage.setItem("adminLoggedIn", "true");  // 保存登录状态
+        
         setIsAdminLoggedIn(true);  // 更新 App 的状态
         navigate("/admin/dashboard"); // 登录成功跳转后台
         

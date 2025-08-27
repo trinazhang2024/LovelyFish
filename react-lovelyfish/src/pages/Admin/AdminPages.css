@@ -1,0 +1,55 @@
+/* 公共后台表格样式 */
+.admin-table-container {
+  overflow-x: auto; /* 横向滚动 */
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 1rem;
+}
+
+.admin-table {
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.admin-table th {
+  background-color: #f7fafc;
+  font-weight: 600;
+}
+
+.admin-table tr:hover {
+  background-color: #f1f5f9;
+}
+
+.saved-flash {
+  animation: flash 1s ease-in-out;
+}
+
+@keyframes flash {
+  0%, 100% { background-color: #d1fae5; }
+  50% { background-color: #34d399; }
+}
+
+/* 面包屑导航 */
+.breadcrumb {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  font-weight: 600;
+  color: #1f2937;
+}

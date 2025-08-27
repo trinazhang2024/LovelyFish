@@ -1,0 +1,77 @@
+/* 页面容器 */
+.search-results-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 标题 */
+.search-results-container h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* 未找到结果提示 */
+.search-results-container .no-results {
+  text-align: left;
+  padding: 60px 20px;
+  color: #666;
+}
+
+/* 产品列表容器 */
+.search-results-container .product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start; /* 产品靠左 */
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+  .search-results-container {
+    padding: 30px 15px;
+  }
+  .search-results-container h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+  .search-results-container .no-results {
+    padding: 50px 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-results-container {
+    padding: 20px 10px;
+  }
+  .search-results-container h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  .search-results-container .no-results {
+    padding: 40px 10px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-results-container {
+    padding: 15px 5px;
+  }
+  .search-results-container h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  .search-results-container .no-results {
+    padding: 30px 5px;
+    font-size: 14px;
+  }
+}
+
+
+
+
+

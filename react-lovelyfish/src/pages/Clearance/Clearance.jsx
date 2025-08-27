@@ -108,8 +108,13 @@ function Clearance() {
                           ${discountedPrice}
                         </Card.Text>
                       )}
-
+                 
                       <div className="clearance-actions">
+                        
+                        <Link to={`/product/${product.id}`} className="btn btn-primary clearance-btn">
+                          Shop Now
+                        </Link>
+                        
                         <Button
                           variant="outline-primary"
                           className="clearance-btn"
@@ -119,9 +124,7 @@ function Clearance() {
                           {addingIds.includes(product.id) ? '添加中...' : 'Add to Cart'}
                         </Button>
 
-                        <Link to={`/product/${product.id}`} className="btn btn-primary clearance-btn">
-                          Shop Now
-                        </Link>
+                        
                       </div>
                     </Card.Body>
                   </Card>

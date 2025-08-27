@@ -1,5 +1,5 @@
-import React, {useState,useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route,Navigate } from "react-router-dom";
+import React, {useState,useEffect,Navigate } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import api from './API/axios'
 import { UserProvider } from "./contexts/UserContext";
 import ProtectedRoute from './components/ProtectedRoute';
@@ -9,6 +9,9 @@ import Dashboard from "./pages/Admin/Dashboard/Dashboard";
 import AdminForgotPassword from './pages/Admin/ForgotPassword/AdminForgotPassword'
 import AdminResetPassword from "./pages/Admin/ResetPassword/AdminResetPassword";
 import AdminChangePassword from "./pages/Admin/ChangePassword/AdminChangePassword";
+import OrdersAdminPage from "./pages/Admin/OrdersAdmin/OrdersAdminPage";
+import OrderDetailPage from "./pages/Admin/OrderDetail/OrderDetailPage";
+import UsersOrdersPage from './pages/Admin/UsersAdmin/UsersOrders/UsersOrdersPage'
 import Navbar from './components/Navbar/Navbar';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
@@ -23,7 +26,7 @@ import NewArrivals from './pages/NewArrivals/NewArrivals';
 import Clearance from './pages/Clearance/Clearance';
 import ProductDetail from './pages/ProductDetail/ProductDetail'; 
 import ProductCategoryPage from './pages/ProductCategoryPage';
-import SearchResultsPage from './pages/SearchResultsPage';
+import SearchResultsPage from './pages/Search/SearchResultsPage';
 import { CartProvider } from './contexts/CartContext';
 import CartPage from './pages/Cart/CartPage/CartPage';
 import ConfirmOrderPage from "./pages/Cart/ConfirmOrder/ConfirmOrderPage";
@@ -34,7 +37,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './styles/global.css';
 
 const App = () => {
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(null);
 
   // 刷新页面时检查后端 Cookie
   useEffect(() => {
@@ -43,14 +46,17 @@ const App = () => {
         const res = await api.get("/admin/me"); // 返回当前管理员信息
         if (res.status === 200) {
           setIsAdminLoggedIn(true);
-          localStorage.setItem("isAdminLoggedIn", "true");}
+          }
       } catch {
         setIsAdminLoggedIn(false);
-        //localStorage.removeItem("isAdminLoggedIn");
+       
       }
     };
     checkAdmin();
   }, []);
+
+  // 等待检查完成再渲染路由
+  if (isAdminLoggedIn === null) return <p>检查登录状态...</p>;
 
   return (
     <UserProvider> 
@@ -77,20 +83,49 @@ const App = () => {
                   />
 
                 {/* Admin routes */}
-                <Route path="/admin/login" element={<AdminLogin setIsAdminLoggedIn={setIsAdminLoggedIn} />} />
+                {/* <Route path="/admin/login" element={<AdminLogin setIsAdminLoggedIn={setIsAdminLoggedIn} />} /> */}
                 <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
                 <Route path="/admin/reset-password" element={<AdminResetPassword />} />
                 <Route path="/admin/change-password" element={<AdminChangePassword />} />
+                {/* <Route path="/admin/orders" element={<OrdersAdminPage />} /> */}
+                <Route path="/admin/orders" element={<ProtectedAdminRoute isAdminLoggedIn={isAdminLoggedIn}><OrdersAdminPage /></ProtectedAdminRoute>} />
+                <Route path="/admin/orders/:orderId" element={<OrderDetailPage />} />
+
+                 {/* UserManagement Part */}
+                <Route path="/admin/users/:userId/orders" element={<UsersOrdersPage />} />
 
                 {/* 受保护后台页面 */}
-                <Route
+                {/* <Route
                   path="/admin/dashboard"
                   element={
                     <ProtectedAdminRoute isAdminLoggedIn={isAdminLoggedIn}>
                       <Dashboard />
                     </ProtectedAdminRoute>
                   }
-                />
+                /> */}
+
+              {/* Admin 登录页 */}
+              <Route
+                path="/admin/login"
+                element={
+                  isAdminLoggedIn ? (
+                    <Navigate to="/admin/dashboard" />
+                  ) : (
+                    <AdminLogin setIsAdminLoggedIn={setIsAdminLoggedIn} />
+                  )
+                }
+              />
+
+              {/* 受保护后台页面 */}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <ProtectedAdminRoute isAdminLoggedIn={isAdminLoggedIn}>
+                    <Dashboard />
+                  </ProtectedAdminRoute>
+                }
+              />
+
 
                 {/* 在路由配置中添加 */}
                 <Route path="/search" element={<SearchResultsPage />} />
@@ -105,7 +140,7 @@ const App = () => {
                 <Route path="/orders" element={<OrdersPage />} />
                 
                 {/* Recommended */}
-                <Route path="/products/:category" element={<ProductList />} />
+                {/* <Route path="/products/:category" element={<ProductList />} /> */}
 
                 <Route path="/about" element={<About/>} />
                 <Route path="/contact" element={<Contact/>} />

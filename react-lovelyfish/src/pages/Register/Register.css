@@ -27,3 +27,66 @@
 .register-container .btn {
   border-radius: 8px;
 }
+
+
+/* 密码规则列表 */
+.password-rules {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.rule-failed {
+  color: #dc3545; /* bootstrap 红 */
+}
+
+.rule-passed {
+  color: #198754; /* bootstrap 绿 */
+}
+
+/* 密码强度条 */
+.strength-bar {
+  height: 6px;
+  border-radius: 3px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  background-color: #e9ecef;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  width: 0%;
+}
+
+.strength-0 { width: 0%; background-color: #e9ecef; }
+.strength-1 { width: 25%; background-color: #dc3545; }  /* Weak */
+.strength-2 { width: 50%; background-color: #fd7e14; }  /* Fair */
+.strength-3 { width: 75%; background-color: #ffc107; }  /* Medium */
+.strength-4 { width: 100%; background-color: #198754; } /* Strong */
+
+/* 强度文字 */
+.strength-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* 文字颜色跟随强度 */
+.strength-text-0 { color: #6c757d; } /* 灰 */
+.strength-text-1 { color: #dc3545; } /* 红 */
+.strength-text-2 { color: #fd7e14; } /* 橙 */
+.strength-text-3 { color: #ffc107; } /* 黄 */
+.strength-text-4 { color: #198754; } /* 绿 */
+
+
+/* Bootstrap 自带 is-invalid + invalid-feedback 样式
+   这里可额外美化一点 */
+   .is-invalid {
+    border-color: #dc3545 !important;
+  }
+  
+  .invalid-feedback {
+    display: block; /* 保证始终能看到提示 */
+    font-size: 0.9rem;
+    margin-top: 4px;
+    color: #dc3545;
+  }
+  
