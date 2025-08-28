@@ -15,6 +15,9 @@ export default function OrdersAdminPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const [totalItems, setTotalItems] = useState(0);
+  const pageSize = 10; // 每页显示条数
+
   const timerRef = useRef(null);
 
   // 防抖 + 请求
@@ -31,6 +34,7 @@ export default function OrdersAdminPage() {
         const res = await api.get("/admin/orders", { params });
         setOrders(res.data.items || []);
         setTotalPages(res.data.totalPages || 1);
+        setTotalItems(res.data.totalItems || 0); 
       } catch (err) {
         console.error("获取订单失败:", err);
       } finally {
@@ -71,6 +75,7 @@ export default function OrdersAdminPage() {
   const updateOrderField = (id, field, value) => {
     setOrders(prev => prev.map(o => (o.id === id ? { ...o, [field]: value } : o)));
   };
+  console.log(page, totalPages);
 
   return (
     <div className="p-4">
@@ -177,6 +182,7 @@ export default function OrdersAdminPage() {
 
       {/* 分页按钮 */}
       <div className="pagination mt-4">
+        <span>共 {totalItems} 条，每页 {pageSize} 条</span>
         <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Previous Page</button>
         <span>{page} / {totalPages}</span>
         <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>Next Page</button>

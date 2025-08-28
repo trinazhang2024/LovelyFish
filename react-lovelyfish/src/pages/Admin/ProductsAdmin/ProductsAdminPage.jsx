@@ -26,14 +26,18 @@ export default function ProductsAdminPage() {
 
   const IMAGE_BASE_URL = "https://localhost:7148/uploads/"; // 部署后改成你的域名
 
+  //===============分页===============
+  const [totalItems, setTotalItems] = useState(0);
+  const pageSize = 10; // 每页显示条数，和后端一致
+
   // ==================== 获取产品 ====================
   const fetchProducts = useCallback(async (searchTerm = "", pageNum = 1) => {
     setLoading(true);
     try {
       const res = await api.get("/Product", {
-        params: { search: searchTerm, page: pageNum, pageSize: 10 },
+        params: { search: searchTerm, page: pageNum, pageSize },
       });
-      const productsData = res.data.items || res.data || [];
+      const productsData = res.data.items ||[];
       // 映射 imageUrls
       const mappedProducts = productsData.map(p => ({
         ...p,
@@ -41,6 +45,7 @@ export default function ProductsAdminPage() {
       }));
       setProducts(mappedProducts);
       setTotalPages(res.data.totalPages || 1);
+      setTotalItems(res.data.totalItems || productsData.length);
     } catch (err) {
       console.error("获取产品失败", err);
     } finally {
@@ -73,7 +78,7 @@ export default function ProductsAdminPage() {
     return () => clearTimeout(searchTimeout.current);
   }, [search, fetchProducts]);
 
-  // ==================== 分页 ====================
+  // ==================== 分页pagination ====================
   useEffect(() => {
     fetchProducts(search, page);
   }, [page, fetchProducts, search]);
@@ -91,12 +96,31 @@ export default function ProductsAdminPage() {
   // ==================== 图片上传 ====================
   const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
+
+    console.log("选中的文件列表:", files); // ✅ 打印文件信息
+    if (files.length === 0) {
+      console.warn("没有选择文件");
+      return;
+    }
+
     const formData = new FormData();
-    files.forEach((file) => formData.append("files", file));
+    files.forEach((file) => {
+      console.log("追加到 FormData 的文件:", file.name); // ✅ 打印文件名
+      formData.append("files", file)
+  });
+
+   // 这里也可以打印 FormData 的内容（不过需要遍历）
+   for (let pair of formData.entries()) {
+    console.log(pair[0], pair[1]);
+  }
+
 
     try {
       const res = await api.post("/upload", formData);
       const fileNames = res.data.map(item => item.fileName);
+
+      console.log("上传返回的文件名:", fileNames); // ✅ 打印上传返回
+
       setForm(prev => ({ ...prev, imageUrls: [...prev.imageUrls, ...fileNames] }));
     } catch (err) {
       console.error("上传图片失败", err);
@@ -114,6 +138,7 @@ export default function ProductsAdminPage() {
 };
 
   // ==================== 新增/编辑产品 ====================
+  //handleSubmit 只发送后端需要的字段，不包括 id、categoryTitle、mainImageUrl。
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -153,10 +178,14 @@ export default function ProductsAdminPage() {
       });
 
       fetchProducts(search, page);
+      console.log("提交 payload:", payload);
     } catch (err) {
       console.error("保存产品失败", err);
       alert("保存失败");
     }
+    console.log("提交 payload:", payload);
+    
+
   };
 
   // ==================== 编辑 ====================
@@ -269,8 +298,9 @@ export default function ProductsAdminPage() {
               </tbody>
             </table>
           </div>
-
+          
           <div className="pagination">
+            <span>共 {totalItems} 条，每页 {pageSize} 条</span>
             <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Prev Page</button>
             <span>{page} / {totalPages}</span>
             <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>Next Page</button>

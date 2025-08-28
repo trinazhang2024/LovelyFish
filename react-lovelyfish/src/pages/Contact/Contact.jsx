@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import './Contact.css';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaUser, FaPaperPlane } from 'react-icons/fa';
+import api from '../../API/axios';
+import './Contact.css';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,31 +10,53 @@ const Contact = () => {
     message: '',
   });
 
+  const [status, setStatus] = useState('');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Thanks for your messages，${formData.name}！We will contact you as soon as possibl.`);
-    setFormData({ name: '', email: '', message: '' });
+
+    if (!formData.name || !formData.email || !formData.message) {
+      setStatus('❌ Please fill in all fields.');
+      return;
+    }
+
+    setStatus('Sending...');
+
+    try {
+      // 调用后端接口
+      const res = await api.post('/contact', formData);
+
+      if (res.status === 200) {
+        setStatus('✅ Message sent successfully!');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setStatus(`❌ Failed to send message: ${res.data?.message || ''}`);
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus(`❌ Error: ${error.response?.data?.message || 'Unable to send message.'}`);
+    }
   };
 
   return (
     <div className="contact-container">
       <h1 className="contact-title">Contact Us</h1>
 
-      {/* Contact Us*/}
+      {/* Contact Info */}
       <section className="contact-section">
         <h2 className="section-title">Contact Info</h2>
         <ul className="contact-info">
           <li><FaPhoneAlt /> Phone: +64 221932432</li>
           <li><FaEnvelope /> Email: lovelyfish@yahoo.com</li>
-          <li><FaMapMarkerAlt /> Address: Massey, west Auckland, New Zealand 0614</li>
+          <li><FaMapMarkerAlt /> Address: Massey, West Auckland, New Zealand 0614</li>
         </ul>
       </section>
 
@@ -54,7 +77,7 @@ const Contact = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="email"><FaEnvelope />Email</label>
+            <label htmlFor="email"><FaEnvelope /> Email</label>
             <input
               type="email"
               id="email"
@@ -66,7 +89,7 @@ const Contact = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="message"><FaPaperPlane />Message</label>
+            <label htmlFor="message"><FaPaperPlane /> Message</label>
             <textarea
               id="message"
               name="message"
@@ -76,10 +99,13 @@ const Contact = () => {
               required
             />
           </div>
-          <button type="submit" className="submit-button">
-            Submit
+          <button type="submit" className="submit-button" disabled={status === 'Sending...'}>
+            {status === 'Sending...' ? 'Sending...' : 'Submit'}
           </button>
         </form>
+
+        {/* 状态提示 */}
+        {status && <p className={`status-message ${status.includes('❌') ? 'error' : 'success'}`}>{status}</p>}
       </section>
     </div>
   );
