@@ -3,14 +3,21 @@ import { useParams } from 'react-router-dom';
 import api from '../API/axios';
 import ProductList from '../components/ProductList/ProductList';
 import useSortableProducts from '../pages/useSortableProducts'; 
+import {useCart} from '../contexts/CartContext'
 import './Products.css';
 import './SortControls.css';
 
 const ProductCategoryPage = () => {
   const { category } = useParams();
+  const { addToCart } = useCart(); // 从上下文获取 addToCart
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [addingIds, setAddingIds] = useState([]);
+  const [cartAlert, setCartAlert] = useState(null);
 
   // URL 映射到数据库分类
   const categoryMap = {
@@ -26,23 +33,21 @@ const ProductCategoryPage = () => {
   };
   const dbCategory = categoryMap[category.toLowerCase()];
 
-  // 获取产品数据
-  useEffect(() => {
+   // 获取产品数据
+   const fetchProducts = (pageNum = 1) => {
     setLoading(true);
-    api.get('/Product')
-      .then(response => {
+    api.get('/Product', {
+      params: { page: pageNum, pageSize: 12, category: dbCategory }
+    })
+      .then(res => {
+        const productsWithImage = res.data.items.map(p => ({
+          ...p,
+          mainImage: p.mainImageUrl || '/upload/placeholder.png',
+        }));
 
-        console.log("原始产品数据:", response.data); // ✅ 查看 FeaturesJson 是字符串还是数组
-
-        const filtered = response.data
-          .filter(p => p.categoryTitle === dbCategory)
-          .map(p => ({
-            ...p,
-            // 主图占位
-            mainImage: p.mainImageUrl || '/upload/placeholder.png',
-          }));
-
-        setProducts(filtered);
+        setProducts(prev => pageNum === 1 ? productsWithImage : [...prev, ...productsWithImage]);
+        setTotalPages(res.data.totalPages);
+        setPage(pageNum);
         setLoading(false);
       })
       .catch(err => {
@@ -50,7 +55,30 @@ const ProductCategoryPage = () => {
         setError('无法加载产品');
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchProducts(1); // 初始加载第一页
   }, [category, dbCategory]);
+
+  const handleLoadMore = () => {
+    if (page < totalPages) fetchProducts(page + 1);
+  };
+
+  // ✅ 统一 Add to Cart 方法
+  const handleAddToCart = async (product) => {
+    if (addingIds.includes(product.id)) return;
+    setAddingIds(prev => [...prev, product.id]);
+    try {
+      await addToCart(product.id, 1);
+      setCartAlert(`${product.title} 已添加到购物车`);
+      setTimeout(() => setCartAlert(null), 3000);
+    } catch (err) {
+      alert('添加购物车失败，请稍后重试');
+    } finally {
+      setAddingIds(prev => prev.filter(id => id !== product.id));
+    }
+  };
 
   // 使用 Hook 管理排序
   const {
@@ -67,6 +95,9 @@ const ProductCategoryPage = () => {
 
   return (
     <div className="products-container">
+
+      {cartAlert && <div className="cart-alert">{cartAlert}</div>}
+
       <h1>{dbCategory}</h1>
 
       <div className="sort-controls">
@@ -82,7 +113,12 @@ const ProductCategoryPage = () => {
         </button>
       </div>
 
-      <ProductList products={sortedProducts} limit={false} />
+      <ProductList
+        products={sortedProducts}
+        limit={false}
+        addToCart={handleAddToCart}
+        addingIds={addingIds}
+      />
     </div>
   );
 };

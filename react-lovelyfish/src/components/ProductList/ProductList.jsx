@@ -1,10 +1,10 @@
 import React from 'react';
 import ProductCard from '../ProductCard/ProductCard';
-import { useCart } from '../../contexts/CartContext';
 import './ProductList.css';
 
-const ProductList = ({ products, limit }) => {
-  const { addToCart } = useCart();
+//使用父组件传来的 addToCart 方法和 addingIds，而不是自己调用 useCart()，统一管理购物车状态。
+const ProductList = ({ products, limit, addToCart, addingIds }) => {
+  console.log("ProductList received products:", products);
 
   if (!products || products.length === 0) {
     return <p>没有产品可显示</p>;
@@ -24,7 +24,8 @@ const ProductList = ({ products, limit }) => {
           <ProductCard
             key={product.id}
             product={product}
-            addToCart={() => addToCart(product.id, 1)}
+            addToCart={addToCart}   // 使用父组件传来的方法
+            addingIds={addingIds}   // 传递当前正在添加的产品ID数组
           />
         ))}
       </div>

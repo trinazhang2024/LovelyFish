@@ -1,5 +1,6 @@
 // src/pages/admin/Dashboard.jsx
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 import ProductsAdminPage from '../ProductsAdmin/ProductsAdminPage';
 import OrdersAdminPage from "../OrdersAdmin/OrdersAdminPage";
 import UsersAdminPage from "../UsersAdmin/UsersAdminPage";
@@ -9,13 +10,16 @@ import './Dashboard.css';
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("orders");
-  const {user, isAdmin} = useUser();
+  const {user, isAdmin, loading} = useUser();
 
-  // user 或 roles 未加载时显示 loading
-  if (!user) return <p>加载中...</p>;
-  if (!isAdmin) {
-    return <p>你没有权限访问此页面</p>;
-  }
+    // 初始化加载中
+  if (loading) return <p>加载中...</p>;
+
+  // 用户未登录
+  if (!user) return <Navigate to="/admin/login" />;
+
+  // 非管理员
+  if (!isAdmin) return <p>你没有权限访问此页面</p>;
 
   const renderPage = () => {
     switch (activePage) {

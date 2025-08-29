@@ -4,9 +4,11 @@ import api from '../API/axios'
 
 const UserContext = createContext();
 
+
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);  // 初始为 null
-
+  const [loading, setLoading] = useState(true);  
+  
   const login = (userData) => {
     setUser(userData);
   };
@@ -45,6 +47,9 @@ export const UserProvider = ({ children }) => {
         console.error("fetchMe error:", error);
         setUser(null);
       }
+      finally {
+        setLoading(false); // 无论成功失败，都结束 loading
+      }
     };
     fetchMe();
   }, []);
@@ -52,7 +57,7 @@ export const UserProvider = ({ children }) => {
   const isAdmin = user?.roles?.includes("Admin") || false;
 
   return (
-    <UserContext.Provider value={{ user, isAdmin, login, logout, updateUser }}>
+    <UserContext.Provider value={{ user, isAdmin, loading, login, logout, updateUser }}>
       {children}
     </UserContext.Provider>
   );

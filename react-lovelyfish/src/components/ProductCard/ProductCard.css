@@ -86,6 +86,10 @@
   padding: 6px 0;
 }
 
+.product-card .new {
+  background-color: #ffc107;
+}
+
 /* 响应式 */
 @media (max-width: 768px) {
   .product-card {

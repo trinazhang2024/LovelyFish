@@ -7,41 +7,61 @@ import './NewArrivals.css';
 
 function NewArrivals() {
   const [products, setProducts] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
   const [addingIds, setAddingIds] = useState([]);
   const [cartAlert, setCartAlert] = useState(null);
 
+  // ✅ 获取第一页产品
   useEffect(() => {
-    api.get('/product')
-      .then(response => {
-        const allProducts = response.data;
-        const newProducts = allProducts
-          .sort((a, b) => b.id - a.id)
-          .map(p => ({
-            ...p,
-            mainImageUrl: p.mainImageUrl || (p.imageUrls && p.imageUrls[0]) || ''
-          }));
+    const fetchProducts = async () => {
+      try {
+        const res = await api.get('/product?page=1&pageSize=8&isNewArrival=true');
+        const newProducts = res.data.items.map(p => ({
+          ...p,
+          mainImageUrl: p.mainImageUrl || (p.imageUrls && p.imageUrls[0]) || ''
+        }));
         setProducts(newProducts);
-        setLoading(false);
-      })
-      .catch(err => {
+        setTotalPages(res.data.totalPages);
+      } catch (err) {
         console.error('Failed to load new products:', err);
         setError('Error loading new product data.');
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProducts();
   }, []);
 
-  const loadMore = () => setVisibleCount(prev => prev + 4);
+  // ✅ Load More
+  const loadMore = async () => {
+    if (page >= totalPages) return;
+    const nextPage = page + 1;
 
+    try {
+      const res = await api.get(`/product?page=${nextPage}&pageSize=8&isNewArrival=true`);
+      const newProducts = res.data.items.map(p => ({
+        ...p,
+        mainImageUrl: p.mainImageUrl || (p.imageUrls && p.imageUrls[0]) || ''
+      }));
+      setProducts(prev => [...prev, ...newProducts]);
+      setPage(nextPage);
+    } catch (err) {
+      console.error('Load more failed', err);
+    }
+  };
+
+  // ✅ 加入购物车
   const handleAddToCart = async (product) => {
     if (addingIds.includes(product.id)) return;
     setAddingIds(prev => [...prev, product.id]);
     try {
       await addToCart(product.id, 1);
-      setCartAlert(`${product.name} 已添加到购物车`);
+      setCartAlert(`${product.title} 已添加到购物车`);
       setTimeout(() => setCartAlert(null), 3000);
     } catch (err) {
       alert('添加购物车失败，请稍后重试');
@@ -66,7 +86,7 @@ function NewArrivals() {
       ) : (
         <>
           <div className="newarrivals-grid">
-            {products.slice(0, visibleCount).map(product => {
+            {products.map(product => {
               const discountedPrice = product.discountPercent
                 ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
                 : product.price.toFixed(2);
@@ -96,7 +116,6 @@ function NewArrivals() {
                     )}
 
                     <div className="na-actions">
-
                       <Link to={`/product/${product.id}`} className="na-btn na-shop">
                         Shop Now
                       </Link>
@@ -108,7 +127,6 @@ function NewArrivals() {
                       >
                         {addingIds.includes(product.id) ? '添加中...' : 'Add to Cart'}
                       </button>
-                      
                     </div>
                   </div>
                 </div>
@@ -116,7 +134,7 @@ function NewArrivals() {
             })}
           </div>
 
-          {visibleCount < products.length && (
+          {page < totalPages && (
             <div className="na-loadmore">
               <button className="na-btn na-load" onClick={loadMore}>
                 Load More

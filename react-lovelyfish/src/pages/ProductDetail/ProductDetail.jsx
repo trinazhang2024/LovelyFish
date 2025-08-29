@@ -4,6 +4,8 @@ import { useCart } from '../../contexts/CartContext';
 import api from '../../API/axios';
 import './ProductDetail.css';
 
+const IMAGE_BASE_URL = "https://localhost:7148/uploads/";
+
 const ProductDetail = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
@@ -16,9 +18,15 @@ const ProductDetail = () => {
 
   useEffect(() => {
     api.get(`/Product/${id}`)
-      .then(response => {
-        setProduct(response.data);
-        setSelectedImage(response.data.images?.[0]?.url || '');
+      .then(res => {
+        const data = res.data;
+        // 拼接完整 URL
+        const imagesWithUrl = data.imageUrls?.map(fileName => ({
+          fileName,
+          url: IMAGE_BASE_URL + fileName
+        })) || [];
+        setProduct({ ...data, images: imagesWithUrl });
+        setSelectedImage(imagesWithUrl[0]?.url || '/upload/placeholder.png'); // 占位图
         setLoading(false);
       })
       .catch(err => {

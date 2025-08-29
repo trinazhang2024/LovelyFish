@@ -5,15 +5,15 @@ import DiscountNew from "../components/DiscountNew/DiscountNew";
 import Recommend from "../components/Recommend/Recommend";
 import ProductList from '../components/ProductList/ProductList';
 import Reviews from "../components/Reviews/Reviews";
-import axios from 'axios';
+import api from '../API/axios';
 
 function Home() {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        axios.get('https://localhost:7148/api/Product')
+        api.get('/Product')
             .then((response) => {
-                setProducts(response.data);
+                setProducts(response.data.items);
             })
             .catch((error) => {
                 console.error('Error fetching products:', error);

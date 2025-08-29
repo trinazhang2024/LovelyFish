@@ -1,5 +1,6 @@
 // src/pages/Admin/ProductsAdminPage.jsx
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import ProductImageUpload from '../../Admin/ProductsAdmin/ProductImageUpload';
 import api from "../../../API/axios";
 import "./ProductsAdminPage.css";
 
@@ -7,10 +8,16 @@ export default function ProductsAdminPage() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
   const searchTimeout = useRef(null);
+  
+  //===============分页===============
+  const [totalItems, setTotalItems] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 10; // 每页显示条数，和后端一致
+  
+  
 
   const [form, setForm] = useState({
     id: null,
@@ -26,12 +33,11 @@ export default function ProductsAdminPage() {
 
   const IMAGE_BASE_URL = "https://localhost:7148/uploads/"; // 部署后改成你的域名
 
-  //===============分页===============
-  const [totalItems, setTotalItems] = useState(0);
-  const pageSize = 10; // 每页显示条数，和后端一致
+  
 
   // ==================== 获取产品 ====================
   const fetchProducts = useCallback(async (searchTerm = "", pageNum = 1) => {
+
     setLoading(true);
     try {
       const res = await api.get("/Product", {
@@ -39,10 +45,16 @@ export default function ProductsAdminPage() {
       });
       const productsData = res.data.items ||[];
       // 映射 imageUrls
-      const mappedProducts = productsData.map(p => ({
+      const mappedProducts = productsData.map(p => {
+        // 打印后端返回的 images 和映射后的 imageUrls
+      console.log("产品 ID:", p.id);
+      console.log("p.images 原始数据:", p.images);
+      console.log("p.imageUrls 映射后:", (p.images || []).map(img => img.fileName));
+      
+      return{
         ...p,
-        imageUrls: (p.images || []).map(img =>img.fileName),
-      }));
+        imageUrls: (p.images || []).map(img =>img.fileName),};
+      });
       setProducts(mappedProducts);
       setTotalPages(res.data.totalPages || 1);
       setTotalItems(res.data.totalItems || productsData.length);
@@ -94,53 +106,61 @@ export default function ProductsAdminPage() {
   };
 
   // ==================== 图片上传 ====================
-  const handleImageChange = async (e) => {
-    const files = Array.from(e.target.files);
+  // const handleImageChange = async (e) => {
+  //   const files = Array.from(e.target.files);
 
-    console.log("选中的文件列表:", files); // ✅ 打印文件信息
-    if (files.length === 0) {
-      console.warn("没有选择文件");
-      return;
-    }
+  //   console.log("选中的文件列表:", files); // ✅ 打印文件信息
+  //   if (files.length === 0) {
+  //     console.warn("没有选择文件");
+  //     return;
+  //   }
 
-    const formData = new FormData();
-    files.forEach((file) => {
-      console.log("追加到 FormData 的文件:", file.name); // ✅ 打印文件名
-      formData.append("files", file)
-  });
+  //   const formData = new FormData();
+  //   files.forEach((file) => {
+  //     console.log("追加到 FormData 的文件:", file.name); // ✅ 打印文件名
+  //     formData.append("files", file)
+  // });
 
-   // 这里也可以打印 FormData 的内容（不过需要遍历）
-   for (let pair of formData.entries()) {
-    console.log(pair[0], pair[1]);
-  }
+  //  // 这里也可以打印 FormData 的内容（不过需要遍历）
+  //  for (let pair of formData.entries()) {
+  //   console.log(pair[0], pair[1]);
+  // }
 
 
-    try {
-      const res = await api.post("/upload", formData);
-      const fileNames = res.data.map(item => item.fileName);
+  //   try {
+  //     const res = await api.post("/Upload", formData);
+  //     const fileNames = res.data.map(item => item.fileName);
 
-      console.log("上传返回的文件名:", fileNames); // ✅ 打印上传返回
+  //     console.log("上传返回的文件名:", fileNames); // ✅ 打印上传返回
 
-      setForm(prev => ({ ...prev, imageUrls: [...prev.imageUrls, ...fileNames] }));
-    } catch (err) {
-      console.error("上传图片失败", err);
-      alert("上传图片失败");
-    }
-  };
+  //     setForm(prev => ({ ...prev, imageUrls: [...prev.imageUrls, ...fileNames] }));
+  //   } catch (err) {
+  //     console.error("上传图片失败", err);
+  //     alert("上传图片失败");
+  //   }
+  // };
 
   // 删除图片只是修改 form.imageUrls，提交时后端会覆盖原有图片
-  const removeImage = (index) => {
-  setForm(prev => {
-    const newUrls = [...prev.imageUrls];
-    newUrls.splice(index, 1);
-    return { ...prev, imageUrls: newUrls };
-  });
-};
+//   const removeImage = (index) => {
+//   setForm(prev => {
+//     const newUrls = [...prev.imageUrls];
+//     newUrls.splice(index, 1);
+//     return { ...prev, imageUrls: newUrls };
+//   });
+// };
 
   // ==================== 新增/编辑产品 ====================
   //handleSubmit 只发送后端需要的字段，不包括 id、categoryTitle、mainImageUrl。
+  
+  // 图片单独管理
+  const [imageUrls, setImageUrls] = useState([]);
+
   const handleSubmit = async (e) => {
+
+    console.log("提交的 imageUrls:", form.imageUrls); // ✅ 打印检查
+
     e.preventDefault();
+
     try {
       const payload = {
         title: form.title,
@@ -150,9 +170,11 @@ export default function ProductsAdminPage() {
         description: form.description,
         features: form.features,
         categoryId: parseInt(form.categoryId),
-        imageUrls: form.imageUrls, // 把图片数组直接传给后端
+        imageUrls, // 把图片数组直接传给后端
         isClearance: form.isClearance || false
       };
+
+      console.log("提交 payload:", payload); // 再打印一次整个 payload
 
       if (form.id) {
         await api.put(`/Product/${form.id}`, payload);
@@ -161,8 +183,7 @@ export default function ProductsAdminPage() {
         await api.post("/Product", payload);
         alert("产品新增成功");
       }
-
-    
+      
 
       setForm({
         id: null,
@@ -183,13 +204,16 @@ export default function ProductsAdminPage() {
       console.error("保存产品失败", err);
       alert("保存失败");
     }
-    console.log("提交 payload:", payload);
+    
     
 
   };
 
   // ==================== 编辑 ====================
   const handleEdit = (p) => {
+    console.log("产品 p 对象:", p);
+    console.log("编辑产品 imageUrls:", p.imageUrls, "类型:", typeof p.imageUrls);
+    
     setForm({
       id: p.id,
       title: p.title,
@@ -199,7 +223,13 @@ export default function ProductsAdminPage() {
       description: p.description,
       features: p.features || [],
       categoryId: p.categoryId,
-      imageUrls: p.imageUrls || [], // 直接用文件名数组
+
+      imageUrls: Array.isArray(p.imageUrls)
+      ? p.imageUrls
+      : p.imageUrls
+        ? [p.imageUrls]
+        : [],
+
       isClearance: p.isClearance || false
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -241,19 +271,16 @@ export default function ProductsAdminPage() {
           <input name="discountPercent" type="number" placeholder="discountPercent" value={form.discountPercent} onChange={handleChange} />
           <textarea name="description" placeholder="Product Description" value={form.description} onChange={handleChange} />
           <input placeholder="Features (comma-separated). eg, output: 3000, wattage:60," value={form.features.join(",")} onChange={handleFeaturesChange} />
+          
           <select name="categoryId" value={form.categoryId} onChange={handleChange} required>
             <option value="">Category</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          <input type="file" multiple onChange={handleImageChange} />
-          <div className="image-preview">
-            {form.imageUrls.map((fileName, idx) => (
-              <div className="preview-item" key={idx}>
-                <img src={IMAGE_BASE_URL + fileName} alt={`预览 ${idx}`} />
-                <button type="button" onClick={() => removeImage(idx)}>×</button>
-              </div>
-            ))}
-          </div>
+
+          {/* 图片上传组件 */}
+          <ProductImageUpload imageUrls={imageUrls} setImageUrls={setImageUrls} />
+
+
           <button type="submit">{form.id ? "更新产品" : "新增产品"}</button>
         </form>
       </div>

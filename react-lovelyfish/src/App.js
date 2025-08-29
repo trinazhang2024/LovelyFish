@@ -34,6 +34,8 @@ import SearchResultsPage from './pages/Search/SearchResultsPage';
 import CartPage from './pages/Cart/CartPage/CartPage';
 import ConfirmOrderPage from "./pages/Cart/ConfirmOrder/ConfirmOrderPage";
 import OrdersPage from './pages/Cart/OrdersPage/OrdersPage';
+import NewArrivals from './pages/NewArrivals/NewArrivals'
+import Clearance from './pages/Clearance/Clearance'
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 
@@ -106,6 +108,8 @@ const AppRoutes = () => {
       <Route path="/orders" element={<OrdersPage />} />
 
       {/* 其他页面 */}
+      <Route path="/new-arrivals" element={<NewArrivals/>} />
+      <Route path="/clearance" element={<Clearance />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
 
