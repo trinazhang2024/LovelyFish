@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import api from '../../API/axios';
+import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
+import '../../components/AddToCartButton/AddToCartButton.css'
 import './NewArrivals.css';
 
 function NewArrivals() {
@@ -12,8 +14,8 @@ function NewArrivals() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
-  const [addingIds, setAddingIds] = useState([]);
-  const [cartAlert, setCartAlert] = useState(null);
+  //const [addingIds, setAddingIds] = useState([]);
+  //const [cartAlert, setCartAlert] = useState(null);
 
   // ✅ 获取第一页产品
   useEffect(() => {
@@ -55,28 +57,12 @@ function NewArrivals() {
     }
   };
 
-  // ✅ 加入购物车
-  const handleAddToCart = async (product) => {
-    if (addingIds.includes(product.id)) return;
-    setAddingIds(prev => [...prev, product.id]);
-    try {
-      await addToCart(product.id, 1);
-      setCartAlert(`${product.title} 已添加到购物车`);
-      setTimeout(() => setCartAlert(null), 3000);
-    } catch (err) {
-      alert('添加购物车失败，请稍后重试');
-    } finally {
-      setAddingIds(prev => prev.filter(id => id !== product.id));
-    }
-  };
 
   if (loading) return <div className="na-loading">Loading new products...</div>;
   if (error) return <div className="na-error">{error}</div>;
 
   return (
     <div className="newarrivals-section">
-      {cartAlert && <div className="na-alert">{cartAlert}</div>}
-
       <div className="newarrivals-header">
         <h2>New Arrivals</h2>
       </div>
@@ -116,17 +102,14 @@ function NewArrivals() {
                     )}
 
                     <div className="na-actions">
-                      <Link to={`/product/${product.id}`} className="na-btn na-shop">
-                        Shop Now
-                      </Link>
+                      <Link to={`/product/${product.id}`} className="buy-button">Shop Now</Link>
 
-                      <button
-                        className="na-btn na-add"
-                        onClick={() => handleAddToCart(product)}
-                        disabled={addingIds.includes(product.id)}
-                      >
-                        {addingIds.includes(product.id) ? '添加中...' : 'Add to Cart'}
-                      </button>
+                      {/* 使用封装好的 AddToCartButton */}
+                      <AddToCartButton
+                        productId={product.id}
+                        productTitle={product.title}
+                        addToCart={addToCart}
+                      />
                     </div>
                   </div>
                 </div>

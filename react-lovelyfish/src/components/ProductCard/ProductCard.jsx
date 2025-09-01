@@ -1,22 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import './ProductCard.css';
+import '../AddToCartButton/AddToCartButton.css'
+
+//const IMAGE_BASE_URL = "https://localhost:7148/uploads/";
 
 //把 ProductCard 改造成 统一使用 addingIds 状态和外部传入的 addToCart 方法，而不是自己内部再调 addToCart(product.id, 1)，并且按钮能显示“添加中...”。
 const ProductCard = ({ product, addToCart, addingIds }) => {
+  //不需要在 ProductCard 里再直接调用 useCart()，只要父组件已经拿到 addToCart 并传给它 就可以了
   if (!product) return <div>Product not found</div>;
 
-  // const handleAddToCart = async () => {
-  //   try {
-  //     await addToCart(product.id, 1);
-  //     alert(`${product.title} 已添加到购物车`);
-  //   } catch (err) {
-  //     alert('添加购物车失败，请稍后重试');
-  //   }
-  // };
-
   // ✅ 使用占位图，如果数据库没有主图
-  const mainImage = product.mainImageUrl || (product.images && product.images[0]?.url) || '/upload/placeholder.png';
+  const mainImage = product.mainImageUrl || (product.images && product.images[0]?.url) || 'placeholder.png';
 
   // ✅ 判断当前产品是否正在添加到购物车
   const isAdding = addingIds?.includes(product.id);
@@ -54,15 +50,14 @@ const ProductCard = ({ product, addToCart, addingIds }) => {
 
         <div className="product-card-actions">
 
-          <Link to={`/product/${product.id}`} className="btn btn-primary">Shop Now</Link>
+          <Link to={`/product/${product.id}`} className="buy-button">Shop Now</Link>
 
-          <button 
-             className="btn btn-success" 
-             onClick={()=> addToCart(product)}
-             disable={isAdding}
-             >
-              Add to Cart
-          </button>
+           {/* 使用封装好的 AddToCartButton */}
+           <AddToCartButton 
+            productId={product.id} 
+            productTitle={product.title} 
+            addToCart={addToCart} 
+          />
           
         </div>
       </div>

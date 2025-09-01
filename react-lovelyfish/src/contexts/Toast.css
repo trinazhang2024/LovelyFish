@@ -1,0 +1,25 @@
+.global-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95); /* 初始缩小 */
+  background-color: rgba(51, 51, 51, 0.95);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.global-toast.show {
+  opacity: 0.95;
+  transform: translate(-50%, -50%) scale(1); /* 弹出 */
+}
+
+.global-toast.hide {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.95); /* 淡出收回 */
+}

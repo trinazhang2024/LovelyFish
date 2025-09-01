@@ -12,6 +12,8 @@ export default function CartPage() {
 
   if (loading) return <p>Loading...</p>;
   console.log("Cart Items:", cartItems);
+
+  
   // 选择单个商品
   const toggleSelect = (id) => {
     setSelectedItems((prev) =>
@@ -106,11 +108,20 @@ export default function CartPage() {
               <span>Action</span>
             </li>
               {cartItems.map(item => {
+                console.log(item.product);
                 const discountedPrice = item.product.discountPercent
                   ? item.product.price * (1 - item.product.discountPercent / 100)
                   : item.product.price;
                 const quantity = localQuantities[item.id] ?? item.quantity;
                 const totalPrice = discountedPrice * quantity;
+
+                const getProductImage = (product) => {
+                  if (product.images && product.images.length > 0) {
+                    return `https://localhost:7148/uploads/${product.images[0].fileName}`;
+                  }
+                  return 'https://localhost:7148/uploads/placeholder.png';
+                };
+
 
                 return (
                   <li key={item.id} className="cart-item">
@@ -125,13 +136,15 @@ export default function CartPage() {
 
                     {/* Picture and Name */}
                     <div className="cart-product">
-                      {(() => {
+                      {/* {(() => {
                         const productImage =
-                          item.product?.image ||
+                          item.product?.mainImage ||
                           (item.product?.images && item.product.images[0]?.url) ||
-                          '/upload/placeholder.png';
+                          'placeholder.png';
                         return <img src={productImage} alt={item.product?.title || 'Product'} className="cart-item-image" />;
-                      })()}
+                      })()} */}
+
+                      <img src={getProductImage(item.product)} alt={item.product?.title || 'Product'} className="cart-item-image" />
                       <h4>{item.product?.title}</h4>
                     </div>
 

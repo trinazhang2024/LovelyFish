@@ -5,6 +5,8 @@ import "./ForgotPasswordPage.css";
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,10 +17,10 @@ export default function ForgotPasswordPage() {
     try {
       setLoading(true);
       const res = await api.post("/account/forgot-password", { email });
-      alert(res.data.message || "如果该邮箱存在，我们已发送密码重置邮件（或测试链接）到控制台。");
+      setMessage(res.data.message || "如果该邮箱存在，我们已发送密码重置邮件（或测试链接）到控制台。");
     } catch (err) {
       console.error("忘记密码请求失败", err);
-      alert(err.message || "请求失败，请稍后再试。");
+      setError(err.response?.data?.message || "请求失败，请稍后再试。");
     } finally {
       setLoading(false);
     }
@@ -39,6 +41,9 @@ export default function ForgotPasswordPage() {
           {loading ? "发送中..." : "发送重置邮件"}
         </button>
       </form>
+      {message && <p className="success">{message}</p>}
+      {error && <p className="error">{error}</p>}
+      
     </div>
   );
 }

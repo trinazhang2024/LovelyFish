@@ -44,6 +44,9 @@ export default function ProductsAdminPage() {
         params: { search: searchTerm, page: pageNum, pageSize },
       });
       const productsData = res.data.items ||[];
+
+      console.log('res.data.items:',productsData);
+      
       // 映射 imageUrls
       const mappedProducts = productsData.map(p => {
         // 打印后端返回的 images 和映射后的 imageUrls
@@ -53,7 +56,7 @@ export default function ProductsAdminPage() {
       
       return{
         ...p,
-        imageUrls: (p.images || []).map(img =>img.fileName),};
+        imageUrls: (p.images || []).map(img =>`${IMAGE_BASE_URL}${img.fileName}`),};
       });
       setProducts(mappedProducts);
       setTotalPages(res.data.totalPages || 1);
@@ -105,49 +108,6 @@ export default function ProductsAdminPage() {
     setForm({ ...form, features: e.target.value.split(",") });
   };
 
-  // ==================== 图片上传 ====================
-  // const handleImageChange = async (e) => {
-  //   const files = Array.from(e.target.files);
-
-  //   console.log("选中的文件列表:", files); // ✅ 打印文件信息
-  //   if (files.length === 0) {
-  //     console.warn("没有选择文件");
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   files.forEach((file) => {
-  //     console.log("追加到 FormData 的文件:", file.name); // ✅ 打印文件名
-  //     formData.append("files", file)
-  // });
-
-  //  // 这里也可以打印 FormData 的内容（不过需要遍历）
-  //  for (let pair of formData.entries()) {
-  //   console.log(pair[0], pair[1]);
-  // }
-
-
-  //   try {
-  //     const res = await api.post("/Upload", formData);
-  //     const fileNames = res.data.map(item => item.fileName);
-
-  //     console.log("上传返回的文件名:", fileNames); // ✅ 打印上传返回
-
-  //     setForm(prev => ({ ...prev, imageUrls: [...prev.imageUrls, ...fileNames] }));
-  //   } catch (err) {
-  //     console.error("上传图片失败", err);
-  //     alert("上传图片失败");
-  //   }
-  // };
-
-  // 删除图片只是修改 form.imageUrls，提交时后端会覆盖原有图片
-//   const removeImage = (index) => {
-//   setForm(prev => {
-//     const newUrls = [...prev.imageUrls];
-//     newUrls.splice(index, 1);
-//     return { ...prev, imageUrls: newUrls };
-//   });
-// };
 
   // ==================== 新增/编辑产品 ====================
   //handleSubmit 只发送后端需要的字段，不包括 id、categoryTitle、mainImageUrl。
@@ -310,7 +270,18 @@ export default function ProductsAdminPage() {
                 {products.map(p => (
                   <tr key={p.id}>
                     <td>{p.id}</td>
-                    <td>{p.imageUrls?.[0] && <img src={p.imageUrls[0]} alt={p.title} style={{ width: 50, height: 50, objectFit: "cover" }} />}</td>
+                    <td>
+                      {p.mainImageUrl ? (
+                        <img
+                          src={p.mainImageUrl}
+                          alt={p.title}
+                          style={{ width: 50, height: 50, objectFit: "cover" }}
+                          // onError={(e) => (e.currentTarget.src = "/uploads/placeholder.png")}
+                        />
+                      ) : (
+                        <span>无图片</span>
+                      )}
+                    </td>
                     <td>{p.title}</td>
                     <td>${p.price}</td>
                     <td>{p.stock}</td>
@@ -325,7 +296,7 @@ export default function ProductsAdminPage() {
               </tbody>
             </table>
           </div>
-          
+
           <div className="pagination">
             <span>共 {totalItems} 条，每页 {pageSize} 条</span>
             <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Prev Page</button>

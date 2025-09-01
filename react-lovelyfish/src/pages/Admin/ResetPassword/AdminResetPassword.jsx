@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import api from "../../../API/axios";
 import './AdminResetPassword.css'
 
@@ -11,6 +11,9 @@ export default function AdminResetPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   
   //计算密码强度
   
@@ -32,7 +35,7 @@ export default function AdminResetPassword() {
     if (newPassword !== confirmPassword) {
       setMessage("Passwords do not match");
       return;
-    }
+    } setLoading(true);
     try {
       const res = await api.post("/admin/reset-password", {
         email,
@@ -40,8 +43,11 @@ export default function AdminResetPassword() {
         newPassword,
       });
       setMessage(res.data.message || "Password reset successful");
+      setTimeout(() => navigate("/admin/login"), 1000);
     } catch (err) {
       setMessage("Failed to reset password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,8 +77,8 @@ export default function AdminResetPassword() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        <button type="submit" >
-          Reset Password
+        <button type="submit" disabled={loading}>
+          {loading ? "Resetting..." : "Reset Password"}
         </button>
         {message && <p >{message}</p>}
       </form>

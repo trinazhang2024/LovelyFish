@@ -14,6 +14,7 @@ export default function ConfirmOrderPage() {
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
 
   const [useNewUserCoupon, setUseNewUserCoupon] = useState(false);
   const [use50Coupon, setUse50Coupon] = useState(false);
@@ -21,11 +22,15 @@ export default function ConfirmOrderPage() {
 
   const [processing, setProcessing] = useState(false);
   const [lastOrderId, setLastOrderId] = useState(null);
+  const [userOrderCount, setUserOrderCount] = useState(0);
 
   const [localQuantities, setLocalQuantities] = useState({});
   const [selectedCartData, setSelectedCartData] = useState([]);
 
   const [loadingUser, setLoadingUser] = useState(true);
+  const [bankInfo, setBankInfo] = useState(null);
+  const [orderAmount, setOrderAmount] = useState(0);
+
 
   // ----------------- Fetch user -----------------
   useEffect(() => {
@@ -43,6 +48,23 @@ export default function ConfirmOrderPage() {
     fetchUser();
   }, []);
 
+  // ----------------- Fetch bank info -----------------
+  useEffect(() => {
+    async function fetchBankInfo() {
+      try {
+        const res = await api.get("/settings/email", { withCredentials: true });
+
+        console.log('res.data:', res.data);
+        
+        setBankInfo(res.data);
+      } catch (err) {
+        console.error("Failed to load bank info", err);
+      }
+    }
+    fetchBankInfo();
+  }, []);
+
+
   // ----------------- Initialize selected items -----------------
   useEffect(() => {
     if (!user || !cartItems.length) return;
@@ -57,6 +79,22 @@ export default function ConfirmOrderPage() {
     });
     setLocalQuantities(initialQuantities);
   }, [user, cartItems, location.state]);
+
+  //---------------------------------------------------------------
+  useEffect(() => {
+    async function fetchUserOrderCount() {
+      try {
+        const res = await api.get("/orders/my", { withCredentials: true });
+        // res.data 是用户订单数组
+        setUserOrderCount(res.data.length);
+        
+        
+      } catch (err) {
+        console.error("Failed to get user orders count", err);
+      }
+    }
+    fetchUserOrderCount();
+  }, []);
 
   // ----------------- Quantity Handlers -----------------
   const incrementItem = id => {
@@ -129,6 +167,7 @@ export default function ConfirmOrderPage() {
       const res = await api.post("/cart/checkout", {
         customerName,
         phone,
+        customerEmail,
         shippingAddress,
         items: itemsToSubmit,
         useNewUserCoupon,
@@ -137,6 +176,7 @@ export default function ConfirmOrderPage() {
       });
 
       setLastOrderId(res.data.orderId);
+      setOrderAmount(res.data.totalPrice);
       fetchCart();
 
       if (res.data.newUserUsed) {
@@ -162,12 +202,20 @@ export default function ConfirmOrderPage() {
 
       {lastOrderId ? (
         <div className="order-success">
-          <p>🎉 Your order has been submitted! Order ID: <strong>{lastOrderId}</strong></p>
-          <p>Shipping cost will be emailed to you.</p>
-          <p>Any question or payment instruction, please check{" "}
-            <Link to="/about" className="check-orders-link">About Us</Link>
-          </p>
-          <p>THANKS FOR YOUR SHOPPING!</p>
+          <p>🎉 Your order has been submitted! Order ID: <strong>{userOrderCount+1}</strong></p>
+          <p>Payment instructions have been sent to your email. Please follow them to complete the order.</p>
+          <p><strong>Order Amount:</strong> ${orderAmount.toFixed(2)}</p>
+
+          {bankInfo && (
+            <>
+              <h4>Bank Transfer Information:</h4>
+              <p><strong>Bank:</strong> {bankInfo.bankName}</p>
+              <p><strong>Account Name:</strong> {bankInfo.accountName}</p>
+              <p><strong>Account Number:</strong> {bankInfo.accountNumber}</p>
+              <p>⚠️ After transferring, please screenshot the transaction and email it to us for verification.</p>
+            </>
+          )}
+
           <Link to="/orders" className="check-orders-link">Check my orders</Link>
         </div>
       ) : (
@@ -187,10 +235,23 @@ export default function ConfirmOrderPage() {
                 : item.product.price;
               const totalPrice = discountedPrice * quantity;
 
+              const getProductImage = (product) => {
+                if (product?.images?.length > 0) {
+                  return `https://localhost:7148/uploads/${product.images[0].fileName}`;
+                }
+                return 'https://localhost:7148/uploads/placeholder.png';
+              };
+
               return (
                 <li key={item.id} className="cart-item">
                   <div className="cart-product">
-                    <img src={item.product?.image || '/upload/placeholder.png'} alt={item.product?.title} className="cart-item-image"/>
+
+                    <img
+                      src={getProductImage(item.product)}
+                      alt={item.product?.title}
+                      className="cart-item-image"
+                    />
+
                     <h4>{item.product?.title}</h4>
                   </div>
 
@@ -224,12 +285,19 @@ export default function ConfirmOrderPage() {
 
           <h3>Customer Information</h3>
           <div className="confirm-form">
+
             <h5>Name</h5>
             <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} placeholder="Your Name"/>
+
             <h5>Phone Number</h5>
             <input type="text" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone"/>
+
+            <h5>Email</h5>
+            <input type="email" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} placeholder="Email"/>
+
             <h5>Postal Address</h5>
             <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Shipping Address"/>
+
           </div>
 
           <h3>Coupon</h3>

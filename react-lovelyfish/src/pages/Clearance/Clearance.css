@@ -49,13 +49,6 @@
   margin-top: auto;
 }
 
-.clearance-section .clearance-btn {
-  flex: 1;
-  font-size: 0.9rem;
-  padding: 0.45rem 0.5rem;
-  cursor: pointer;
-}
-
 .clearance-section .clearance-img {
   height: 200px;
   object-fit: cover;

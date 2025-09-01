@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { UserProvider, useUser } from "./contexts/UserContext";
 import { CartProvider } from './contexts/CartContext';
+import { ToastProvider } from './contexts/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import UserLoginRedirect from './components/UserLoginRedirect';
@@ -121,15 +122,17 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <UserProvider>
-      <CartProvider>
-        <Router>
-          <Navbar />
-          <AppRoutes />
-          <Footer />
-        </Router>
-      </CartProvider>
-    </UserProvider>
+    <ToastProvider>
+      <UserProvider>
+        <CartProvider>
+          <Router>
+            <Navbar />
+            <AppRoutes />
+            <Footer />
+          </Router>
+        </CartProvider>
+      </UserProvider>
+    </ToastProvider>
   );
 };
 

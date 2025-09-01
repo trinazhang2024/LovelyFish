@@ -13,9 +13,14 @@ export default function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(""); // 成功提示
+  const [error, setError] = useState("");     // 错误提示
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setError("");
+
     if (!email || !token) {
       alert("链接无效，请重新获取重置密码链接。");
       return;
@@ -24,6 +29,15 @@ export default function ResetPasswordPage() {
       alert("两次输入的密码不一致！");
       return;
     }
+
+    // 可选：前端密码强度校验
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      setError("密码至少8位，包含大小写字母、数字和特殊字符。");
+      return;
+    }
+
+
     try {
       setLoading(true);
       await api.post("/account/reset-password", {
@@ -31,11 +45,11 @@ export default function ResetPasswordPage() {
         token,
         newPassword,
       });
-      alert("密码重置成功，请登录！");
-      navigate("/login");
+      setMessage("密码重置成功，请登录！");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       console.error("重置密码失败", err);
-      alert(err.message || "重置密码失败，请重试。");
+      setError(err.response?.data?.message || "重置密码失败，请重试。");
     } finally {
       setLoading(false);
     }
@@ -63,6 +77,10 @@ export default function ResetPasswordPage() {
           {loading ? "提交中..." : "提交新密码"}
         </button>
       </form>
+
+      {message && <p className="success">{message}</p>}
+      {error && <p className="error">{error}</p>}
+      
     </div>
   );
 }

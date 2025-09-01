@@ -12,7 +12,7 @@ export default function AdminForgotPassword() {
       const res = await api.post("/admin/forgot-password", { email });
       setMessage((res.data.message || "Reset link sent!") + ", Please check your email.");
     } catch (err) {
-      setMessage(err.response?.data?.message || "Failed to send reset link");
+      setMessage(err.response?.data?.message || "Failed to send reset link" + " 请检查邮箱。");
     }
   };
 

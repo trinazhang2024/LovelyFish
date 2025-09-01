@@ -5,6 +5,8 @@ import { Container, Row, Col, Card, Button, Badge, Alert, Spinner } from 'react-
 import { BsArrowRight, BsTagFill } from 'react-icons/bs';
 import api from '../../API/axios';
 import './Clearance.css';
+import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
+import '../../components/AddToCartButton/AddToCartButton.css'
 
 function Clearance() {
   const [products, setProducts] = useState([]);
@@ -14,7 +16,6 @@ function Clearance() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
-  const [addingIds, setAddingIds] = useState([]);
 
   const pageSize = 8;
 
@@ -52,20 +53,6 @@ function Clearance() {
       console.error('Load more failed', err);
     } finally {
       setLoadingMore(false);
-    }
-  };
-
-  // ✅ 添加到购物车
-  const handleAddToCart = async (product) => {
-    if (addingIds.includes(product.id)) return;
-    setAddingIds(prev => [...prev, product.id]);
-    try {
-      await addToCart(product.id, 1);
-      alert(`${product.title} 已添加到购物车`);
-    } catch {
-      alert('添加购物车失败，请稍后重试');
-    } finally {
-      setAddingIds(prev => prev.filter(id => id !== product.id));
     }
   };
 
@@ -126,15 +113,15 @@ function Clearance() {
                       )}
 
                       <div className="clearance-actions">
-                        <Link to={`/product/${product.id}`} className="btn btn-primary clearance-btn">Shop Now</Link>
-                        <Button
-                          variant="outline-primary"
-                          className="clearance-btn"
-                          onClick={() => handleAddToCart(product)}
-                          disabled={addingIds.includes(product.id)}
-                        >
-                          {addingIds.includes(product.id) ? '添加中...' : 'Add to Cart'}
-                        </Button>
+
+                        <Link to={`/product/${product.id}`} className="buy-button">Shop Now</Link>
+
+                        {/* 使用封装好的 AddToCartButton */}
+                        <AddToCartButton
+                          productId={product.id}
+                          productTitle={product.title}
+                          addToCart={addToCart}
+                        />
                       </div>
                     </Card.Body>
                   </Card>

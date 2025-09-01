@@ -1,0 +1,45 @@
+.buy-button {
+  min-width: 100px; /* 最小宽度，可根据需要调 */
+  white-space: nowrap; /* 不换行 */
+  display: inline-flex; /* 保持内容居中对齐 */
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s, background 0.2s;
+  
+}
+
+.buy-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: linear-gradient(90deg, #0056b3, #003f7f);
+}
+
+.buy-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

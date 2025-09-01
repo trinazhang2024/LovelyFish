@@ -13,6 +13,15 @@ export default function OrdersPage() {
       try {
         const res = await api.get("/orders/my"); // 调用后端 OrdersController
         setOrders(res.data);
+
+        //console.log('res.data :', res.data);
+        
+
+        // ✅ 打印每个订单的图片 URL
+        // res.data.forEach(order => {
+        //   console.log("Order", order.id, "images:", order.orderItems.map(i => i.mainImageUrl));
+        // });
+
       } catch (err) {
         console.error("Failed to fetch orders:", err);
       } finally {
@@ -56,6 +65,8 @@ export default function OrdersPage() {
   if (loading) return <p className="loading">Loading orders...</p>;
   if (!orders.length) return <p className="empty-orders">You have no orders yet.</p>;
 
+
+
   return (
     <div className="orders-container">
       <h2>My Orders</h2>
@@ -72,6 +83,17 @@ export default function OrdersPage() {
 
         // 节省的金额
         const saved = originalTotal - finalTotal;
+
+        const getProductImage = (item) => {
+          if (item.mainImageUrl) {
+
+           // console.log('item.mainImageUrl:', item.mainImageUrl);
+            
+            // 如果 mainImageUrl 已经是 /uploads/xxx.jpg，则直接拼接完整 URL
+            return `https://localhost:7148${item.mainImageUrl}`;
+          }
+          return `https://localhost:7148/uploads/placeholder.png`;
+        };
 
         return (
           <div key={order.id} className="order-card">
@@ -107,7 +129,25 @@ export default function OrdersPage() {
 
             <div className="order-items">
               {order.orderItems.map((item) => (
+
+                
+
                 <div key={item.id} className="order-item">
+
+                  {/* image */}
+                  <img
+                    src={getProductImage(item)}
+                    alt={item.productName ?? "Product"}
+                    className="order-item-image"
+                    onError={(e) => {
+                      if (!e.currentTarget.dataset.error) {
+                        e.currentTarget.src = "/uploads/placeholder.png";
+                        e.currentTarget.dataset.error = "true";
+                      }
+                    }}
+                  />
+
+                  {/* product info and price */}
                   <p>
                     {item.productName} x {item.quantity} - ${item.price.toFixed(2)}
                   </p>

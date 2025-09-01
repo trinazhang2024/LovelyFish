@@ -16,9 +16,6 @@ const ProductCategoryPage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const [addingIds, setAddingIds] = useState([]);
-  const [cartAlert, setCartAlert] = useState(null);
-
   // URL 映射到数据库分类
   const categoryMap = {
     waterpumps: "Water Pump",
@@ -65,21 +62,6 @@ const ProductCategoryPage = () => {
     if (page < totalPages) fetchProducts(page + 1);
   };
 
-  // ✅ 统一 Add to Cart 方法
-  const handleAddToCart = async (product) => {
-    if (addingIds.includes(product.id)) return;
-    setAddingIds(prev => [...prev, product.id]);
-    try {
-      await addToCart(product.id, 1);
-      setCartAlert(`${product.title} 已添加到购物车`);
-      setTimeout(() => setCartAlert(null), 3000);
-    } catch (err) {
-      alert('添加购物车失败，请稍后重试');
-    } finally {
-      setAddingIds(prev => prev.filter(id => id !== product.id));
-    }
-  };
-
   // 使用 Hook 管理排序
   const {
     sortedProducts,
@@ -95,8 +77,6 @@ const ProductCategoryPage = () => {
 
   return (
     <div className="products-container">
-
-      {cartAlert && <div className="cart-alert">{cartAlert}</div>}
 
       <h1>{dbCategory}</h1>
 
@@ -116,8 +96,7 @@ const ProductCategoryPage = () => {
       <ProductList
         products={sortedProducts}
         limit={false}
-        addToCart={handleAddToCart}
-        addingIds={addingIds}
+        addToCart={addToCart}
       />
     </div>
   );

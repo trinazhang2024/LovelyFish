@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
+import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import api from '../../API/axios';
 import './ProductDetail.css';
 
@@ -13,20 +14,19 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [adding, setAdding] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     api.get(`/Product/${id}`)
       .then(res => {
         const data = res.data;
-        // 拼接完整 URL
         const imagesWithUrl = data.imageUrls?.map(fileName => ({
           fileName,
           url: IMAGE_BASE_URL + fileName
         })) || [];
+
         setProduct({ ...data, images: imagesWithUrl });
-        setSelectedImage(imagesWithUrl[0]?.url || '/upload/placeholder.png'); // 占位图
+        setSelectedImage(imagesWithUrl.length > 0 ? imagesWithUrl[0].url : 'placeholder.png');
         setLoading(false);
       })
       .catch(err => {
@@ -35,18 +35,6 @@ const ProductDetail = () => {
         setLoading(false);
       });
   }, [id]);
-
-  const addToCartHandler = async () => {
-    setAdding(true);
-    try {
-      await addToCart(product.id, 1);
-      alert(`${product.title} 已添加到购物车`);
-    } catch (err) {
-      alert('添加购物车失败，请稍后重试');
-    } finally {
-      setAdding(false);
-    }
-  };
 
   if (loading) return <p>正在加载产品详情...</p>;
   if (error) return <p>{error}</p>;
@@ -60,8 +48,17 @@ const ProductDetail = () => {
       </div>
 
       <div className="product-container">
+        {/* 左侧图片区域 */}
         <div className="product-image-container">
-          {selectedImage && <img src={selectedImage} alt={product.title} className="product-image" />}
+          {selectedImage && (
+            <img 
+            key={selectedImage}  // 加 key，每次切换都会重新渲染，触发动画   
+            src={selectedImage} 
+            alt={product.title} 
+            className="product-image fade-in" />
+          )}
+
+          {/* 缩略图列表 */}
           <div className="thumbnail-list">
             {product.images?.map((img, idx) => (
               <img
@@ -75,33 +72,39 @@ const ProductDetail = () => {
           </div>
         </div>
 
+        {/* 右侧信息区域 */}
         <div className="product-info-container">
-          <h1 className="product-title">{product.title}</h1>
+          <div className="product-field">
+            <span className="field-label">Name:</span>
+            <span className="field-value">{product.title}</span>
+          </div>
 
-          <p className="product-price">
+          <div className="product-field">
+            <span className="field-label">Price:</span>
             {product.discountPercent > 0 ? (
               <>
-                <span className="text-muted text-decoration-line-through" style={{ marginRight: 8 }}>
-                  ${product.price.toFixed(2)}
-                </span>
-                <span className="text-danger fw-bold">
+                <span className="price-original field-value">${product.price.toFixed(2)}</span>
+                <span className="price-discount field-value">
                   ${(product.price * (1 - product.discountPercent / 100)).toFixed(2)}
                 </span>
+                <span className="discount-label">-{product.discountPercent}%</span>
               </>
             ) : (
-              <span className="text-danger fw-bold">${product.price.toFixed(2)}</span>
+              <span className="price-normal field-value">${product.price.toFixed(2)}</span>
             )}
-          </p>
+          </div>
 
-          <button
-            className="buy-button"
-            onClick={addToCartHandler}
-            disabled={adding}
-          >
-            {adding ? "添加中..." : "Add to Cart"}
-          </button>
+          <div className="product-field">
+            <span className="field-label">Category:</span>
+            <span className="field-value">{product.category?.name || 'Uncategorized'}</span>
+          </div>
 
-          <p>Category: {product.category?.name || 'Uncategorized'}</p>
+          {/* 封装后的购物车按钮 */}
+          <AddToCartButton
+            productId={product.id}
+            productTitle={product.title}
+            addToCart={addToCart}
+          />
 
           <div className="product-description">
             <h2>Description</h2>
@@ -115,6 +118,7 @@ const ProductDetail = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 
