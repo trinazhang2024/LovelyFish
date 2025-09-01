@@ -37,13 +37,8 @@ const About = () => {
       <section className="about-section">
         <h2 className="section-title">How to Purchase</h2>
         <p className="section-content">
-          You can place an order directly on our website and choose to pay via bank transfer. Please email us a screenshot of your payment, and we will arrange shipment as soon as the payment is confirmed.
+          <strong>You can place an order directly on our website and choose to pay via bank transfer. Please email us a screenshot of your payment, and we will arrange shipment as soon as the payment is confirmed.</strong>
         </p>
-        <ul className="section-content highlight">
-          <li><MdPayment /> Bank: **Bank Name**</li>
-          <li><FaUniversity /> Account Number: ***Bank Account Number***</li>
-          <li>After payment, please send the screenshot to our email. We will process your order promptly.</li>
-        </ul>
       </section>
 
       {/* Contact Us */}

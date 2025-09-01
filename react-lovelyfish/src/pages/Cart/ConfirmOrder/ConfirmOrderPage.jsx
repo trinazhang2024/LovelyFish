@@ -212,7 +212,9 @@ export default function ConfirmOrderPage() {
               <p><strong>Bank:</strong> {bankInfo.bankName}</p>
               <p><strong>Account Name:</strong> {bankInfo.accountName}</p>
               <p><strong>Account Number:</strong> {bankInfo.accountNumber}</p>
-              <p>⚠️ After transferring, please screenshot the transaction and email it to us for verification.</p>
+              <p>⚠️ After transferring, please screenshot the transaction and email it to us for verification. 
+                 <Link to="/contact">Contact Us</Link>
+              </p>
             </>
           )}
 
