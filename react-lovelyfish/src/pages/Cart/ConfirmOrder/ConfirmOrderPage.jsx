@@ -237,11 +237,13 @@ export default function ConfirmOrderPage() {
                 : item.product.price;
               const totalPrice = discountedPrice * quantity;
 
+              const IMAGE_BASE_URL = import.meta.env.VITE_API_BASE_UPLOADS
+
               const getProductImage = (product) => {
                 if (product?.images?.length > 0) {
-                  return `https://localhost:7148/uploads/${product.images[0].fileName}`;
+                  return `${IMAGE_BASE_URL}${product.images[0].fileName}`;
                 }
-                return 'https://localhost:7148/uploads/placeholder.png';
+                return `${IMAGE_BASE_URL}placeholder.png`;
               };
 
               return (

@@ -4,7 +4,6 @@ import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import './ProductCard.css';
 import '../AddToCartButton/AddToCartButton.css'
 
-//const IMAGE_BASE_URL = "https://localhost:7148/uploads/";
 
 //把 ProductCard 改造成 统一使用 addingIds 状态和外部传入的 addToCart 方法，而不是自己内部再调 addToCart(product.id, 1)，并且按钮能显示“添加中...”。
 const ProductCard = ({ product, addToCart, addingIds }) => {

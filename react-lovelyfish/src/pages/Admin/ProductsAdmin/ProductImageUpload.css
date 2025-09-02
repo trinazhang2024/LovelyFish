@@ -1,0 +1,45 @@
+.upload-container {
+  margin-top: 8px;
+}
+
+.uploading-text {
+  color: #666;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.image-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.image-wrapper {
+  position: relative;
+}
+
+.preview-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.remove-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: red;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  text-align: center;
+  font-size: 14px;
+  padding: 0;
+}

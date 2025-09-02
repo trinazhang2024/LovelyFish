@@ -1,8 +1,6 @@
-// src/components/ProductImageUpload.jsx
 import React, { useState } from "react";
 import api from "../../../API/axios";
-
-const IMAGE_BASE_URL = "https://localhost:7148/uploads/";
+import "./ProductImageUpload.css"; // 引入外部样式
 
 export default function ProductImageUpload({ imageUrls, setImageUrls }) {
   const [uploading, setUploading] = useState(false);
@@ -17,13 +15,10 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
     setUploading(true);
     try {
       const res = await api.post("/Upload", formData);
-      // 返回 [{ fileName: "xxx.jpg" }]
-      const uploadedFileNames = res.data.map(item => item.fileName);
-      // ✅ 直接更新 imageUrls
-      setImageUrls(prev => [...prev, ...uploadedFileNames]);
+      const uploadedFileUrls = res.data.map(item => item.fileUrl);
+      setImageUrls(prev => [...prev, ...uploadedFileUrls]);
 
-      console.log("上传后 imageUrls:", [...imageUrls, ...uploadedFileNames]);
-
+      console.log("上传后 imageUrls:", [...imageUrls, ...uploadedFileUrls]);
     } catch (err) {
       console.error("上传失败", err);
       alert("上传失败");
@@ -41,21 +36,17 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
   };
 
   return (
-    <div>
+    <div className="upload-container">
       <input type="file" multiple onChange={handleImageChange} disabled={uploading} />
-      {uploading && <p>上传中...</p>}
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
-        {Array.isArray(imageUrls) ? imageUrls.map((fileName, idx) => (
-          <div key={idx} style={{ position: "relative" }}>
-            <img
-              src={IMAGE_BASE_URL + fileName}
-              alt={`预览${idx}`}
-              style={{ width: 80, height: 80, objectFit: "cover", border: "1px solid #ccc" }}
-            />
+      {uploading && <p className="uploading-text">上传中...</p>}
+      <div className="image-list">
+        {Array.isArray(imageUrls) ? imageUrls.map((url, idx) => (
+          <div key={idx} className="image-wrapper">
+            <img src={url} alt={`预览${idx}`} className="preview-image" />
             <button
               type="button"
               onClick={() => removeImage(idx)}
-              style={{ position: "absolute", top: 0, right: 0, background: "red", color: "#fff", border: "none", borderRadius: "50%", cursor: "pointer" }}
+              className="remove-button"
             >
               ×
             </button>

@@ -84,15 +84,16 @@ export default function OrdersPage() {
         // 节省的金额
         const saved = originalTotal - finalTotal;
 
+        const IMAGE_BASE_URL = import.meta.env.VITE_API_BASE_UPLOADS
         const getProductImage = (item) => {
           if (item.mainImageUrl) {
 
            // console.log('item.mainImageUrl:', item.mainImageUrl);
             
             // 如果 mainImageUrl 已经是 /uploads/xxx.jpg，则直接拼接完整 URL
-            return `https://localhost:7148${item.mainImageUrl}`;
+            return `${IMAGE_BASE_URL}${item.mainImageUrl}`;
           }
-          return `https://localhost:7148/uploads/placeholder.png`;
+          return `${IMAGE_BASE_URL}placeholder.png`;
         };
 
         return (

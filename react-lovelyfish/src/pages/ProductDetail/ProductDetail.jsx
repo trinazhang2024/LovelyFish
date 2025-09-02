@@ -5,7 +5,7 @@ import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import api from '../../API/axios';
 import './ProductDetail.css';
 
-const IMAGE_BASE_URL = "https://localhost:7148/uploads/";
+const IMAGE_BASE_URL = import.meta.env.VITE_API_BASE_UPLOADS
 
 const ProductDetail = () => {
   const { id } = useParams();
