@@ -5,14 +5,18 @@ import "./AdminForgotPassword.css"; // 新建 CSS 文件
 export default function AdminForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await api.post("/admin/forgot-password", { email });
-      setMessage((res.data.message || "Reset link sent!") + ", Please check your email.");
+      setMessage(`${res.data.message || "Reset link sent!"}, Please check your email.`);
     } catch (err) {
-      setMessage(err.response?.data?.message || "Failed to send reset link" + " 请检查邮箱。");
+      setMessage(err.response?.data?.message || "Failed to send reset link，请检查邮箱。");
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -27,7 +31,9 @@ export default function AdminForgotPassword() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button type="submit">Send Reset Link</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Sending..." : "Send Reset Link"}
+        </button>
         {message && <p>{message}</p>}
       </form>
     </div>

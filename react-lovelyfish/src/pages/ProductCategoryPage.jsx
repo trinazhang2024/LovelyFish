@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../API/axios';
 import ProductList from '../components/ProductList/ProductList';
@@ -31,32 +31,31 @@ const ProductCategoryPage = () => {
   const dbCategory = categoryMap[category.toLowerCase()];
 
    // 获取产品数据
-   const fetchProducts = (pageNum = 1) => {
+   const fetchProducts = useCallback((pageNum = 1) => {
     setLoading(true);
     api.get('/Product', {
       params: { page: pageNum, pageSize: 12, category: dbCategory }
     })
-      .then(res => {
-        const productsWithImage = res.data.items.map(p => ({
-          ...p,
-          mainImage: p.mainImageUrl || '/upload/placeholder.png',
-        }));
-
-        setProducts(prev => pageNum === 1 ? productsWithImage : [...prev, ...productsWithImage]);
-        setTotalPages(res.data.totalPages);
-        setPage(pageNum);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('加载产品失败:', err);
-        setError('无法加载产品');
-        setLoading(false);
-      });
-  };
-
+    .then(res => {
+      const productsWithImage = res.data.items.map(p => ({
+        ...p,
+        mainImage: p.mainImageUrl || '/upload/placeholder.png',
+      }));
+      setProducts(prev => pageNum === 1 ? productsWithImage : [...prev, ...productsWithImage]);
+      setTotalPages(res.data.totalPages);
+      setPage(pageNum);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error('加载产品失败:', err);
+      setError('无法加载产品');
+      setLoading(false);
+    });
+  }, [dbCategory]); // dbCategory 改变时才更新函数
+  
   useEffect(() => {
-    fetchProducts(1); // 初始加载第一页
-  }, [category, dbCategory]);
+    fetchProducts(1); 
+  }, [category, dbCategory, fetchProducts]); // ESLint 不报错
 
   const handleLoadMore = () => {
     if (page < totalPages) fetchProducts(page + 1);
@@ -98,6 +97,10 @@ const ProductCategoryPage = () => {
         limit={false}
         addToCart={addToCart}
       />
+
+      {page < totalPages && (
+        <button onClick={handleLoadMore}>加载更多</button>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { UserProvider, useUser } from "./contexts/UserContext";
+import { UserProvider } from "./contexts/UserContext";
 import { CartProvider } from './contexts/CartContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -41,7 +41,7 @@ import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 
 const AppRoutes = () => {
-  const { user } = useUser(); // 从 UserContext 获取当前用户
+ // const { user } = useUser(); // 从 UserContext 获取当前用户
 
   return (
     <Routes>

@@ -1,7 +1,7 @@
 import React from 'react';
 import './About.css';
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaUniversity } from 'react-icons/fa';
-import { MdPayment } from 'react-icons/md';
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+//import { MdPayment } from 'react-icons/md';
 
 const About = () => {
   return (

@@ -14,7 +14,7 @@ const ProductCard = ({ product, addToCart, addingIds }) => {
   const mainImage = product.mainImageUrl || (product.images && product.images[0]?.url) || 'placeholder.png';
 
   // ✅ 判断当前产品是否正在添加到购物车
-  const isAdding = addingIds?.includes(product.id);
+ // const isAdding = addingIds?.includes(product.id);
 
   const discountedPrice = product.discountPercent
     ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
