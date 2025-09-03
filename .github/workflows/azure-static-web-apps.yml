@@ -1,6 +1,6 @@
 name: Azure Static Web Apps CI/CD
 
-# 触发条件：push 到 main 分支
+# 触发条件：push 到 main 分
 on:
   push:
     branches:
