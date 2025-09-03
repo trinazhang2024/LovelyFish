@@ -30,6 +30,8 @@ jobs:
       - name: Build React App
         run: npm run build
         working-directory: react-lovelyfish
+        env:
+            CI: false
 
       # 5️⃣ 部署到 Azure Static Web App
       - name: Build and Deploy to Azure Static Web Apps
