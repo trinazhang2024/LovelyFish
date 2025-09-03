@@ -34,7 +34,7 @@ jobs:
       - name: Build React App
         run: npm run build
         working-directory: react-lovelyfish
-        env:
+        env: 
           CI: false
 
       # 5️⃣ 部署到 Azure Static Web App（测试用 token）
