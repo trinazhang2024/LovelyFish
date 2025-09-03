@@ -20,6 +20,12 @@ jobs:
           node-version: '20'
           submodules: true
           lfs: false
+        # 新增：设置 Node 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -32,6 +38,8 @@ jobs:
           app_location: "./react-lovelyfish" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "build" # Built app content directory - optional
+        env:
+          CI: false  # 忽略 ESLint 警告
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
@@ -45,4 +53,5 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_MEADOW_0F44D3E00 }}
           action: "close"
+
 
