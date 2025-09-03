@@ -32,5 +32,5 @@ jobs:
           app_location: "react-lovelyfish"                     # React 源码
           api_location: ""                                     # 没有 API 留空
           output_location: "react-lovelyfish/build"           # build 输出
-          config_file_location: "react-lovelyfish/staticwebapp.config.json"  # SPA 路由
+          config_file_location: "staticwebapp.config.json"  # SPA 路由
           node_version: "20"
