@@ -5,7 +5,7 @@ import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import api from '../../API/axios';
 import './ProductDetail.css';
 
-const IMAGE_BASE_URL = import.meta.env.VITE_API_BASE_UPLOADS
+const baseUrl = process.env.REACT_APP_API_BASE_UPLOADS;
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -22,7 +22,7 @@ const ProductDetail = () => {
         const data = res.data;
         const imagesWithUrl = data.imageUrls?.map(fileName => ({
           fileName,
-          url: IMAGE_BASE_URL + fileName
+          url: baseUrl + fileName
         })) || [];
 
         setProduct({ ...data, images: imagesWithUrl });
