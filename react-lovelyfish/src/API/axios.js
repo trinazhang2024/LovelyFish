@@ -2,7 +2,9 @@ import axios from "axios";
 
 // 从环境变量读取后端 API 地址
 // REACT_APP_API_BASE_URL 需要在 .env 或 Azure 前端环境变量里配置
-const baseURL = process.env.REACT_APP_API_BASE_URL;
+const baseURL = "https://lovelyfish-backend-esgtdkf7h0e2ambg.australiaeast-01.azurewebsites.net/api";
+
+//process.env.REACT_APP_API_BASE_URL;
 
 // 创建 axios 实例
 const api = axios.create({
