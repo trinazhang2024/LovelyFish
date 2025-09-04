@@ -26,6 +26,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
+        # add clean build
+      - name: Clean Node Modules & Build 
+        run: |
+          rm -rf node_modules build
+          npm install
+          npm run build
           
       - name: Build And Deploy
         id: builddeploy
@@ -54,6 +60,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_MEADOW_0F44D3E00 }}
           action: "close"
+
 
 
 
