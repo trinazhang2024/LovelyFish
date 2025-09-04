@@ -1,7 +1,13 @@
 {
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*", "/css/*", "/js/*"]
+  },
   "routes": [
-    { "route": "/*", 
-      "serve": "/index.html", 
-      "statusCode": 200 }
+    {
+      "route": "/404",
+      "serve": "/404.html",
+      "statusCode": 404
+    }
   ]
 }
