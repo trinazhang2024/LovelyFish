@@ -6,7 +6,7 @@ const baseURL = "https://lovelyfish-backend-esgtdkf7h0e2ambg.australiaeast-01.az
 
 //process.env.REACT_APP_API_BASE_URL;
 
-// 创建 axios 实例
+// 创建 axios 
 const api = axios.create({
   baseURL,            // 使用环境变量
   withCredentials: true, // 让浏览器带上 Cookie
