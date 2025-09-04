@@ -84,7 +84,7 @@ export default function OrdersPage() {
         // 节省的金额
         const saved = originalTotal - finalTotal;
 
-        const IMAGE_BASE_URL = import.meta.env.VITE_API_BASE_UPLOADS
+        const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads/";
         const getProductImage = (item) => {
           if (item.mainImageUrl) {
 

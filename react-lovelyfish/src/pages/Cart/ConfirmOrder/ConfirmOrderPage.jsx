@@ -237,7 +237,7 @@ export default function ConfirmOrderPage() {
                 : item.product.price;
               const totalPrice = discountedPrice * quantity;
 
-              const IMAGE_BASE_URL = import.meta.env.VITE_API_BASE_UPLOADS
+              const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads/";
 
               const getProductImage = (product) => {
                 if (product?.images?.length > 0) {
