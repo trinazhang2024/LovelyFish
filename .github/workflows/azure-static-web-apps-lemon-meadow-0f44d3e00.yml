@@ -32,6 +32,14 @@ jobs:
           rm -rf node_modules build
           npm install
           npm run build
+
+       # Ensure the configuration file is in the build/ directory
+      - name: Copy staticwebapp.config.json to build
+        run: cp ./react-lovelyfish/public/staticwebapp.config.json ./react-lovelyfish/build/
+
+      # Debug: List the contents of the build directory
+      - name: List build folder
+        run: ls -l ./react-lovelyfish/build
           
       - name: Build And Deploy
         id: builddeploy
@@ -60,6 +68,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_MEADOW_0F44D3E00 }}
           action: "close"
+
 
 
 
