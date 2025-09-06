@@ -1,6 +1,6 @@
 // src/api.js
 
-const API_BASE = "https://lovelyfish-backend-esgtdkf7h0e2ambg.australiaeast-01.azurewebsites.net/api/Product";
+const API_BASE = process.env.REACT_API_BASE;
 
 // Get all products
 export async function getAllProducts() {

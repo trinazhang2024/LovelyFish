@@ -235,7 +235,7 @@ export default function ConfirmOrderPage() {
                 : item.product.price;
               const totalPrice = discountedPrice * quantity;
 
-              const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads";
+              const IMAGE_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS;
 
               const getProductImage = (product) => {
                 if (product?.images?.length > 0) {

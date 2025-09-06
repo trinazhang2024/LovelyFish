@@ -79,7 +79,8 @@ export default function OrdersPage() {
         // Amount saved
         const saved = originalTotal - finalTotal;
 
-        const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads/";
+        const IMAGE_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS;
+        
         const getProductImage = (item) => {
           if (item.mainImageUrl) {
             return `${IMAGE_BASE_URL}${item.mainImageUrl}`;

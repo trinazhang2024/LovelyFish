@@ -137,7 +137,8 @@ export default function CartPage() {
               const quantity = localQuantities[item.id] ?? item.quantity;
               const totalPrice = discountedPrice * quantity;
 
-              const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads";
+              const IMAGE_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS;
+              
               const getProductImage = (product) => {
                 if (product.images && product.images.length > 0) {
                   return `${IMAGE_BASE_URL}${product.images[0].fileName}`;
