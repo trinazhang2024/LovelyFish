@@ -2,20 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import './ProductCard.css';
-import '../AddToCartButton/AddToCartButton.css'
+import '../AddToCartButton/AddToCartButton.css';
 
-
-//把 ProductCard 改造成 统一使用 addingIds 状态和外部传入的 addToCart 方法，而不是自己内部再调 addToCart(product.id, 1)，并且按钮能显示“添加中...”。
-const ProductCard = ({ product, addToCart}) => {
-  //不需要在 ProductCard 里再直接调用 useCart()，只要父组件已经拿到 addToCart 并传给它 就可以了
+/**
+ * ProductCard component
+ * @param {Object} product - Product data
+ * @param {Function} addToCart - Function from parent to add product to cart
+ */
+const ProductCard = ({ product, addToCart }) => {
+  // If no product, show fallback
   if (!product) return <div>Product not found</div>;
 
-  // ✅ 使用占位图，如果数据库没有主图
+  // Use main image, fallback to first image or placeholder
   const mainImage = product.mainImageUrl || (product.images && product.images[0]?.url) || 'placeholder.png';
 
-  // ✅ 判断当前产品是否正在添加到购物车
- // const isAdding = addingIds?.includes(product.id);
-
+  // Calculate discounted price if discountPercent exists
   const discountedPrice = product.discountPercent
     ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
     : product.price.toFixed(2);
@@ -23,16 +24,19 @@ const ProductCard = ({ product, addToCart}) => {
   return (
     <div className="product-card">
 
+      {/* Badges: discount or new arrival */}
       {product.discountPercent > 0 ? (
         <div className="product-card-badge discount">{product.discountPercent}% OFF</div>
       ) : product.isNewArrival ? (
         <div className="product-card-badge new">NEW</div>
       ) : null}
 
+      {/* Product image */}
       <div className="product-card-image">
         <img src={mainImage} alt={product.title} />
       </div>
 
+      {/* Product details */}
       <div className="product-card-body">
         <h5 className="product-card-title">{product.title}</h5>
         {product.category && <p className="product-card-category">{product.category.title}</p>}
@@ -47,17 +51,17 @@ const ProductCard = ({ product, addToCart}) => {
           )}
         </p>
 
+        {/* Actions: Shop Now + Add to Cart */}
         <div className="product-card-actions">
-
+          {/* Link to product detail page */}
           <Link to={`/product/${product.id}`} className="buy-button">Shop Now</Link>
 
-           {/* 使用封装好的 AddToCartButton */}
-           <AddToCartButton 
+          {/* Unified AddToCartButton */}
+          <AddToCartButton 
             productId={product.id} 
             productTitle={product.title} 
-            addToCart={addToCart} 
+            addToCart={addToCart}   // Use parent-provided function
           />
-          
         </div>
       </div>
     </div>

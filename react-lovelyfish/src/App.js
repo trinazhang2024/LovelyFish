@@ -27,7 +27,7 @@ import OrderDetailPage from "./pages/Admin/OrderDetail/OrderDetailPage";
 import UsersAdminPage from './pages/Admin/UsersAdmin/UsersAdminPage';
 import UsersOrdersPage from './pages/Admin/UsersAdmin/UsersOrders/UsersOrdersPage';
 
-// 其他前端页面
+// Other front-end pages
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail/ProductDetail'; 
 import ProductCategoryPage from './pages/ProductCategoryPage';
@@ -35,25 +35,26 @@ import SearchResultsPage from './pages/Search/SearchResultsPage';
 import CartPage from './pages/Cart/CartPage/CartPage';
 import ConfirmOrderPage from "./pages/Cart/ConfirmOrder/ConfirmOrderPage";
 import OrdersPage from './pages/Cart/OrdersPage/OrdersPage';
-import NewArrivals from './pages/NewArrivals/NewArrivals'
-import Clearance from './pages/Clearance/Clearance'
+import NewArrivals from './pages/NewArrivals/NewArrivals';
+import Clearance from './pages/Clearance/Clearance';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 
-const AppRoutes = () => {
- // const { user } = useUser(); // 从 UserContext 获取当前用户
 
+ // AppRoutes defines all frontend routes for the application.
+ // It uses ProtectedRoute and ProtectedAdminRoute to restrict access.
+ 
+const AppRoutes = () => {
   return (
     <Routes>
+      {/* Public routes */}
       <Route path="/" element={<Home />} />
-
-      {/* Customer routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-      {/* 受保护客户页面 */}
+      {/* Protected customer routes */}
       <Route path="/profile" element={
         <ProtectedRoute>
           <Profile />
@@ -70,7 +71,7 @@ const AppRoutes = () => {
       <Route path="/admin/reset-password" element={<AdminResetPassword />} />
       <Route path="/admin/change-password" element={<AdminChangePassword />} />
 
-      {/* 受保护后台页面 */}
+      {/* Protected admin routes */}
       <Route path="/admin/dashboard" element={
         <ProtectedAdminRoute>
           <Dashboard />
@@ -97,38 +98,42 @@ const AppRoutes = () => {
         </ProtectedAdminRoute>
       } />
 
-      {/* 产品 & 搜索 */}
+      {/* Products & search pages */}
       <Route path="/products" element={<Products />} />
       <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="/products/:category" element={<ProductCategoryPage />} />
       <Route path="/search" element={<SearchResultsPage />} />
 
-      {/* 购物车 & 订单 */}
+      {/* Cart & orders */}
       <Route path="/cart" element={<CartPage />} />
       <Route path="/confirm-order" element={<ConfirmOrderPage />} />
       <Route path="/orders" element={<OrdersPage />} />
 
-      {/* 其他页面 */}
-      <Route path="/new-arrivals" element={<NewArrivals/>} />
+      {/* Other pages */}
+      <Route path="/new-arrivals" element={<NewArrivals />} />
       <Route path="/clearance" element={<Clearance />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
 
-      {/* 未匹配路由跳首页 */}
+      {/* Redirect unmatched routes to home */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };
 
+/**
+ * Main App component wraps the application with context providers
+ * and renders Navbar, Routes, and Footer.
+ */
 const App = () => {
   return (
-    <ToastProvider>
-      <UserProvider>
-        <CartProvider>
+    <ToastProvider> {/* Global toast notifications */}
+      <UserProvider> {/* User authentication and info */}
+        <CartProvider> {/* Shopping cart context */}
           <Router>
-            <Navbar />
-            <AppRoutes />
-            <Footer />
+            <Navbar /> {/* Top navigation bar */}
+            <AppRoutes /> {/* Application routes */}
+            <Footer /> {/* Footer component */}
           </Router>
         </CartProvider>
       </UserProvider>

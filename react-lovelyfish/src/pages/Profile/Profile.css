@@ -1,35 +1,38 @@
-/* Profile.css */
 
-/* ===== 容器布局 ===== */
 .profile-container {
-  max-width: 800px;
-  margin: 40px auto; /* 居中，两边留空 */
-  padding: 30px 40px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  max-width: 800px;                /* Limit width for readability */
+  margin: 40px auto;               /* Center horizontally, add top/bottom spacing */
+  padding: 30px 40px;              /* Inner spacing */
+  background: #ffffff;             /* White background */
+  border-radius: 12px;             /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* Soft shadow */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* ===== 标题 ===== */
+
+/* Title */
+
 .profile-container h2 {
   text-align: center;
-  font-weight: 700;
   font-size: 1.8rem;
-  color: #2c3e50;
+  color: #2c3e50;                  /* Dark blue-gray */
   margin-bottom: 25px;
   letter-spacing: 1px;
 }
 
-/* ===== 表单结构 ===== */
+
+/* Forms: Profile & Password Change */
+
 .profile-form,
 .change-password-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 18px;                        /* Space between fields */
 }
 
-/* ===== 表单字段 ===== */
+
+/* Form Fields */
+
 .profile-field {
   display: flex;
   flex-direction: column;
@@ -37,16 +40,18 @@
 
 .profile-field label {
   font-weight: 600;
-  color: #34495e;
+  color: #34495e;                   /* Label color */
   margin-bottom: 6px;
 }
 
 .profile-field p {
   font-weight: 500;
-  color: #555;
+  color: #555;                       /* Value text color */
 }
 
-/* ===== 输入框 ===== */
+
+/* Input Fields */
+
 .profile-field input,
 .change-password-form input {
   padding: 10px 12px;
@@ -59,11 +64,13 @@
 .profile-field input:focus,
 .change-password-form input:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: #3498db;             /* Blue border on focus */
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
-/* ===== 提示信息 ===== */
+
+/* Alerts / Messages */
+
 .alert {
   padding: 10px 15px;
   border-radius: 6px;
@@ -72,18 +79,20 @@
 }
 
 .alert-success {
-  background-color: #e9f9f0;
-  color: #1e8449;
+  background-color: #e9f9f0;        /* Light green background */
+  color: #1e8449;                   /* Dark green text */
   border: 1px solid #b2dfbc;
 }
 
 .alert-danger {
-  background-color: #fcebea;
-  color: #c0392b;
+  background-color: #fcebea;        /* Light red background */
+  color: #c0392b;                   /* Red text */
   border: 1px solid #f5c6cb;
 }
 
-/* ===== 按钮公共样式 ===== */
+
+/* Buttons: General Styles */
+
 button {
   font-weight: 600;
   font-size: 14px;
@@ -99,41 +108,48 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ===== 保存资料按钮 ===== */
+
+/* Save Profile Button */
+
 .profile-form button[type="submit"] {
   align-self: flex-start;
-  background-color: #3498db;
+  background-color: #3498db;        /* Blue */
   color: #fff;
 }
 
 .profile-form button[type="submit"]:hover {
-  background-color: #2d89c7;
+  background-color: #2d89c7;        /* Darker blue on hover */
 }
 
-/* ===== 修改密码按钮（切换） ===== */
+/* Toggle Password Form Button */
+
 .toggle-password-btn {
-  background-color: #6c757d;
+  background-color: #6c757d;        /* Gray */
   color: #fff;
   padding: 8px 16px;
   margin-top: 15px;
 }
 
 .toggle-password-btn:hover {
-  background-color: #5a6268;
+  background-color: #5a6268;        /* Darker gray on hover */
 }
 
-/* ===== 修改密码提交按钮 ===== */
+
+/* Change Password Submit Button */
+
 .change-password-button {
-  background-color: #27ae60;
+  background-color: #27ae60;        /* Green */
   color: #fff;
   align-self: flex-start;
 }
 
 .change-password-button:hover {
-  background-color: #219150;
+  background-color: #219150;        /* Darker green */
 }
 
-/* ===== 密码说明 ===== */
+
+/* Password Requirements / Tips */
+
 .password-requirements {
   font-size: 13px;
   color: #7f8c8d;
@@ -142,21 +158,24 @@ button:disabled {
   border-radius: 4px;
 }
 
-/* ===== 退出按钮 ===== */
+/* Logout Button */
+
 .logout-button {
   width: 100%;
   margin-top: 30px;
-  background-color: #e74c3c;
+  background-color: #e74c3c;        /* Red */
   color: white;
   padding: 10px;
   font-size: 15px;
 }
 
 .logout-button:hover {
-  background-color: #c0392b;
+  background-color: #c0392b;        /* Darker red on hover */
 }
 
-/* ===== 按钮居中分布区域 ===== */
+
+/* Centered Action Buttons Area */
+
 .profile-actions {
   display: flex;
   justify-content: center;
@@ -164,7 +183,8 @@ button:disabled {
   margin-top: 20px;
 }
 
-/* ===== 小屏优化 ===== */
+/* Responsive: Small Screens */
+
 @media (max-width: 600px) {
   .profile-container {
     padding: 20px;
@@ -172,25 +192,13 @@ button:disabled {
   }
 
   .profile-actions {
-    flex-direction: column;
+    flex-direction: column;          /* Stack buttons vertically */
     align-items: center;
     gap: 10px;
   }
 
   button {
-    width: 100%;
+    width: 100%;                     /* Full-width buttons */
   }
 }
 
-
-/* 页面两侧留了空白（max-width+margin auto）。
-
-标题加粗、字体加大、有颜色（#2c3e50）。
-
-输入框和按钮的边距、圆角、阴影都更精致。
-
-按钮配色分区（保存蓝色、修改密码灰色/绿色、退出红色）。
-
-profile-actions 区域让按钮居中排列，两侧留白。
-
-小屏自动按钮竖排，不会挤在一起。 */

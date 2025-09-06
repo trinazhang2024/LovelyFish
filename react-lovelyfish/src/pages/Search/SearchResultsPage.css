@@ -1,12 +1,12 @@
-/* 页面容器 */
+
 .search-results-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  max-width: 1200px;              /* Limit page width */
+  margin: 0 auto;                  /* Center horizontally */
+  padding: 40px 20px;              /* Vertical and horizontal padding */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* 标题 */
+/* Page Title */
 .search-results-container h2 {
   font-size: 28px;
   font-weight: 600;
@@ -14,22 +14,25 @@
   color: #333;
 }
 
-/* 未找到结果提示 */
+
+/* No Results Message */
 .search-results-container .no-results {
   text-align: left;
   padding: 60px 20px;
   color: #666;
 }
 
-/* 产品列表容器 */
+/* Product List Container */
 .search-results-container .product-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: flex-start; /* 产品靠左 */
+  gap: 20px;                     /* Space between product cards */
+  justify-content: flex-start;   /* Align products to left */
 }
 
-/* 响应式 */
+/* Responsive Design */
+
+/* Medium screens (<=1024px) */
 @media (max-width: 1024px) {
   .search-results-container {
     padding: 30px 15px;
@@ -43,6 +46,7 @@
   }
 }
 
+/* Small screens (<=768px) */
 @media (max-width: 768px) {
   .search-results-container {
     padding: 20px 10px;
@@ -53,10 +57,11 @@
   }
   .search-results-container .no-results {
     padding: 40px 10px;
-    text-align: center;
+    text-align: center;           /* Center text on small screens */
   }
 }
 
+/* Extra small screens (<=480px) */
 @media (max-width: 480px) {
   .search-results-container {
     padding: 15px 5px;
@@ -67,11 +72,6 @@
   }
   .search-results-container .no-results {
     padding: 30px 5px;
-    font-size: 14px;
+    font-size: 14px;              /* Smaller font on mobile */
   }
 }
-
-
-
-
-

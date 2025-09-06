@@ -1,8 +1,8 @@
 import React from 'react';
-import './Register.css'; // 可以共用 Register.css
+import './Register.css'; // Reuse Register.css for styling
 
 const PasswordStrengthMeter = ({ password }) => {
-  // 密码规则
+  // Password validation rules
   const rules = [
     { test: (pwd) => pwd.length >= 6, label: 'At least 6 characters' },
     { test: (pwd) => /[A-Z]/.test(pwd), label: 'At least one uppercase letter' },
@@ -10,21 +10,23 @@ const PasswordStrengthMeter = ({ password }) => {
     { test: (pwd) => /[^A-Za-z0-9]/.test(pwd), label: 'At least one special character' },
   ];
 
-  // 计算密码强度（满足多少条规则）
+  // Count how many rules are satisfied
   const strength = rules.reduce((acc, rule) => acc + (rule.test(password) ? 1 : 0), 0);
 
-  // 强度文字
+  // Labels for different strength levels
   const strengthLabels = ["", "Weak", "Fair", "Medium", "Strong"];
 
   return (
     <div className="password-strength-meter">
-      {/* 进度条 */}
+      {/* Strength progress bar (visual indicator) */}
       <div className={`strength-bar strength-${strength}`}></div>
-      {/* 强度文字 */}
+      
+      {/* Strength label text */}
       <div className={`strength-text strength-text-${strength}`}>
         {strengthLabels[strength]}
       </div>
-      {/* 规则列表 */}
+
+      {/* List of password rules */}
       <ul className="password-rules">
         {rules.map((rule, idx) => (
           <li

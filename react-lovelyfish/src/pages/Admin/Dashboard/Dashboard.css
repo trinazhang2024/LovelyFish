@@ -1,21 +1,21 @@
-/* Dashboard整体布局 */
+/* Dashboard layout */
 .dashboard {
   display: flex;
   height: 100vh;
   font-family: 'Inter', sans-serif;
 }
 
-/* 左侧导航栏 */
+/* Left sidebar navigation */
 .dashboard-aside {
   width: 240px;
-  background-color: #809cc4; /* 深灰色 */
+  background-color: #809cc4; /* Sidebar background color */
   color: white;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #374151;
 }
 
-/* 左侧标题 */
+/* Sidebar title */
 .dashboard-aside .title {
   padding: 1rem;
   font-size: 1.25rem;
@@ -23,7 +23,7 @@
   border-bottom: 1px solid #374151;
 }
 
-/* 左侧导航按钮 */
+/* Sidebar navigation buttons */
 .dashboard-aside nav button {
   width: 100%;
   text-align: left;
@@ -36,15 +36,17 @@
   cursor: pointer;
 }
 
+/* Sidebar button hover effect */
 .dashboard-aside nav button:hover {
   background-color: #374151;
 }
 
+/* Active state for sidebar button */
 .dashboard-aside nav button.active {
   background-color: #4b5563;
 }
 
-/* 顶部区域，可放修改密码按钮 */
+/* Top header area (for actions like change password) */
 .dashboard-header {
   display: flex;
   justify-content: flex-end;
@@ -54,7 +56,7 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-/* 修改密码按钮 */
+/* Change password button */
 .change-password-btn {
   padding: 0.5rem 1rem;
   background-color: #7c3aed;
@@ -69,7 +71,7 @@
   background-color: #6d28d9;
 }
 
-/* 右侧主内容区域 */
+/* Right main content area */
 .dashboard-main {
   flex: 1;
   background-color: #f9fafb;
@@ -77,7 +79,7 @@
   overflow-y: auto;
 }
 
-/* 响应式处理 */
+/* Responsive layout for small screens */
 @media (max-width: 768px) {
   .dashboard {
     flex-direction: column;

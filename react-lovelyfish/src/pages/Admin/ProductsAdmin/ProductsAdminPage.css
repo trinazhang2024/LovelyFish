@@ -1,13 +1,13 @@
 /* ProductsAdminPage.css */
 
-/* 页面整体 */
+/* ------------------ Page Container ------------------ */
 .products-admin-page {
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* 搜索框 */
+/* ------------------ Search Box ------------------ */
 .search-container {
   display: flex;
   justify-content: flex-start;
@@ -21,7 +21,7 @@
   border: 1px solid #ccc;
 }
 
-/* 新增/编辑产品表单 - 竖排 */
+/* ------------------ Add/Edit Product Form - Vertical Layout ------------------ */
 .products-form,
 .products-form.vertical-form {
   display: flex;
@@ -40,13 +40,13 @@
   font-size: 14px;
 }
 
-/* 单独控制 description 框高度 */
+/* Control height for description textarea */
 .products-form textarea[name="description"] {
   min-height: 120px;
   resize: vertical;
 }
 
-/* 提交按钮 */
+/* Submit button */
 .products-form button {
   background-color: #1d4ed8;
   color: #fff;
@@ -58,7 +58,7 @@
   background-color: #2563eb;
 }
 
-/* 图片预览 */
+/* ------------------ Image Preview ------------------ */
 .image-preview {
   display: flex;
   gap: 8px;
@@ -92,7 +92,7 @@
   cursor: pointer;
 }
 
-/* 产品表格 */
+/* ------------------ Products Table ------------------ */
 .products-table-container {
   overflow-x: auto;
 }
@@ -117,7 +117,7 @@
   border-radius: 6px;
 }
 
-/* 表格操作按钮 */
+/* Table action buttons */
 .products-table button {
   padding: 4px 8px;
   border: none;
@@ -139,7 +139,7 @@
   color: #fff;
 }
 
-/* 分页 */
+/* ------------------ Pagination ------------------ */
 .pagination {
   display: flex;
   justify-content: center;
@@ -165,19 +165,19 @@
   font-weight: bold;
 }
 
-/* ===================== 响应式调整 ===================== */
+/* ===================== Responsive Adjustments ===================== */
 @media (max-width: 768px) {
-  /* 页面左右间距 */
+  /* Page horizontal padding */
   .products-admin-page {
     padding: 0 12px;
   }
 
-  /* 搜索框自适应 */
+  /* Search box responsive width */
   .search-input {
     width: 100%;
   }
 
-  /* 表单宽度自适应 */
+  /* Form elements responsive */
   .products-form input,
   .products-form select,
   .products-form textarea,
@@ -185,7 +185,7 @@
     font-size: 16px;
   }
 
-  /* 图片预览调整为小图 + 居中 */
+  /* Image preview - smaller + centered */
   .image-preview {
     justify-content: center;
   }
@@ -195,19 +195,19 @@
     height: 60px;
   }
 
-  /* 表格横向滚动 */
+  /* Table horizontal scroll */
   .products-table-container {
     overflow-x: auto;
   }
 
-  /* 表格字体稍微大一些，方便触控 */
+  /* Table font slightly larger for touch devices */
   .products-table th,
   .products-table td {
     padding: 6px 8px;
     font-size: 14px;
   }
 
-  /* 分页按钮更大，方便触控 */
+  /* Pagination buttons larger for touch */
   .pagination button {
     padding: 8px 14px;
     font-size: 14px;
@@ -215,25 +215,25 @@
 }
 
 @media (max-width: 480px) {
-  /* 表单输入框高度略增 */
+  /* Slightly taller form inputs */
   .products-form input,
   .products-form select,
   .products-form textarea {
     padding: 10px;
   }
 
-  /* 提交按钮占满宽度 */
+  /* Submit button full width */
   .products-form button {
     width: 100%;
   }
 
-  /* 图片预览更紧凑 */
+  /* Image preview compact */
   .preview-item img {
     width: 50px;
     height: 50px;
   }
 
-  /* 表格字体再小一点，避免横向滚动太大 */
+  /* Table font smaller to avoid horizontal scroll */
   .products-table th,
   .products-table td {
     padding: 4px 6px;

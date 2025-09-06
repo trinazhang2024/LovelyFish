@@ -1,55 +1,62 @@
-/* 公共后台表格样式 */
+
 .admin-table-container {
-  overflow-x: auto; /* 横向滚动 */
+  overflow-x: auto; /* Enable horizontal scroll if table is too wide */
   background-color: #fff;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* subtle shadow */
   padding: 1rem;
 }
 
 .admin-table {
   min-width: 100%;
-  border-collapse: collapse;
+  border-collapse: collapse; /* Remove spacing between cells */
 }
 
+/* Table headers and cells */
 .admin-table th,
 .admin-table td {
   padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e2e8f0; /* light gray border */
   text-align: center;
 }
 
+/* Table header styling */
 .admin-table th {
-  background-color: #f7fafc;
-  font-weight: 600;
+  background-color: #f7fafc; /* light gray background */
+  font-weight: 600; /* semi-bold */
 }
 
+/* Hover effect for rows */
 .admin-table tr:hover {
-  background-color: #f1f5f9;
+  background-color: #f1f5f9; /* light hover highlight */
 }
+
+
+/* Flash animation for saved items */
 
 .saved-flash {
   animation: flash 1s ease-in-out;
 }
 
 @keyframes flash {
-  0%, 100% { background-color: #d1fae5; }
-  50% { background-color: #34d399; }
+  0%, 100% { background-color: #d1fae5; } /* light green */
+  50% { background-color: #34d399; }      /* bright green flash */
 }
 
-/* 面包屑导航 */
+/* Breadcrumb navigation */
+
 .breadcrumb {
-  font-size: 0.875rem;
-  color: #4b5563;
+  font-size: 0.875rem; /* small font */
+  color: #4b5563;      /* gray text */
   margin-bottom: 1rem;
 }
 
 .breadcrumb a {
-  color: #2563eb;
+  color: #2563eb;      /* blue links */
   text-decoration: underline;
 }
 
 .breadcrumb span {
-  font-weight: 600;
-  color: #1f2937;
+  font-weight: 600;    /* bold for current page */
+  color: #1f2937;      /* darker gray */
 }

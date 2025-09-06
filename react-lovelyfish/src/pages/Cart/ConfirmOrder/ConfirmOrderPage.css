@@ -1,4 +1,4 @@
-/* 页面容器 */
+/* Page Container */
 .confirm-order-container {
   max-width: 1000px;
   margin: 40px auto;
@@ -9,7 +9,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* 标题 */
+/* Titles */
 .confirm-order-container h2 {
   text-align: center;
   margin-bottom: 25px;
@@ -22,7 +22,7 @@
   color: #34495e;
 }
 
-/* 购物车列表 */
+/* Cart List */
 .cart-list {
   list-style: none;
   padding: 0;
@@ -46,7 +46,7 @@
   border-bottom: 2px solid #ccc;
 }
 
-/* 产品信息 */
+/* Product Info */
 .cart-product {
   display: flex;
   align-items: center;
@@ -60,7 +60,7 @@
   margin-right: 14px;
 }
 
-/* 数量操作 */
+/* Quantity Controls */
 .cart-quantity {
   display: flex;
   align-items: center;
@@ -94,13 +94,13 @@
   padding: 4px 0;
 }
 
-/* 总价 */
+/* Total Price */
 .cart-total {
   font-weight: bold;
   text-align: right;
 }
 
-/* 客户信息表单 */
+/* Customer Information Form */
 .confirm-form {
   display: flex;
   flex-direction: column;
@@ -115,7 +115,7 @@
   font-size: 14px;
 }
 
-/* 优惠券按钮 */
+/* Coupon Buttons */
 .coupon-buttons {
   display: flex;
   gap: 12px;
@@ -151,7 +151,7 @@
   cursor: not-allowed;
 }
 
-/* 总价和提交按钮 */
+/* Summary and Checkout Button */
 .cart-summary-container {
   display: flex;
   justify-content: space-between;
@@ -190,7 +190,7 @@
   box-shadow: none;
 }
 
-/* 提交成功提示 */
+/* Order Success Message */
 .order-success {
   text-align: center;
   padding: 32px 22px;
@@ -216,20 +216,20 @@
   color: #34495e;
 }
 
-/* 响应式适配 */
+/* Responsive Design */
 @media (max-width: 768px) {
   .confirm-order-container {
     padding: 15px 20px;
   }
 
-  /* 购物车列表改为单列显示，方便手机查看 */
+  /* Cart list switches to single column for mobile */
   .cart-header,
   .cart-item {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 10px 0;
-    grid-template-columns: none; /* 取消网格 */
+    grid-template-columns: none; /* Remove grid */
   }
 
   .cart-header span,
@@ -252,17 +252,17 @@
     gap: 4px;
   }
 
-  /* 优惠券按钮换行排列 */
+  /* Coupon buttons wrap */
   .coupon-buttons {
     flex-wrap: wrap;
     gap: 10px;
   }
 
   .coupon-buttons button {
-    flex: 1 1 calc(50% - 10px); /* 每行最多2个 */
+    flex: 1 1 calc(50% - 10px); /* Maximum 2 per row */
   }
 
-  /* 总价和提交按钮竖排 */
+  /* Summary and checkout button stacked vertically */
   .cart-summary-container {
     flex-direction: column;
     align-items: flex-start;

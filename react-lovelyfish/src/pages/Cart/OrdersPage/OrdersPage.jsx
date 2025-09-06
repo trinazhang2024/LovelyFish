@@ -4,24 +4,16 @@ import api from "../../../API/axios";
 import "./OrdersPage.css";
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { addToCart } = useCart();
+  const [orders, setOrders] = useState([]); // Store user's orders
+  const [loading, setLoading] = useState(true); // Loading state
+  const { addToCart } = useCart(); // Function to add items to cart
 
+  // ----------------- Fetch user's orders -----------------
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await api.get("/orders/my"); // 调用后端 OrdersController
-        setOrders(res.data);
-
-        //console.log('res.data :', res.data);
-        
-
-        // ✅ 打印每个订单的图片 URL
-        // res.data.forEach(order => {
-        //   console.log("Order", order.id, "images:", order.orderItems.map(i => i.mainImageUrl));
-        // });
-
+        const res = await api.get("/orders/my"); // Call backend OrdersController
+        setOrders(res.data); // Store returned orders
       } catch (err) {
         console.error("Failed to fetch orders:", err);
       } finally {
@@ -31,16 +23,18 @@ export default function OrdersPage() {
     fetchOrders();
   }, []);
 
+  // ----------------- View logistics info -----------------
   const viewLogistics = (courier, trackingNumber) => {
     if (!trackingNumber) {
-      alert("There is no logistic information on this order, thank you!");
+      alert("There is no logistic information for this order. Thank you!");
       return;
     }
     alert(`Courier Company: ${courier}\nTracking Number: ${trackingNumber}`);
   };
 
+  // ----------------- Re-purchase previous order -----------------
   const repurchase = async (order) => {
-    console.log("Re-purchase order items:", order.orderItems); // ✅ 调试打印
+    console.log("Re-purchase order items:", order.orderItems);
     try {
       const requests = order.orderItems.map(item => {
         if (!item.productId || item.quantity < 1) {
@@ -48,49 +42,46 @@ export default function OrdersPage() {
           return Promise.resolve();
         }
         console.log("Adding to cart:", item.productId, item.quantity);
-        return addToCart(item.productId, item.quantity); // ✅ 小写
+        return addToCart(item.productId, item.quantity); // Add item to cart
       });
       await Promise.all(requests);
-      alert(`The items of order #${order.id} have been added to cart`);
+      alert(`The items of order #${order.id} have been added to your cart.`);
     } catch (err) {
       console.error("Failed to re-purchase:", err);
       alert("Failed to re-purchase. Please try again.");
     }
   };
 
+  // ----------------- Contact support -----------------
   const contactSupport = () => {
     window.location.href = "/contact";
   };
 
+  // ----------------- Render loading / empty states -----------------
   if (loading) return <p className="loading">Loading orders...</p>;
   if (!orders.length) return <p className="empty-orders">You have no orders yet.</p>;
 
-
-
+  // ----------------- Main render -----------------
   return (
     <div className="orders-container">
       <h2>My Orders</h2>
 
       {orders.map((order, index) => {
-        // 计算原价（所有商品单价 * 数量）
+        // Calculate original total price (unit price * quantity)
         const originalTotal = order.orderItems.reduce(
           (sum, item) => sum + item.price * item.quantity,
           0
         );
 
-        // 后端返回的最终支付价格
+        // Final total returned by backend
         const finalTotal = order.totalPrice ?? 0;
 
-        // 节省的金额
+        // Amount saved
         const saved = originalTotal - finalTotal;
 
         const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads/";
         const getProductImage = (item) => {
           if (item.mainImageUrl) {
-
-           // console.log('item.mainImageUrl:', item.mainImageUrl);
-            
-            // 如果 mainImageUrl 已经是 /uploads/xxx.jpg，则直接拼接完整 URL
             return `${IMAGE_BASE_URL}${item.mainImageUrl}`;
           }
           return `${IMAGE_BASE_URL}placeholder.png`;
@@ -98,10 +89,10 @@ export default function OrdersPage() {
 
         return (
           <div key={order.id} className="order-card">
+            {/* ----------------- Order Header ----------------- */}
             <div className="order-header">
               <p><strong>Order #:</strong> {orders.length - index}</p>
               <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleString()}</p>
-
               <p>
                 <strong>Total:</strong>{" "}
                 <span className="final-price">${finalTotal.toFixed(2)}</span>
@@ -117,7 +108,6 @@ export default function OrdersPage() {
                   </>
                 )}
               </p>
-
               <p><strong>Customer:</strong> {order.customerName}</p>
               <p><strong>Address:</strong> {order.shippingAddress}</p>
               <p><strong>Profile Phone:</strong> {order.phoneNumber ?? order.PhoneNumber ?? "N/A"}</p>
@@ -128,14 +118,11 @@ export default function OrdersPage() {
               </p>
             </div>
 
+            {/* ----------------- Order Items ----------------- */}
             <div className="order-items">
               {order.orderItems.map((item) => (
-
-                
-
                 <div key={item.id} className="order-item">
-
-                  {/* image */}
+                  {/* Product image */}
                   <img
                     src={getProductImage(item)}
                     alt={item.productName ?? "Product"}
@@ -147,8 +134,7 @@ export default function OrdersPage() {
                       }
                     }}
                   />
-
-                  {/* product info and price */}
+                  {/* Product info */}
                   <p>
                     {item.productName} x {item.quantity} - ${item.price.toFixed(2)}
                   </p>
@@ -156,6 +142,7 @@ export default function OrdersPage() {
               ))}
             </div>
 
+            {/* ----------------- Order Actions ----------------- */}
             <div className="order-actions">
               <button onClick={() => viewLogistics(order.courier, order.trackingNumber)}>
                 Courier info

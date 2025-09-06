@@ -1,21 +1,22 @@
-/* ========================== */
-/* UsersAdminPage 样式 */
-/* ========================== */
 
+/* Overall page padding */
 .users-admin-page {
   padding: 1rem;
 }
 
+/* Page title */
 .page-title {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
+/* Search box container */
 .search-box {
   margin-bottom: 1rem;
 }
 
+/* Search input field */
 .search-input {
   width: 100%;
   max-width: 400px;
@@ -25,13 +26,16 @@
   font-size: 1rem;
 }
 
+/* Empty state message */
 .no-users {
   text-align: center;
   padding: 1rem;
   color: #6b7280;
 }
 
-/* 分页 */
+
+/* Pagination styles */
+
 .pagination {
   margin-top: 1rem;
   display: flex;
@@ -56,9 +60,8 @@
   border-color: #2563eb;
 }
 
-/* ========================== */
-/* 表格样式（桌面端） */
-/* ========================== */
+
+/* Desktop table styles */
 
 .admin-table-container {
   overflow-x: auto;
@@ -89,6 +92,7 @@
   background-color: #f3f4f6;
 }
 
+/* Buttons inside table rows */
 .action-buttons {
   display: flex;
   gap: 0.5rem;
@@ -96,6 +100,7 @@
   flex-wrap: wrap;
 }
 
+/* Enable/Disable buttons */
 .btn-enable {
   background-color: #22c55e;
   color: #ffffff;
@@ -114,6 +119,7 @@
   cursor: pointer;
 }
 
+/* View orders button */
 .btn-view-orders {
   background-color: #3b82f6;
   color: #ffffff;
@@ -124,9 +130,9 @@
   text-align: center;
 }
 
-/* ========================== */
-/* 移动端响应式（卡片风格） */
-/* ========================== */
+
+/* Mobile responsive card-style table */
+
 @media (max-width: 768px) {
   .admin-table-container {
     padding: 0;
@@ -138,7 +144,7 @@
   }
 
   .admin-table thead {
-    display: none;
+    display: none; /* Hide headers on mobile */
   }
 
   .admin-table tbody {
@@ -164,12 +170,14 @@
     border: none;
   }
 
+  /* Label before data in mobile card view */
   .admin-table td::before {
     content: attr(data-label);
     font-weight: 600;
     color: #6b7280;
   }
 
+  /* Mobile row action buttons */
   .action-buttons {
     margin-top: 0.5rem;
     justify-content: flex-start;

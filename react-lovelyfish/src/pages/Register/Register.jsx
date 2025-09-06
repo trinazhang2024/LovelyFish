@@ -21,19 +21,23 @@ const Register = () => {
       return;
     }
 
-    // 前端校验：要求必须满足 PasswordStrengthMeter 中的所有规则
-    const rulesPassed = password.length >= 6 && /[A-Z]/.test(password) && /\d/.test(password) && /[^A-Za-z0-9]/.test(password);
+    // Frontend validation: must pass all PasswordStrengthMeter rules
+    const rulesPassed =
+      password.length >= 6 &&
+      /[A-Z]/.test(password) &&
+      /\d/.test(password) &&
+      /[^A-Za-z0-9]/.test(password);
+
     if (!rulesPassed) {
       setErrorMessage('Password does not meet all requirements.');
       return;
     }
 
     try {
-      const response = await api.post('account/register',  { email, password });
+      const response = await api.post('account/register', { email, password });
 
       alert(response.data.message || 'Registration successful!');
       navigate('/login', { state: { fromRegister: true } });
-
     } catch (error) {
       if (error.response && error.response.data) {
         if (Array.isArray(error.response.data[""])) {
@@ -53,8 +57,11 @@ const Register = () => {
         <h2>Register</h2>
         {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
         <form onSubmit={handleSubmit} className="register-form">
+          {/* Email input */}
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email address</label>
+            <label htmlFor="email" className="form-label">
+              Email address
+            </label>
             <input
               type="email"
               className="form-control"
@@ -65,8 +72,11 @@ const Register = () => {
             />
           </div>
 
+          {/* Password input with strength meter */}
           <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password</label>
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
             <input
               type="password"
               className="form-control"
@@ -76,15 +86,20 @@ const Register = () => {
               required
             />
 
-            {/* 引用密码强度组件 */}
+            {/* Password strength component */}
             <PasswordStrengthMeter password={password} />
           </div>
 
+          {/* Confirm password input with Bootstrap validation */}
           <div className="mb-3">
-            <label htmlFor="confirm" className="form-label">Confirm Password</label>
+            <label htmlFor="confirm" className="form-label">
+              Confirm Password
+            </label>
             <input
               type="password"
-              className={`form-control ${confirm && confirm !== password ? "is-invalid" : ""}`}
+              className={`form-control ${
+                confirm && confirm !== password ? 'is-invalid' : ''
+              }`}
               id="confirm"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
@@ -95,7 +110,10 @@ const Register = () => {
             )}
           </div>
 
-          <button type="submit" className="btn btn-success w-100">Register</button>
+          {/* Submit button */}
+          <button type="submit" className="btn btn-success w-100">
+            Register
+          </button>
         </form>
       </div>
     </div>

@@ -1,4 +1,4 @@
-/* ------------------ 通用表格样式 ------------------ */
+/* ------------------ General Table Styles ------------------ */
 .admin-table-container {
   overflow-x: auto;
   margin-bottom: 20px;
@@ -27,7 +27,7 @@
   background-color: #fafafa;
 }
 
-/* ------------------ 输入框 ------------------ */
+/* ------------------ Input Fields ------------------ */
 .admin-table input {
   width: 100%;
   padding: 6px 10px;
@@ -43,7 +43,7 @@
   outline: none;
 }
 
-/* ------------------ 保存闪烁效果 ------------------ */
+/* ------------------ Save Flash Effect ------------------ */
 .saved-flash {
   animation: flashSaved 2s ease-out;
 }
@@ -54,7 +54,7 @@
   100% { background-color: transparent; color: inherit; }
 }
 
-/* ------------------ 状态标签 ------------------ */
+/* ------------------ Status Badges ------------------ */
 .status-badge {
   padding: 3px 8px;
   border-radius: 4px;
@@ -65,12 +65,12 @@
   text-transform: capitalize;
 }
 
-.status-pending { background-color: #f97316; }   /* 待付款 */
-.status-paid { background-color: #3b82f6; }      /* 已付款 */
-.status-shipped { background-color: #10b981; }   /* 已发货 */
-.status-completed { background-color: #6b7280; } /* 已完成 */
+.status-pending { background-color: #f97316; }   /* Pending Payment */
+.status-paid { background-color: #3b82f6; }      /* Paid */
+.status-shipped { background-color: #10b981; }   /* Shipped */
+.status-completed { background-color: #6b7280; } /* Completed */
 
-/* ------------------ 面包屑 ------------------ */
+/* ------------------ Breadcrumb ------------------ */
 .breadcrumb {
   font-size: 14px;
   margin-bottom: 15px;
@@ -85,14 +85,14 @@
   text-decoration: underline;
 }
 
-/* ------------------ 页面标题 ------------------ */
+/* ------------------ Page Title ------------------ */
 .page-title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-/* ------------------ 返回按钮 ------------------ */
+/* ------------------ Return Button ------------------ */
 .return-button {
   display: inline-block;
   padding: 8px 16px;
@@ -107,7 +107,7 @@
   background-color: #2563eb;
 }
 
-/* ------------------ 加载/错误文字 ------------------ */
+/* ------------------ Loading / Error Text ------------------ */
 .loading-text,
 .error-text {
   text-align: center;

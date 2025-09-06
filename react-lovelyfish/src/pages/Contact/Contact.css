@@ -1,4 +1,4 @@
-/* 基础容器 */
+/* ----------------- Base Container ----------------- */
 .contact-container {
   max-width: 900px;
   margin: 0 auto;
@@ -7,7 +7,7 @@
   color: #333;
 }
 
-/* 标题 */
+/* ----------------- Page Title ----------------- */
 .contact-title {
   text-align: center;
   font-size: 2.5rem;
@@ -15,7 +15,7 @@
   color: #0077b6;
 }
 
-/* 区块标题 */
+/* ----------------- Section Titles ----------------- */
 .section-title {
   font-size: 1.8rem;
   margin-bottom: 15px;
@@ -25,7 +25,7 @@
   padding-bottom: 5px;
 }
 
-/* 联系信息列表 */
+/* ----------------- Contact Info List ----------------- */
 .contact-info {
   list-style: none;
   padding: 0;
@@ -37,17 +37,17 @@
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 10px; /* space between icon and text */
 }
 
-/* 表单 */
+/* ----------------- Contact Form ----------------- */
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 15px; /* space between form items */
 }
 
-/* 表单项 */
+/* ----------------- Form Groups ----------------- */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -58,7 +58,7 @@
   font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 5px; /* space between label text and icon */
 }
 
 .form-group input,
@@ -67,14 +67,14 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
-  resize: vertical;
+  resize: vertical; /* allow vertical resizing for textarea */
 }
 
 textarea {
   min-height: 100px;
 }
 
-/* 按钮 */
+/* ----------------- Submit Button ----------------- */
 .submit-button {
   padding: 12px 20px;
   background-color: #0077b6;
@@ -95,7 +95,7 @@ textarea {
   cursor: not-allowed;
 }
 
-/* 状态提示 */
+/* ----------------- Status Messages ----------------- */
 .status-message {
   margin-top: 10px;
   font-weight: bold;
@@ -110,7 +110,7 @@ textarea {
   color: red;
 }
 
-/* 响应式 */
+/* ----------------- Responsive Styles ----------------- */
 @media (max-width: 768px) {
   .contact-container {
     padding: 15px;

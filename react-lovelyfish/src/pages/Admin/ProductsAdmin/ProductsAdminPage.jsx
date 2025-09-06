@@ -5,20 +5,20 @@ import api from "../../../API/axios";
 import "./ProductsAdminPage.css";
 
 export default function ProductsAdminPage() {
+  // -------------------- State --------------------
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const searchTimeout = useRef(null);
-  
-  //===============分页===============
+
+  // -------------------- Pagination --------------------
   const [totalItems, setTotalItems] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const pageSize = 10; // 每页显示条数，和后端一致
-  
-  
+  const pageSize = 10; // Number of items per page, same as backend
 
+  // -------------------- Form State --------------------
   const [form, setForm] = useState({
     id: null,
     title: "",
@@ -28,53 +28,51 @@ export default function ProductsAdminPage() {
     description: "",
     features: [],
     categoryId: "",
-    imageUrls: [], // 存文件名
+    imageUrls: [], // Store uploaded file URLs
+    isClearance: false
   });
 
-  const IMAGE_BASE_URL = "https://localhost:7148/uploads/"; // 部署后改成你的域名
+  const IMAGE_BASE_URL = "https://localhost:7148/uploads/"; // Change to your domain after deployment
 
-  
-
-  // ==================== 获取产品 ====================
+  // -------------------- Fetch Products --------------------
   const fetchProducts = useCallback(async (searchTerm = "", pageNum = 1) => {
-
     setLoading(true);
     try {
       const res = await api.get("/Product", {
         params: { search: searchTerm, page: pageNum, pageSize },
       });
-      const productsData = res.data.items ||[];
 
-      console.log('res.data.items:',productsData);
-      
-      // 映射 imageUrls
+      const productsData = res.data.items || [];
+
+      // Map backend image objects to imageUrls
       const mappedProducts = productsData.map(p => {
-        // 打印后端返回的 images 和映射后的 imageUrls
-      console.log("产品 ID:", p.id);
-      console.log("p.images 原始数据:", p.images);
-      console.log("p.imageUrls 映射后:", (p.images || []).map(img => img.fileName));
-      
-      return{
-        ...p,
-        imageUrls: (p.images || []).map(img =>`${IMAGE_BASE_URL}${img.fileName}`),};
+        console.log("Product ID:", p.id);
+        console.log("Original images:", p.images);
+        console.log("Mapped imageUrls:", (p.images || []).map(img => img.fileName));
+
+        return {
+          ...p,
+          imageUrls: (p.images || []).map(img => `${IMAGE_BASE_URL}${img.fileName}`),
+        };
       });
+
       setProducts(mappedProducts);
       setTotalPages(res.data.totalPages || 1);
       setTotalItems(res.data.totalItems || productsData.length);
     } catch (err) {
-      console.error("获取产品失败", err);
+      console.error("Failed to fetch products:", err);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // ==================== 获取分类 ====================
+  // -------------------- Fetch Categories --------------------
   const fetchCategories = useCallback(async () => {
     try {
       const res = await api.get("/Product/categories");
       setCategories(res.data || []);
     } catch (err) {
-      console.error("获取分类失败", err);
+      console.error("Failed to fetch categories:", err);
     }
   }, []);
 
@@ -83,42 +81,38 @@ export default function ProductsAdminPage() {
     fetchProducts();
   }, [fetchCategories, fetchProducts]);
 
-  // ==================== 搜索防抖 ====================
+  // -------------------- Search with Debounce --------------------
   useEffect(() => {
     if (searchTimeout.current) clearTimeout(searchTimeout.current);
+
     searchTimeout.current = setTimeout(() => {
       setPage(1);
       fetchProducts(search, 1);
     }, 500);
+
     return () => clearTimeout(searchTimeout.current);
   }, [search, fetchProducts]);
 
-  // ==================== 分页pagination ====================
+  // -------------------- Pagination Effect --------------------
   useEffect(() => {
     fetchProducts(search, page);
   }, [page, fetchProducts, search]);
 
-  // ==================== 表单变化 ====================
+  // -------------------- Form Input Handlers --------------------
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm(prev => ({ ...prev, [name]: value }));
   };
 
   const handleFeaturesChange = (e) => {
-    setForm({ ...form, features: e.target.value.split(",") });
+    setForm(prev => ({ ...prev, features: e.target.value.split(",") }));
   };
 
-
-  // ==================== 新增/编辑产品 ====================
-  //handleSubmit 只发送后端需要的字段，不包括 id、categoryTitle、mainImageUrl。
-  
-  // 图片单独管理
+  // -------------------- Image Upload State --------------------
   const [imageUrls, setImageUrls] = useState([]);
 
+  // -------------------- Submit (Add/Edit Product) --------------------
   const handleSubmit = async (e) => {
-
-    console.log("提交的 imageUrls:", form.imageUrls); // ✅ 打印检查
-
     e.preventDefault();
 
     try {
@@ -130,21 +124,21 @@ export default function ProductsAdminPage() {
         description: form.description,
         features: form.features,
         categoryId: parseInt(form.categoryId),
-        imageUrls, // 把图片数组直接传给后端
+        imageUrls, // Pass uploaded images to backend
         isClearance: form.isClearance || false
       };
 
-      console.log("提交 payload:", payload); // 再打印一次整个 payload
+      console.log("Submitting payload:", payload);
 
       if (form.id) {
         await api.put(`/Product/${form.id}`, payload);
-        alert("产品更新成功");
+        alert("Product updated successfully");
       } else {
         await api.post("/Product", payload);
-        alert("产品新增成功");
+        alert("Product added successfully");
       }
-      
 
+      // Reset form
       setForm({
         id: null,
         title: "",
@@ -157,113 +151,105 @@ export default function ProductsAdminPage() {
         imageUrls: [],
         isClearance: false
       });
+      setImageUrls([]);
 
       fetchProducts(search, page);
-      console.log("提交 payload:", payload);
-    } catch (err) {
-      console.error("保存产品失败", err);
-      alert("保存失败");
-    }
-    
-    
 
+    } catch (err) {
+      console.error("Failed to save product:", err);
+      alert("Save failed");
+    }
   };
 
-  // ==================== 编辑 ====================
-  const handleEdit = (p) => {
-    console.log("产品 p 对象:", p);
-    console.log("编辑产品 imageUrls:", p.imageUrls, "类型:", typeof p.imageUrls);
-    
+  // -------------------- Edit Product --------------------
+  const handleEdit = (product) => {
     setForm({
-      id: p.id,
-      title: p.title,
-      price: p.price,
-      stock: p.stock,
-      discountPercent: p.discountPercent,
-      description: p.description,
-      features: p.features || [],
-      categoryId: p.categoryId,
-
-      imageUrls: Array.isArray(p.imageUrls)
-      ? p.imageUrls
-      : p.imageUrls
-        ? [p.imageUrls]
-        : [],
-
-      isClearance: p.isClearance || false
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      stock: product.stock,
+      discountPercent: product.discountPercent,
+      description: product.description,
+      features: product.features || [],
+      categoryId: product.categoryId,
+      imageUrls: Array.isArray(product.imageUrls) ? product.imageUrls : product.imageUrls ? [product.imageUrls] : [],
+      isClearance: product.isClearance || false
     });
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ==================== 删除 ====================
+  // -------------------- Delete Product --------------------
   const handleDelete = async (id) => {
-    if (!window.confirm("确定删除吗？")) return;
+    if (!window.confirm("Are you sure to delete this product?")) return;
     try {
       await api.delete(`/Product/${id}`);
       fetchProducts(search, page);
     } catch (err) {
-      console.error("删除失败", err);
-      alert("删除失败");
+      console.error("Failed to delete product:", err);
+      alert("Delete failed");
     }
   };
 
-  // ==================== JSX ====================
+  // -------------------- JSX --------------------
   return (
     <div className="products-admin-page">
-      <h2>产品管理</h2>
+      <h2>Product Management</h2>
 
+      {/* Search input */}
       <div className="search-container">
         <input
           type="text"
           className="search-input"
-          placeholder="搜索产品名称..."
+          placeholder="Search products..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
+      {/* Product Form */}
       <div className="product-form-container">
-        <h3>{form.id ? "编辑产品" : "新增产品"}</h3>
+        <h3>{form.id ? "Edit Product" : "Add New Product"}</h3>
         <form className="products-form vertical-form" onSubmit={handleSubmit}>
           <input name="title" placeholder="Product Title" value={form.title} onChange={handleChange} required />
           <input name="price" type="number" placeholder="Price" value={form.price} onChange={handleChange} required />
           <input name="stock" type="number" placeholder="Stock" value={form.stock} onChange={handleChange} required />
-          <input name="discountPercent" type="number" placeholder="discountPercent" value={form.discountPercent} onChange={handleChange} />
+          <input name="discountPercent" type="number" placeholder="Discount Percent" value={form.discountPercent} onChange={handleChange} />
           <textarea name="description" placeholder="Product Description" value={form.description} onChange={handleChange} />
-          <input placeholder="Features (comma-separated). eg, output: 3000, wattage:60," value={form.features.join(",")} onChange={handleFeaturesChange} />
-          
+          <input placeholder="Features (comma-separated, e.g., output:3000, wattage:60)" value={form.features.join(",")} onChange={handleFeaturesChange} />
+
           <select name="categoryId" value={form.categoryId} onChange={handleChange} required>
             <option value="">Category</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
 
-          {/* 图片上传组件 */}
+          {/* Image Upload Component */}
           <ProductImageUpload imageUrls={imageUrls} setImageUrls={setImageUrls} />
 
-
-          <button type="submit">{form.id ? "更新产品" : "新增产品"}</button>
+          <button type="submit">{form.id ? "Update Product" : "Add Product"}</button>
         </form>
       </div>
 
+      {/* Product List */}
       {loading ? (
-        <p>加载中...</p>
+        <p>Loading...</p>
       ) : products.length === 0 ? (
-        <p>暂无产品</p>
+        <p>No products available</p>
       ) : (
         <div className="products-list-container">
-          <h3>所有产品</h3>
+          <h3>All Products</h3>
           <div className="products-table-container">
             <table className="products-table">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>图片</th>
-                  <th>标题</th>
-                  <th>价格</th>
-                  <th>库存</th>
-                  <th>折扣</th>
-                  <th>分类</th>
-                  <th>操作</th>
+                  <th>Image</th>
+                  <th>Title</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Discount</th>
+                  <th>Category</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -272,14 +258,9 @@ export default function ProductsAdminPage() {
                     <td>{p.id}</td>
                     <td>
                       {p.mainImageUrl ? (
-                        <img
-                          src={p.mainImageUrl}
-                          alt={p.title}
-                          style={{ width: 50, height: 50, objectFit: "cover" }}
-                          // onError={(e) => (e.currentTarget.src = "/uploads/placeholder.png")}
-                        />
+                        <img src={p.mainImageUrl} alt={p.title} style={{ width: 50, height: 50, objectFit: "cover" }} />
                       ) : (
-                        <span>无图片</span>
+                        <span>No image</span>
                       )}
                     </td>
                     <td>{p.title}</td>
@@ -297,8 +278,9 @@ export default function ProductsAdminPage() {
             </table>
           </div>
 
+          {/* Pagination */}
           <div className="pagination">
-            <span>共 {totalItems} 条，每页 {pageSize} 条</span>
+            <span>Total {totalItems}, {pageSize} per page</span>
             <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Prev Page</button>
             <span>{page} / {totalPages}</span>
             <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>Next Page</button>

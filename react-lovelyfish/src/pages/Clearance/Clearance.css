@@ -67,7 +67,7 @@
   margin-top: 1.5rem;
 }
 
-/* 响应式 */
+/* Responsive  */
 @media (max-width: 576px) {
   .clearance-section .clearance-actions {
     flex-direction: column;

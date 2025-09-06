@@ -4,39 +4,61 @@ import api from "../../API/axios";
 import "./ResetPasswordPage.css";
 
 export default function ResetPasswordPage() {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
 
+  // React Router hooks
+
+  const [searchParams] = useSearchParams(); // Read query params from URL
+  const navigate = useNavigate();           // For programmatic navigation
+
+  // Extract email and token from URL query
+  // -----------------------------
   const email = searchParams.get("email") || "";
   const token = searchParams.get("token") || "";
 
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(""); // 成功提示
-  const [error, setError] = useState("");     // 错误提示
+
+  // Component state
+
+  const [newPassword, setNewPassword] = useState("");       // New password input
+  const [confirmPassword, setConfirmPassword] = useState(""); // Confirm password input
+  const [loading, setLoading] = useState(false);           // Loading state during API call
+  const [message, setMessage] = useState("");              // Success message
+  const [error, setError] = useState("");                  // Error message
+
+
+  // Handle form submission
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    setError("");
+    e.preventDefault();      // Prevent page reload
+    setMessage("");          // Reset previous success
+    setError("");            // Reset previous error
+
+    // Validate URL parameters
 
     if (!email || !token) {
-      alert("链接无效，请重新获取重置密码链接。");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      alert("两次输入的密码不一致！");
+      setError("Invalid link. Please request a new password reset link.");
       return;
     }
 
-    // 可选：前端密码强度校验
+  
+    // Validate password confirmation
+   
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+
+    // Optional: Frontend password strength check
+
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     if (!passwordRegex.test(newPassword)) {
-      setError("密码至少8位，包含大小写字母、数字和特殊字符。");
+      setError(
+        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character."
+      );
       return;
     }
 
+    // Call backend API to reset password
 
     try {
       setLoading(true);
@@ -45,42 +67,47 @@ export default function ResetPasswordPage() {
         token,
         newPassword,
       });
-      setMessage("密码重置成功，请登录！");
+
+      setMessage("Password reset successful! Redirecting to login...");
+      // Automatically redirect to login after 2 seconds
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      console.error("重置密码失败", err);
-      setError(err.response?.data?.message || "重置密码失败，请重试。");
+      console.error("Password reset failed", err);
+      setError(err.response?.data?.message || "Password reset failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  // JSX: Render form and messages
+
   return (
     <div className="reset-password-container">
-      <h2>重置密码</h2>
-      <p>重置邮箱：{email}</p>
+      <h2>Reset Password</h2>
+      <p>Email: {email}</p>
+
       <form onSubmit={handleSubmit}>
         <input
           type="password"
-          placeholder="新密码"
+          placeholder="New Password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         />
         <input
           type="password"
-          placeholder="确认新密码"
+          placeholder="Confirm New Password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           style={{ marginTop: "10px" }}
         />
         <button type="submit" disabled={loading}>
-          {loading ? "提交中..." : "提交新密码"}
+          {loading ? "Submitting..." : "Submit New Password"}
         </button>
       </form>
 
+      {/* Display success or error messages */}
       {message && <p className="success">{message}</p>}
       {error && <p className="error">{error}</p>}
-      
     </div>
   );
 }

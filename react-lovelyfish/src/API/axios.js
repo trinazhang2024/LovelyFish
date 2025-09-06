@@ -1,18 +1,16 @@
 import axios from "axios";
 
-// 从环境变量读取后端 API 地址
-// REACT_APP_API_BASE_URL 需要在 .env 或 Azure 前端环境变量里配置
+// Read backend API URL from environment variable
+// REACT_APP_API_BASE_URL should be set in .env or Azure frontend environment variables
 const baseURL = "https://lovelyfish-backend-esgtdkf7h0e2ambg.australiaeast-01.azurewebsites.net/api";
 
-//process.env.REACT_APP_API_BASE_URL;
-
-// 创建 axios 
+// Create axios instance
 const api = axios.create({
-  baseURL,            // 使用环境变量
-  withCredentials: true, // 让浏览器带上 Cookie
+  baseURL,             // Use environment variable
+  withCredentials: true, // Include cookies in requests
 });
 
-// 请求拦截器
+// Request interceptor
 api.interceptors.request.use(
   (config) => {
     console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`);
@@ -21,7 +19,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// 响应拦截器（统一错误处理）
+// Response interceptor (centralized error handling)
 api.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -1,45 +1,50 @@
+
 .buy-button {
-  min-width: 100px; /* 最小宽度，可根据需要调 */
-  white-space: nowrap; /* 不换行 */
-  display: inline-flex; /* 保持内容居中对齐 */
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(90deg, #007bff, #0056b3);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: transform 0.2s, background 0.2s;
-  
+  min-width: 100px;           /* Minimum width */
+  white-space: nowrap;        /* Prevent text wrapping */
+  display: inline-flex;       /* Flex for centering content */
+  align-items: center;        /* Vertical center */
+  justify-content: center;    /* Horizontal center */
+  background: linear-gradient(90deg, #007bff, #0056b3); /* Gradient background */
+  color: white;               /* Text color */
+  border: none;               /* Remove border */
+  padding: 12px 20px;         /* Padding inside button */
+  border-radius: 6px;         /* Rounded corners */
+  cursor: pointer;            /* Pointer cursor */
+  font-size: 16px;            /* Font size */
+  transition: transform 0.2s, background 0.2s; /* Smooth hover effect */
 }
 
+/* Hover effect (if button is not disabled) */
 .buy-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  background: linear-gradient(90deg, #0056b3, #003f7f);
+  transform: translateY(-2px); /* Slight lift */
+  background: linear-gradient(90deg, #0056b3, #003f7f); /* Darker gradient */
 }
 
+/* Disabled button style */
 .buy-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+  background-color: #ccc;     /* Grey background */
+  cursor: not-allowed;        /* Not allowed cursor */
 }
 
+/* Loading state container */
 .loading {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: center;        /* Vertical align spinner and text */
+  gap: 8px;                   /* Space between spinner and text */
 }
 
+/* Spinner animation */
 .spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid white;
-  border-top: 2px solid transparent;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  border: 2px solid white;      /* Spinner border */
+  border-top: 2px solid transparent; /* Top is transparent for rotation effect */
+  border-radius: 50%;           /* Make it a circle */
+  animation: spin 0.7s linear infinite; /* Continuous rotation */
 }
 
+/* Keyframes for spinner rotation */
 @keyframes spin {
   to { transform: rotate(360deg); }
 }

@@ -1,24 +1,29 @@
+/* Navbar general fonts and colors*/
 .navbar, .navbar-nav, .dropdown-item {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
-  color: #05445E; 
+  color: #05445E; /* Dark blue text */
 }
 
+/* Navbar links and dropdown links */
 .navbar .nav-link, .dropdown-item {
   color: #05445E;
 }
 
+/* Hover effect for navbar and dropdown links */
 .navbar .nav-link:hover, .dropdown-item:hover {
-  color: #189AB4; 
-  background-color: #E0F7FA; 
+  color: #189AB4;        /* Lighter blue on hover */
+  background-color: #E0F7FA; /* Light cyan background */
 }
 
+/* Dropdown menu styling */
 .dropdown-menu {
   background-color: #E0F7FA; 
   border: none;
-  box-shadow: 0 4px 8px rgba(5, 68, 94, 0.2);
+  box-shadow: 0 4px 8px rgba(5, 68, 94, 0.2); /* Subtle shadow */
 }
 
+/* Search input field styling */
 .navbar .form-control {
   border: 1.5px solid #189AB4;
   min-width: 250px;
@@ -27,6 +32,7 @@
   color: #05445E;
 }
 
+/* Search button styling */
 .navbar .btn-outline-success {
   border-color: #189AB4;
   color: #189AB4;
@@ -35,29 +41,35 @@
   padding: 8px 20px;
 }
 
+/* Hover effect for search button */
 .navbar .btn-outline-success:hover {
   background-color: #189AB4;
   color: #fff;
 }
 
+/* Transparent background for navbar (Bootstrap bg-body-tertiary) */
 .bg-body-tertiary {
   background-color: transparent !important;
 }
 
+/* Spacing between nav items */
 .navbar-nav .nav-item:not(:last-child) {
   margin-right: 10px;
 }
 
+/* Prevent nav links from wrapping */
 .nav-link {
-  white-space: nowrap; /* 禁止换行 */
+  white-space: nowrap;
 }
 
+/* Cart Icon */
 .cart-icon {
   position: relative;
   display: inline-block;
   color: inherit;
 }
 
+/* Badge for cart item count */
 .cart-badge {
   position: absolute;
   top: -5px;
@@ -70,13 +82,14 @@
   font-weight: bold;
 }
 
-/* Settings 下拉菜单悬停显示 */
+/* Settings dropdown menu*/
 .settings-dropdown {
   position: relative;
 }
 
+/* Dropdown hidden by default */
 .settings-dropdown .dropdown-menu {
-  display: none; /* 默认隐藏 */
+  display: none; /* Hide menu initially */
   position: absolute;
   top: 100%;
   left: 0;
@@ -89,10 +102,12 @@
   box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
 }
 
+/* Show dropdown on hover */
 .settings-dropdown:hover .dropdown-menu {
-  display: block; /* 悬停显示 */
+  display: block;
 }
 
+/* Dropdown items styling */
 .settings-dropdown .dropdown-item {
   padding: 0.25rem 1.5rem;
   color: #333;
@@ -100,17 +115,14 @@
   text-decoration: none;
 }
 
+/* Hover effect for dropdown items */
 .settings-dropdown .dropdown-item:hover {
   background-color: #3488ac;
   color: #000;
 }
 
+/* Divider in dropdown menu */
 .settings-dropdown .dropdown-divider {
   margin: 0.5rem 0;
   border-top: 1px solid #e9ecef;
 }
-
-
-/* .navbar{
-  position: sticky;
-} */

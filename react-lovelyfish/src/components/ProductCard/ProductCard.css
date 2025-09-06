@@ -90,7 +90,7 @@
   background-color: #ffc107;
 }
 
-/* 响应式 */
+/* responsive */
 @media (max-width: 768px) {
   .product-card {
     flex: 1 1 calc(50% - 15px);

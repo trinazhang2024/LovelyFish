@@ -6,10 +6,10 @@ import api from "../../../API/axios";
 import "./ConfirmOrderPage.css";
 
 export default function ConfirmOrderPage() {
-  const location = useLocation();
-  const { cartItems, fetchCart } = useCart();
+  const location = useLocation(); // Used to get selected items and quantities passed from previous page
+  const { cartItems, fetchCart } = useCart(); // Get cart items and fetchCart function from context
 
-  // ----------------- Hooks -----------------
+  // ----------------- State Hooks -----------------
   const [user, setUser] = useState(null);
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
@@ -24,15 +24,14 @@ export default function ConfirmOrderPage() {
   const [lastOrderId, setLastOrderId] = useState(null);
   const [userOrderCount, setUserOrderCount] = useState(0);
 
-  const [localQuantities, setLocalQuantities] = useState({});
-  const [selectedCartData, setSelectedCartData] = useState([]);
+  const [localQuantities, setLocalQuantities] = useState({}); // Track quantity changes locally
+  const [selectedCartData, setSelectedCartData] = useState([]); // Products selected for checkout
 
   const [loadingUser, setLoadingUser] = useState(true);
   const [bankInfo, setBankInfo] = useState(null);
   const [orderAmount, setOrderAmount] = useState(0);
 
-
-  // ----------------- Fetch user -----------------
+  // ----------------- Fetch Current User -----------------
   useEffect(() => {
     async function fetchUser() {
       try {
@@ -40,7 +39,7 @@ export default function ConfirmOrderPage() {
         setUser(res.data);
       } catch (err) {
         console.error("Failed to load user", err);
-        setUser({ newUserUsed: false }); // fallback
+        setUser({ newUserUsed: false }); // fallback for new user
       } finally {
         setLoadingUser(false);
       }
@@ -48,14 +47,12 @@ export default function ConfirmOrderPage() {
     fetchUser();
   }, []);
 
-  // ----------------- Fetch bank info -----------------
+  // ----------------- Fetch Bank Information -----------------
   useEffect(() => {
     async function fetchBankInfo() {
       try {
         const res = await api.get("/settings/email", { withCredentials: true });
-
-        console.log('res.data:', res.data);
-        
+        console.log('Bank info:', res.data);
         setBankInfo(res.data);
       } catch (err) {
         console.error("Failed to load bank info", err);
@@ -64,8 +61,7 @@ export default function ConfirmOrderPage() {
     fetchBankInfo();
   }, []);
 
-
-  // ----------------- Initialize selected items -----------------
+  // ----------------- Initialize Selected Items -----------------
   useEffect(() => {
     if (!user || !cartItems.length) return;
 
@@ -73,6 +69,7 @@ export default function ConfirmOrderPage() {
     const selectedData = cartItems.filter(i => selectedItems.includes(i.id));
     setSelectedCartData(selectedData);
 
+    // Initialize local quantities (from previous page state or default cart quantity)
     const initialQuantities = {};
     selectedData.forEach(item => {
       initialQuantities[item.id] = location.state?.quantities?.[item.id] ?? item.quantity;
@@ -80,15 +77,12 @@ export default function ConfirmOrderPage() {
     setLocalQuantities(initialQuantities);
   }, [user, cartItems, location.state]);
 
-  //---------------------------------------------------------------
+  // ----------------- Fetch User Order Count -----------------
   useEffect(() => {
     async function fetchUserOrderCount() {
       try {
         const res = await api.get("/orders/my", { withCredentials: true });
-        // res.data 是用户订单数组
-        setUserOrderCount(res.data.length);
-        
-        
+        setUserOrderCount(res.data.length); // Store number of previous orders
       } catch (err) {
         console.error("Failed to get user orders count", err);
       }
@@ -129,7 +123,7 @@ export default function ConfirmOrderPage() {
   };
 
   const handle50Coupon = () => {
-    if (!use50Coupon) setUse100Coupon(false);
+    if (!use50Coupon) setUse100Coupon(false); // Only one coupon ($50 or $100) can be active
     setUse50Coupon(prev => !prev);
   };
 
@@ -138,6 +132,7 @@ export default function ConfirmOrderPage() {
     setUse100Coupon(prev => !prev);
   };
 
+  // Calculate total discount
   const discountAmount = (() => {
     let discount = 0;
     if (useNewUserCoupon && canUseNewUserCoupon) discount += 5;
@@ -148,9 +143,10 @@ export default function ConfirmOrderPage() {
 
   const finalTotalPrice = Math.max(originalTotalPrice - discountAmount, 0);
 
-  // ----------------- Checkout -----------------
+  // ----------------- Checkout Handler -----------------
   const handleCheckout = async () => {
 
+    // Validate required fields
     if (!customerName.trim() || !phone.trim() || !shippingAddress.trim()) {
       alert("⚠️ Please fill in your name, phone number and shipping address before submitting the order.");
       return;
@@ -177,7 +173,7 @@ export default function ConfirmOrderPage() {
 
       setLastOrderId(res.data.orderId);
       setOrderAmount(res.data.totalPrice);
-      fetchCart();
+      fetchCart(); // Refresh cart after checkout
 
       if (res.data.newUserUsed) {
         setUser(prev => ({ ...prev, newUserUsed: true }));
@@ -200,6 +196,7 @@ export default function ConfirmOrderPage() {
     <div className="confirm-order-container">
       <h2>Confirm Order</h2>
 
+      {/* If order has been submitted */}
       {lastOrderId ? (
         <div className="order-success">
           <p>🎉 Your order has been submitted! Order ID: <strong>{userOrderCount+1}</strong></p>
@@ -222,6 +219,7 @@ export default function ConfirmOrderPage() {
         </div>
       ) : (
         <>
+          {/* Selected Products */}
           <h3>Products Selected</h3>
           <ul className="cart-list">
             <li className="cart-header">
@@ -237,7 +235,7 @@ export default function ConfirmOrderPage() {
                 : item.product.price;
               const totalPrice = discountedPrice * quantity;
 
-              const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads/";
+              const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads";
 
               const getProductImage = (product) => {
                 if (product?.images?.length > 0) {
@@ -249,13 +247,11 @@ export default function ConfirmOrderPage() {
               return (
                 <li key={item.id} className="cart-item">
                   <div className="cart-product">
-
                     <img
                       src={getProductImage(item.product)}
                       alt={item.product?.title}
                       className="cart-item-image"
                     />
-
                     <h4>{item.product?.title}</h4>
                   </div>
 
@@ -287,23 +283,20 @@ export default function ConfirmOrderPage() {
             })}
           </ul>
 
+          {/* Customer Information Form */}
           <h3>Customer Information</h3>
           <div className="confirm-form">
-
             <h5>Name</h5>
             <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} placeholder="Your Name"/>
-
             <h5>Phone Number</h5>
             <input type="text" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone"/>
-
             <h5>Email</h5>
             <input type="email" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} placeholder="Email"/>
-
             <h5>Postal Address</h5>
             <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Shipping Address"/>
-
           </div>
 
+          {/* Coupons */}
           <h3>Coupon</h3>
           <div className="coupon-buttons">
             <button className={useNewUserCoupon ? "active" : ""} disabled={!canUseNewUserCoupon} onClick={handleNewUserCoupon}>
@@ -317,6 +310,7 @@ export default function ConfirmOrderPage() {
             </button>
           </div>
 
+          {/* Cart Summary */}
           <div className="cart-summary-container">
             <div className="cart-summary-left">
               <strong>Total Items:</strong> {Object.values(localQuantities).reduce((a,b)=>a+b,0)}

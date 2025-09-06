@@ -1,27 +1,29 @@
 import { useState } from 'react';
 
-// 提取瓦数函数
+// Function to extract wattage from product features
 const getWattage = (product) => {
-  let features = product.features;  // ✅ 用 features
+  let features = product.features;  // ✅ Use features array
 
   if (!Array.isArray(features)) return 0;
 
+  // Find the feature containing 'watt'
   const wattItem = features.find(f => f.toLowerCase().includes('watt'));
   if (!wattItem) return 0;
 
+  // Extract numeric value from the string
   const match = wattItem.match(/\d+/);
   return match ? parseInt(match[0], 10) : 0;
 };
 
 const useSortableProducts = (initialProducts) => {
-  const [sortBy, setSortBy] = useState('default'); // 排序字段
-  const [sortOrder, setSortOrder] = useState('asc'); // 排序顺序
+  const [sortBy, setSortBy] = useState('default'); // Field to sort by
+  const [sortOrder, setSortOrder] = useState('asc'); // Sort order
 
-  // 动态生成可用排序选项
+  // Dynamically generate available sort options
   const sortOptions = ['price'];
   if (initialProducts.some(p => getWattage(p) > 0)) sortOptions.push('wattage');
 
-  // 排序逻辑
+  // Sorting logic
   const sortedProducts = [...initialProducts].sort((a, b) => {
     if (sortBy === 'default') return 0;
 
@@ -37,27 +39,26 @@ const useSortableProducts = (initialProducts) => {
       bVal = getWattage(b);
     }
 
+    // Calculate result based on ascending or descending order
     const result = sortOrder === 'asc' ? aVal - bVal : bVal - aVal;
-    console.log(`排序字段: ${sortBy}, ${a.Title}: ${aVal}, ${b.Title}: ${bVal}, 结果: ${result}`);
-    return result; });
+    console.log(`Sort field: ${sortBy}, ${a.Title}: ${aVal}, ${b.Title}: ${bVal}, Result: ${result}`);
+    return result; 
+  });
 
-  // 更新排序方式
+  // Update sorting field
   const handleSortChange = (e) => {
-    console.log('选择排序字段:', e.target.value); // ✅ 调试选择排序字段
+    console.log('Selected sort field:', e.target.value); // ✅ Debug selected sort field
     setSortBy(e.target.value);
   };
 
-  // 切换升降序
+  // Toggle ascending/descending order
   const handleOrderChange = () => {
     setSortOrder(prev => {
       const newOrder = prev === 'asc' ? 'desc' : 'asc';
-      console.log('切换排序顺序:', newOrder); // ✅ 调试升降序
+      console.log('Toggled sort order:', newOrder); // ✅ Debug sort order toggle
       return newOrder;
     });
   };
-
-
-  
 
   return {
     sortedProducts,

@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import api from "../../../API/axios";
-import "./ProductImageUpload.css"; // 引入外部样式
+import "./ProductImageUpload.css"; // External styles
 
+/*
+ ProductImageUpload Component
+ Handles uploading and previewing multiple product images.
+ Props:
+   - imageUrls: array of image URLs
+   - setImageUrls: function to update image URLs in parent component
+ */
 export default function ProductImageUpload({ imageUrls, setImageUrls }) {
   const [uploading, setUploading] = useState(false);
 
+  // Handle file selection and upload
   const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
@@ -18,15 +26,16 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
       const uploadedFileUrls = res.data.map(item => item.fileUrl);
       setImageUrls(prev => [...prev, ...uploadedFileUrls]);
 
-      console.log("上传后 imageUrls:", [...imageUrls, ...uploadedFileUrls]);
+      console.log("After upload, imageUrls:", [...imageUrls, ...uploadedFileUrls]);
     } catch (err) {
-      console.error("上传失败", err);
-      alert("上传失败");
+      console.error("Upload failed", err);
+      alert("Upload failed");
     } finally {
       setUploading(false);
     }
   };
 
+  // Remove image from the list
   const removeImage = (index) => {
     setImageUrls(prev => {
       const newArr = [...prev];
@@ -37,12 +46,17 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
 
   return (
     <div className="upload-container">
+      {/* File input */}
       <input type="file" multiple onChange={handleImageChange} disabled={uploading} />
-      {uploading && <p className="uploading-text">上传中...</p>}
+      
+      {/* Uploading indicator */}
+      {uploading && <p className="uploading-text">Uploading...</p>}
+      
+      {/* Image preview list */}
       <div className="image-list">
         {Array.isArray(imageUrls) ? imageUrls.map((url, idx) => (
           <div key={idx} className="image-wrapper">
-            <img src={url} alt={`预览${idx}`} className="preview-image" />
+            <img src={url} alt={`Preview ${idx}`} className="preview-image" />
             <button
               type="button"
               onClick={() => removeImage(idx)}

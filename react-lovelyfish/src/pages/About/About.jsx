@@ -33,7 +33,7 @@ const About = () => {
         </p>
       </section>
 
-      {/* 如何购买 */}
+      {/* How to purchase */}
       <section className="about-section">
         <h2 className="section-title">How to Purchase</h2>
         <p className="section-content">

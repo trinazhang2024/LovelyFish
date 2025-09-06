@@ -4,15 +4,18 @@ import api from '../API/axios'
 
 const UserContext = createContext();
 
-
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);  // 初始为 null
+  const [user, setUser] = useState(null);  // Initial state is null
   const [loading, setLoading] = useState(true);  
   
+  // Simple login function: set the current user
+  // login(userData) simply sets the current user state; front-end can use /account/me response {name, email}.
   const login = (userData) => {
     setUser(userData);
   };
 
+  // Logout: call API to clear backend cookie and reset user
+  // logout calls the API to clear backend cookies to prevent stale sessions; failures are logged but won't block front-end logout logic.
   const logout = async () => {
     try {
       await api.post("/account/logout");
@@ -22,7 +25,7 @@ export const UserProvider = ({ children }) => {
     setUser(null);
   };
 
-  // 更新用户资料（刷新整个 user 对象）
+  // Update user info (refresh the entire user object)
   const updateUser = async () => {
     try {
       const res = await api.get("/account/me");
@@ -32,23 +35,22 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-
-  // ✅ 刷新页面时自动获取用户信息
+  // ✅ Automatically fetch user info on page refresh
   useEffect(() => {
     const fetchMe = async () => {
       try {
         const res = await api.get("/account/me");
 
-        console.log("当前用户信息:", res.data); // ✅ 打印查看
+        console.log("Current user info:", res.data); // ✅ Log for inspection
 
-        setUser(res.data); // res.data 里已经包含 roles = ["Admin"] 或空数组
+        setUser(res.data); // res.data may contain roles = ["Admin"] or empty array
 
       } catch(error){
         console.error("fetchMe error:", error);
-        setUser(null);
+        setUser(null); // Clear user state on failure
       }
       finally {
-        setLoading(false); // 无论成功失败，都结束 loading
+        setLoading(false); // End loading state regardless of success/failure
       }
     };
     fetchMe();
@@ -65,10 +67,6 @@ export const UserProvider = ({ children }) => {
 
 export const useUser = () => useContext(UserContext);
 
-// login(userData) 函数简单设置当前用户状态，前端拿 /account/me 返回的 {name, email} 就很好了。
 
-// logout 做了 API 调用清理后端 Cookie，防止后端会话残留，调用失败时打印错误，保证不会阻塞前端退出逻辑。
 
-// 刷新时 useEffect 里调 /account/me ，如果失败则清空用户状态，保持前端和后端状态一致。
 
-// 你可以在 UserContext.Provider 里根据 user 状态做更多逻辑，比如是否登录，角色判断等。

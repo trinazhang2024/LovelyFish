@@ -5,11 +5,16 @@ import api from '../../API/axios';
 import './SearchResultsPage.css';
 
 const SearchResultsPage = () => {
+  // Get query string from URL. e.g., /search?q=fish
   const query = new URLSearchParams(useLocation().search).get('q') || '';
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
+  // Component state
+  const [products, setProducts] = useState([]); // All products fetched from backend
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null);     // Error message
+
+
+  // Fetch all products on component mount
   useEffect(() => {
     api.get('/Product')
       .then(response => {
@@ -18,20 +23,22 @@ const SearchResultsPage = () => {
         setLoading(false);
       })
       .catch(err => {
-        console.error('加载产品失败:', err);
-        setError('无法加载产品数据');
+        console.error('Failed to load products:', err);
+        setError('Unable to load product data');
         setLoading(false);
       });
   }, []);
 
-  // 统一化函数：字符串小写、去空格、去尾部 s
+  // Normalize strings for search
+  // Lowercase, remove spaces, remove trailing 's'
   const normalize = str => {
     if (!str || typeof str !== 'string') return '';
     return str.toLowerCase().replace(/\s+/g, '').replace(/s$/, '');
   };
 
-  const keyword = normalize(query);
+  const keyword = normalize(query); // Normalized search keyword
 
+  // Filter products based on title, description, or category
   const filteredProducts = products.filter(product => {
     const title = normalize(product.title);
     const description = normalize(product.description);
@@ -40,20 +47,24 @@ const SearchResultsPage = () => {
     return title.includes(keyword) || description.includes(keyword) || category.includes(keyword);
   });
 
-  if (loading) return <p>正在加载产品...</p>;
+
+  // Render loading, error, or results
+  if (loading) return <p>Loading products...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="search-results-container">
-      <h2 className="mb-4">搜索结果: "{query}"</h2>
+      <h2 className="mb-4">Search Results: "{query}"</h2>
+
       {filteredProducts.length > 0 ? (
         <div className="product-list">
-           <ProductList products={filteredProducts} limit={false} />
+          {/* Pass filtered products to ProductList component */}
+          <ProductList products={filteredProducts} limit={false} />
         </div>
       ) : (
         <div className="no-results">
-          <h4>未找到匹配商品</h4>
-          <p>请尝试其他关键词</p>
+          <h4>No matching products found</h4>
+          <p>Try searching with other keywords</p>
         </div>
       )}
     </div>

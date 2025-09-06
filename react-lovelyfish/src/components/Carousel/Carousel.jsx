@@ -1,5 +1,5 @@
 import React from "react";
-import './Carousel.css'; // 引入 Carousel 的样式
+import './Carousel.css'; 
 
 function Carousel() {
     return (

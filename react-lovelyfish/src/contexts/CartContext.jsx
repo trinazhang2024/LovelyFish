@@ -10,63 +10,66 @@ export const CartProvider = ({ children }) => {
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
+  // Fetch the shopping cart
   const fetchCart = async () => {
     setLoading(true);
     try {
       const res = await api.get("/cart");
       setCartItems(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
-      console.error("获取购物车失败", error);
+      console.error("Failed to fetch cart", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // Add a product to the cart
   const addToCart = async (productId, quantity = 1) => {
     try {
       await api.post("/cart", { productId, quantity });
       await fetchCart();
     } catch (error) {
-      console.error("添加购物车失败", error);
+      console.error("Failed to add to cart", error);
     }
   };
 
-  // 手动更新数量（输入框）
+  // Manually update quantity (input field)
   const updateCartItem = async (cartItemId, quantity) => {
     try {
       await api.post(`/cart/update/${cartItemId}?quantity=${quantity}`);
       await fetchCart();
     } catch (error) {
-      console.error("更新购物车失败", error);
+      console.error("Failed to update cart item", error);
     }
   };
 
-  // 增加数量
+  // Increase quantity
   const incrementItem = async (cartItemId) => {
     try {
       await api.post(`/cart/increment/${cartItemId}`);
       await fetchCart();
     } catch (error) {
-      console.error("增加数量失败", error);
+      console.error("Failed to increment item quantity", error);
     }
   };
 
-  // 减少数量
+  // Decrease quantity
   const decrementItem = async (cartItemId) => {
     try {
       await api.post(`/cart/decrement/${cartItemId}`);
       await fetchCart();
     } catch (error) {
-      console.error("减少数量失败", error);
+      console.error("Failed to decrement item quantity", error);
     }
   };
 
+  // Remove item from cart
   const removeCartItem = async (cartItemId) => {
     try {
       await api.delete(`/cart/remove/${cartItemId}`);
       await fetchCart();
     } catch (error) {
-      console.error("删除购物车商品失败", error);
+      console.error("Failed to remove cart item", error);
     }
   };
 

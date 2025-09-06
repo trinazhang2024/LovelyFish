@@ -1,17 +1,18 @@
-/* ========================== */
-/* UsersOrdersPage 高级桌面端样式 */
-/* ========================== */
+
+/* UsersOrdersPage Styles */
 
 .users-orders-page {
   padding: 2rem 1rem;
-  /* max-width: 1500px;  */
   margin: 0 auto;
   box-sizing: border-box;
 }
-.users-orders-page .admin-table-containerb{
+
+/* Optional container width for table */
+.users-orders-page .admin-table-containerb {
   width: 1200px;
 }
 
+/* Page title */
 .page-title {
   font-size: 1.75rem;
   font-weight: bold;
@@ -20,6 +21,7 @@
   color: #111827;
 }
 
+/* No orders message */
 .no-orders {
   text-align: center;
   padding: 2rem;
@@ -27,11 +29,12 @@
   font-size: 1.125rem;
 }
 
+/* Return/back button */
 .return-button {
   display: inline-block;
-  margin: 10px 0 20px 0; /* 上下间距 */
+  margin: 10px 0 20px 0;
   padding: 8px 16px;
-  background-color: #007bff; /* 蓝色按钮 */
+  background-color: #007bff;
   color: #fff;
   text-decoration: none;
   border-radius: 4px;
@@ -39,10 +42,10 @@
 }
 
 .return-button:hover {
-  background-color: #0056b3; /* 悬停颜色 */
+  background-color: #0056b3;
 }
 
-
+/* Breadcrumb navigation */
 .breadcrumb {
   font-size: 0.875rem;
   margin-bottom: 1rem;
@@ -59,7 +62,7 @@
   text-decoration: underline;
 }
 
-/* 分页 */
+/* Pagination */
 .pagination {
   margin-top: 1.5rem;
   display: flex;
@@ -88,15 +91,12 @@
   border-color: #2563eb;
 }
 
-/* ========================== */
-/* 桌面端表格卡片风格 */
-/* ========================== */
+
+/* Desktop Table Card Style */
 
 .admin-table-container {
   overflow-x: auto;
-  /* max-width: 1000px;                 */
-  /* 表格最大宽度 */
-  margin: 0 auto 2rem;              /* 居中并与分页留间距 */
+  margin: 0 auto 2rem;   /* Center and add spacing below */
   background-color: #ffffff;
   border-radius: 0.75rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -125,9 +125,9 @@
   background-color: #f3f4f6;
 }
 
-/* ========================== */
-/* 移动端响应式（卡片风格） */
-/* ========================== */
+
+/* Mobile Responsive (Card Style) */
+
 @media (max-width: 768px) {
   .admin-table-container {
     padding: 0;
@@ -139,7 +139,7 @@
   }
 
   .admin-table thead {
-    display: none;
+    display: none; /* Hide table headers on mobile */
   }
 
   .admin-table tbody {
@@ -165,8 +165,9 @@
     border: none;
   }
 
+  /* Show the column label before each value on mobile */
   .admin-table td::before {
-    content: attr(data-label);
+    content: attr(data-label); /* Use the data-label attribute for mobile */
     font-weight: 600;
     color: #6b7280;
     margin-right: 0.5rem;

@@ -3,20 +3,20 @@ import { useParams } from 'react-router-dom';
 import api from '../API/axios';
 import ProductList from '../components/ProductList/ProductList';
 import useSortableProducts from '../pages/useSortableProducts'; 
-import {useCart} from '../contexts/CartContext'
+import { useCart } from '../contexts/CartContext';
 import './Products.css';
 import './SortControls.css';
 
 const ProductCategoryPage = () => {
-  const { category } = useParams();
-  const { addToCart } = useCart(); // 从上下文获取 addToCart
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const { category } = useParams(); // Get category from URL parameters
+  const { addToCart } = useCart();  // Get addToCart function from Cart context
+  const [products, setProducts] = useState([]); // Store fetched products
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null);     // Error state
+  const [page, setPage] = useState(1);          // Current page number
+  const [totalPages, setTotalPages] = useState(1); // Total number of pages
 
-  // URL 映射到数据库分类
+  // Map URL-friendly category names to database category names
   const categoryMap = {
     waterpumps: "Water Pump",
     filters: "Filter",
@@ -28,78 +28,89 @@ const ProductCategoryPage = () => {
     spongefoams: "Foam and Sponge Filter",
     other: "Other"
   };
-  const dbCategory = categoryMap[category.toLowerCase()];
+  const dbCategory = categoryMap[category.toLowerCase()]; // Convert URL param to DB category
 
-   // 获取产品数据
-   const fetchProducts = useCallback((pageNum = 1) => {
+  // Function to fetch products from the backend
+  const fetchProducts = useCallback((pageNum = 1) => {
     setLoading(true);
     api.get('/Product', {
       params: { page: pageNum, pageSize: 12, category: dbCategory }
     })
     .then(res => {
+      // Ensure each product has a main image; use placeholder if missing
       const productsWithImage = res.data.items.map(p => ({
         ...p,
         mainImage: p.mainImageUrl || '/upload/placeholder.png',
       }));
+
+      // If first page, replace products; otherwise, append
       setProducts(prev => pageNum === 1 ? productsWithImage : [...prev, ...productsWithImage]);
-      setTotalPages(res.data.totalPages);
-      setPage(pageNum);
+      setTotalPages(res.data.totalPages); // Update total pages
+      setPage(pageNum);                   // Update current page
       setLoading(false);
     })
     .catch(err => {
-      console.error('加载产品失败:', err);
-      setError('无法加载产品');
+      console.error('Failed to load products:', err);
+      setError('Unable to load products'); // Show user-friendly error
       setLoading(false);
     });
-  }, [dbCategory]); // dbCategory 改变时才更新函数
-  
+  }, [dbCategory]); // Only recreate function when dbCategory changes
+
+  // Fetch products when category or fetch function changes
   useEffect(() => {
     fetchProducts(1); 
-  }, [category, dbCategory, fetchProducts]); // ESLint 不报错
+  }, [category, dbCategory, fetchProducts]);
 
+  // Handler to load next page of products
   const handleLoadMore = () => {
     if (page < totalPages) fetchProducts(page + 1);
   };
 
-  // 使用 Hook 管理排序
+  // Use custom hook to manage sorting of products
   const {
-    sortedProducts,
-    sortBy,
-    sortOrder,
-    handleSortChange,
-    handleOrderChange,
-    sortOptions
+    sortedProducts,   // Products after sorting
+    sortBy,           // Current sort field
+    sortOrder,        // Current sort order (asc/desc)
+    handleSortChange, // Function to change sort field
+    handleOrderChange,// Function to toggle sort order
+    sortOptions       // Available sort options
   } = useSortableProducts(products);
 
-  if (loading) return <p>正在加载 {dbCategory} 产品...</p>;
+  // Display loading or error state
+  if (loading) return <p>Loading {dbCategory} products...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="products-container">
 
+      {/* Display category title */}
       <h1>{dbCategory}</h1>
 
+      {/* Sorting controls */}
       <div className="sort-controls">
-        <label>排序方式：</label>
+        <label>Sort by:</label>
         <select value={sortBy} onChange={handleSortChange}>
-          <option value="default">默认</option>
-          {sortOptions.includes('price') && <option value="price">价格</option>}
-          {sortOptions.includes('wattage') && <option value="wattage">瓦数</option>}
+          <option value="default">Default</option>
+          {sortOptions.includes('price') && <option value="price">Price</option>}
+          {sortOptions.includes('wattage') && <option value="wattage">Wattage</option>}
         </select>
 
+        {/* Toggle ascending/descending */}
         <button onClick={handleOrderChange} disabled={sortBy === 'default'}>
-          {sortOrder === 'asc' ? '↑ 升序' : '↓ 降序'}
+          {sortOrder === 'asc' ? '↑ Ascending' : '↓ Descending'}
         </button>
       </div>
 
+      {/* Display the product list */}
       <ProductList
         products={sortedProducts}
-        limit={false}
-        addToCart={addToCart}
+        limit={false}    // Show all products
+        addToCart={addToCart} // Pass addToCart function
       />
 
+      {/* Load more button for pagination */}
       {page < totalPages && (
-        <button onClick={handleLoadMore}>加载更多</button>
+        <button onClick={handleLoadMore}>Load More</button>
       )}
     </div>
   );

@@ -1,26 +1,27 @@
 // src/pages/admin/Dashboard.jsx
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import ProductsAdminPage from '../ProductsAdmin/ProductsAdminPage';
+import ProductsAdminPage from "../ProductsAdmin/ProductsAdminPage";
 import OrdersAdminPage from "../OrdersAdmin/OrdersAdminPage";
 import UsersAdminPage from "../UsersAdmin/UsersAdminPage";
-import AdminChangePassword from '../ChangePassword/AdminChangePassword';
-import {useUser} from "../../../contexts/UserContext";
-import './Dashboard.css';
+import AdminChangePassword from "../ChangePassword/AdminChangePassword";
+import { useUser } from "../../../contexts/UserContext";
+import "./Dashboard.css";
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("orders");
-  const {user, isAdmin, loading} = useUser();
+  const { user, isAdmin, loading } = useUser();
 
-    // 初始化加载中
-  if (loading) return <p>加载中...</p>;
+  // Show loading state when user data is being fetched
+  if (loading) return <p>Loading...</p>;
 
-  // 用户未登录
+  // Redirect to login if user is not logged in
   if (!user) return <Navigate to="/admin/login" />;
 
-  // 非管理员
-  if (!isAdmin) return <p>你没有权限访问此页面</p>;
+  // Restrict access if user is not an admin
+  if (!isAdmin) return <p>You do not have permission to access this page</p>;
 
+  // Render different admin pages based on selected tab
   const renderPage = () => {
     switch (activePage) {
       case "orders":
@@ -36,7 +37,7 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
-      {/* 左侧导航 */}
+      {/* Left Sidebar Navigation */}
       <aside className="dashboard-aside">
         <div className="title">Admin Dashboard</div>
         <nav>
@@ -44,65 +45,62 @@ export default function Dashboard() {
             className={activePage === "orders" ? "active" : ""}
             onClick={() => setActivePage("orders")}
           >
-            订单管理
+            Orders Management
           </button>
           <button
             className={activePage === "products" ? "active" : ""}
             onClick={() => setActivePage("products")}
           >
-            产品管理
+            Products Management
           </button>
           <button
             className={activePage === "users" ? "active" : ""}
             onClick={() => setActivePage("users")}
           >
-            用户管理
+            Users Management
           </button>
         </nav>
       </aside>
 
-      {/* 右侧内容 */}
+      {/* Right Main Content Area */}
       <div className="dashboard-main">
         <div className="dashboard-header">
-          <button className="change-password-btn" onClick={() => setActivePage("changePassword")}>
-            修改密码
+          <button
+            className="change-password-btn"
+            onClick={() => setActivePage("changePassword")}
+          >
+            Change Password
           </button>
         </div>
-        {activePage === "changePassword" ? <AdminChangePassword /> : renderPage()}
+        {activePage === "changePassword" ? (
+          <AdminChangePassword />
+        ) : (
+          renderPage()
+        )}
       </div>
     </div>
   );
 }
 
+/* 
+Admin Dashboard Features
 
-// 后台 Dashboard 功能点
+Orders Management:
+- View all user orders (with pagination / filters)
+- Update order status (pending → paid → shipped → completed)
+- Edit shipping company & tracking number
+- Search orders (by user, date, order ID, etc.)
 
-// 订单管理
+Products Management:
+- Add / Edit / Delete products
+- Manage stock, price, images
 
-// 查看所有用户的订单（分页 / 筛选）
+Users Management:
+- View user list
+- View user order history
 
-// 修改订单状态（pending → 已付款 → 已发货 → 已完成）
-
-// 编辑快递公司、快递单号
-
-// 搜索订单（按用户、时间、订单号等）
-
-// 商品管理
-
-// 添加 / 编辑 / 删除商品
-
-// 管理库存、价格、图片
-
-// 用户管理
-
-// 查看用户列表
-
-// 查询用户的历史订单
-
-// 统计报表（后期可做）
-
-// 总销售额
-
-// 每日/每月订单数
-
-// 热销商品排行
+Future Statistics (optional):
+- Total sales
+- Daily / monthly order count
+- Best-selling products ranking
+*/

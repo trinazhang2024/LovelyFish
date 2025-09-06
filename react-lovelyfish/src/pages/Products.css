@@ -11,13 +11,13 @@
   text-align: center;
 }
 
-/* 如果 ProductList 使用 flex 网格，需要保证间距 */
+/* If ProductList uses a flex grid, ensure proper spacing */
 .product-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  margin-bottom: 40px; /* 卡片底部间距 */
+  margin-bottom: 40px; /* Bottom spacing for cards */
 }
 
 @media (max-width: 768px) {
@@ -26,10 +26,10 @@
   }
 
   .product-list {
-    gap: 15px; /* 缩小间距 */
+    gap: 15px; /* Reduce spacing for smaller screens */
   }
 
   .product-list > div {
-    flex: 1 1 100%; /* 小屏幕单列显示 */
+    flex: 1 1 100%; /* Single column on small screens */
   }
 }

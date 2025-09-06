@@ -4,14 +4,17 @@ import api from '../../API/axios';
 import './Contact.css';
 
 const Contact = () => {
+  // ----------------- Form State -----------------
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
 
+  // ----------------- Submission Status -----------------
   const [status, setStatus] = useState('');
 
+  // ----------------- Handle Input Change -----------------
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -20,9 +23,11 @@ const Contact = () => {
     }));
   };
 
+  // ----------------- Handle Form Submission -----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate fields
     if (!formData.name || !formData.email || !formData.message) {
       setStatus('❌ Please fill in all fields.');
       return;
@@ -31,12 +36,12 @@ const Contact = () => {
     setStatus('Sending...');
 
     try {
-      // 调用后端接口
+      // Send data to backend API
       const res = await api.post('/contact', formData);
 
       if (res.status === 200) {
         setStatus('✅ Message sent successfully!');
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', message: '' }); // reset form
       } else {
         setStatus(`❌ Failed to send message: ${res.data?.message || ''}`);
       }
@@ -48,9 +53,10 @@ const Contact = () => {
 
   return (
     <div className="contact-container">
+      {/* Page Title */}
       <h1 className="contact-title">Contact Us</h1>
 
-      {/* Contact Info */}
+      {/* ----------------- Contact Info Section ----------------- */}
       <section className="contact-section">
         <h2 className="section-title">Contact Info</h2>
         <ul className="contact-info">
@@ -60,10 +66,12 @@ const Contact = () => {
         </ul>
       </section>
 
-      {/* Contact Form */}
+      {/* ----------------- Contact Form Section ----------------- */}
       <section className="contact-section">
         <h2 className="section-title">Send a Message</h2>
+
         <form className="contact-form" onSubmit={handleSubmit}>
+          {/* Name Field */}
           <div className="form-group">
             <label htmlFor="name"><FaUser /> Name</label>
             <input
@@ -76,6 +84,8 @@ const Contact = () => {
               required
             />
           </div>
+
+          {/* Email Field */}
           <div className="form-group">
             <label htmlFor="email"><FaEnvelope /> Email</label>
             <input
@@ -88,6 +98,8 @@ const Contact = () => {
               required
             />
           </div>
+
+          {/* Message Field */}
           <div className="form-group">
             <label htmlFor="message"><FaPaperPlane /> Message</label>
             <textarea
@@ -99,13 +111,23 @@ const Contact = () => {
               required
             />
           </div>
-          <button type="submit" className="submit-button" disabled={status === 'Sending...'}>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="submit-button"
+            disabled={status === 'Sending...'}
+          >
             {status === 'Sending...' ? 'Sending...' : 'Submit'}
           </button>
         </form>
 
-        {/* 状态提示 */}
-        {status && <p className={`status-message ${status.includes('❌') ? 'error' : 'success'}`}>{status}</p>}
+        {/* ----------------- Status Message ----------------- */}
+        {status && (
+          <p className={`status-message ${status.includes('❌') ? 'error' : 'success'}`}>
+            {status}
+          </p>
+        )}
       </section>
     </div>
   );

@@ -1,22 +1,29 @@
+/* ============================= */
+/* Product Detail Page Container */
+/* ============================= */
 .product-detail { 
   padding: 20px;
   max-width: 1200px;  
   margin: 0 auto;
 }
 
+/* Breadcrumb */
 .breadcrumb {
   margin-bottom: 15px;
   font-size: 14px;
   color: #555;
 }
 
+/* ============================= */
+/* Product Container (Left Image + Right Info) */
+/* ============================= */
 .product-container {
   display: flex;
   gap: 30px;
   align-items: flex-start;
 }
 
-/* 左侧大图 */
+/* ---------- Left: Main Product Image ---------- */
 .product-image-container {
   flex: 1;
 }
@@ -29,7 +36,7 @@
   border-radius: 6px;
 }
 
-/* 缩略图 */
+/* ---------- Thumbnails ---------- */
 .thumbnail-list {
   display: flex;
   gap: 10px;
@@ -52,10 +59,10 @@
 }
 
 .thumbnail.selected {
-  border: 2px solid #007bff;
+  border: 2px solid #007bff; /* highlight selected thumbnail */
 }
 
-/* 右侧信息区域 */
+/* ---------- Right: Product Info ---------- */
 .product-info-container {
   flex: 1;
   display: flex;
@@ -75,7 +82,7 @@
 .field-label {
   font-weight: 600;
   color: #222;
-  min-width: 90px; /* label 宽度统一 */
+  min-width: 90px; /* uniform label width */
 }
 
 .field-value {
@@ -83,7 +90,7 @@
   font-size: 16px;
 }
 
-/* 价格信息 */
+/* ---------- Price ---------- */
 .price-original {
   text-decoration: line-through;
   color: #999;
@@ -92,18 +99,18 @@
 }
 
 .price-discount {
-  color: #e60023;
+  color: #e60023; /* red for discount */
   font-weight: bold;
   font-size: 18px;
 }
 
 .price-normal {
-  color: #e60023;
+  color: #e60023; /* red for normal price */
   font-weight: bold;
   font-size: 18px;
 }
 
-/* 折扣百分比标签 */
+/* Discount label */
 .discount-label {
   background-color: #e60023;
   color: white;
@@ -114,18 +121,13 @@
   margin-left: 6px;
 }
 
-/* 分类 */
+/* Category */
 .product-category {
   font-size: 16px;
   color: #666;
 }
 
-/* 描述 */
-.product-description {
-  margin-top: 20px;
-}
-
-/* 产品描述 */
+/* ---------- Product Description ---------- */
 .product-description {
   margin-top: 20px;
 }
@@ -150,7 +152,7 @@
   line-height: 1.5;
 }
 
-/* 主图过渡动画 */
+/* ---------- Main Image Transition Animation ---------- */
 .fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -167,8 +169,10 @@
 }
 
 /* ============================= */
-/* 响应式设计 */
+/* Responsive Design */
 /* ============================= */
+
+/* Large tablet / small desktop */
 @media (max-width: 992px) {
   .product-container {
     gap: 20px;
@@ -185,6 +189,7 @@
   }
 }
 
+/* Tablets / Medium screens */
 @media (max-width: 768px) {
   .product-container {
     flex-direction: column; 
@@ -229,6 +234,7 @@
   }
 }
 
+/* Mobile screens */
 @media (max-width: 480px) {
   .product-image {
     max-width: 280px;

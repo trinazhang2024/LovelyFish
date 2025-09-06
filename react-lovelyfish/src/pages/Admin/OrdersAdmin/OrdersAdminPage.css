@@ -1,4 +1,4 @@
-/* ------------------ 页面容器 ------------------ */
+/* ------------------ Page Container ------------------ */
 .p-4 {
   padding: 16px;
   background-color: #f9fafb;
@@ -6,7 +6,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* ------------------ 面包屑 ------------------ */
+/* ------------------ Breadcrumb ------------------ */
 .breadcrumb {
   font-size: 14px;
   margin-bottom: 15px;
@@ -21,7 +21,7 @@
   text-decoration: underline;
 }
 
-/* ------------------ 页面标题 ------------------ */
+/* ------------------ Page Title ------------------ */
 .text-2xl {
   font-size: 24px;
 }
@@ -34,7 +34,7 @@
   margin-bottom: 16px;
 }
 
-/* ------------------ 搜索框 ------------------ */
+/* ------------------ Search Box ------------------ */
 .search-container {
   margin-bottom: 16px;
 }
@@ -55,7 +55,7 @@
   outline: none;
 }
 
-/* ------------------ 表格 ------------------ */
+/* ------------------ Table ------------------ */
 .admin-table-container {
   overflow-x: auto;
   margin-bottom: 20px;
@@ -85,7 +85,7 @@
   background-color: #fafafa;
 }
 
-/* ------------------ 输入框 ------------------ */
+/* ------------------ Input Fields ------------------ */
 .admin-table input,
 .admin-table select {
   width: 100%;
@@ -103,7 +103,7 @@
   outline: none;
 }
 
-/* ------------------ 保存闪烁效果 ------------------ */
+/* ------------------ Flash Effect after Save ------------------ */
 .saved-flash {
   animation: flashSaved 2s ease-out;
 }
@@ -114,7 +114,7 @@
   100% { background-color: transparent; color: inherit; }
 }
 
-/* ------------------ 查看详情按钮 ------------------ */
+/* ------------------ View Details Button ------------------ */
 .order-detail-btn {
   display: inline-block;
   padding: 6px 12px;
@@ -130,7 +130,7 @@
   background-color: #2563eb;
 }
 
-/* ------------------ 分页 ------------------ */
+/* ------------------ Pagination ------------------ */
 .pagination {
   display: flex;
   justify-content: center;
@@ -159,7 +159,7 @@
   opacity: 0.5;
 }
 
-/* ------------------ 加载/暂无订单提示 ------------------ */
+/* ------------------ Loading / No Orders Message ------------------ */
 .loading-text,
 .error-text,
 .admin-table-container p {

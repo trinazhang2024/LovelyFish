@@ -13,15 +13,18 @@ export default function CartPage() {
   if (loading) return <p>Loading...</p>;
   console.log("Cart Items:", cartItems);
 
-  
-  // 选择单个商品
+
+  // Selection Handlers
+  // -------------------------
+
+  // Toggle single item selection
   const toggleSelect = (id) => {
-    setSelectedItems((prev) =>
+    setSelectedItems(prev =>
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     );
   };
 
-  // 全选 / 全不选
+  // Select all / Deselect all items
   const toggleSelectAll = () => {
     if (selectedItems.length === cartItems.length) {
       setSelectedItems([]);
@@ -30,7 +33,11 @@ export default function CartPage() {
     }
   };
 
-  // 数量加减
+ 
+  // Quantity Handlers
+  // -------------------------
+
+  // Increase quantity
   const incrementItem = (id) => {
     setLocalQuantities(prev => ({
       ...prev,
@@ -38,6 +45,7 @@ export default function CartPage() {
     }));
   };
 
+  // Decrease quantity
   const decrementItem = (id) => {
     setLocalQuantities(prev => {
       const current = prev[id] ?? cartItems.find(i => i.id === id)?.quantity;
@@ -45,6 +53,7 @@ export default function CartPage() {
     });
   };
 
+  // Direct quantity input change
   const handleQuantityChange = (id, value) => {
     const num = parseInt(value, 10);
     if (!isNaN(num) && num > 0) {
@@ -52,40 +61,51 @@ export default function CartPage() {
     }
   };
 
+  // On blur, can call backend API to update quantity
   const handleQuantityBlur = (id) => {
-    // 可在这里调用后端接口更新购物车数量
     console.log("Update quantity for", id, "to", localQuantities[id]);
+    // TODO: Call backend API to save updated quantity
   };
 
-  const caculateOrder = () => {
+
+  // Order Calculation / Navigation
+  // -------------------------
+
+  const calculateOrder = () => {
     if (selectedItems.length === 0) {
       alert("Please select items first!");
       return;
     }
-    navigate("/confirm-order", { state: { selectedItems,quantities: localQuantities } });
+    navigate("/confirm-order", { state: { selectedItems, quantities: localQuantities } });
   };
 
-    // 计算选中商品总数量
-  const selectedTotalQuantity = selectedItems.reduce(
-    (sum, id) => {
-      const item = cartItems.find(i => i.id === id);
-      const quantity = localQuantities[id] ?? item.quantity;
-      return sum + (item ? quantity : 0);
-    },
-    0
-  );
 
-  // 计算选中商品总价（折扣价）
-  const originalTotalPrice = selectedItems.reduce((sum, id) => {
+  // Computed Values
+  // -------------------------
+
+  // Total selected quantity
+  const selectedTotalQuantity = selectedItems.reduce((sum, id) => {
     const item = cartItems.find(i => i.id === id);
     const quantity = localQuantities[id] ?? item.quantity;
+    return sum + (item ? quantity : 0);
+  }, 0);
+
+  // Total price for selected items (with discount)
+  const originalTotalPrice = selectedItems.reduce((sum, id) => {
+    const item = cartItems.find(i => i.id === id);
     if (!item) return sum;
+
+    const quantity = localQuantities[id] ?? item.quantity;
     const discountedPrice = item.product.discountPercent
       ? item.product.price * (1 - item.product.discountPercent / 100)
       : item.product.price;
+
     return sum + discountedPrice * quantity;
   }, 0);
 
+
+  // Render
+  // -------------------------
   return (
     <div className="cart-container">
       <h2>Shopping Cart</h2>
@@ -94,10 +114,12 @@ export default function CartPage() {
         <p>Your cart is empty</p>
       ) : (
         <>
+          {/* Select All / Unselect All */}
           <button onClick={toggleSelectAll}>
             {selectedItems.length === cartItems.length ? "Unselect All" : "Select All"}
           </button>
 
+          {/* Cart List */}
           <ul className="cart-list">
             <li className="cart-header">
               <span>Select</span>
@@ -107,95 +129,88 @@ export default function CartPage() {
               <span>Total</span>
               <span>Action</span>
             </li>
-              {cartItems.map(item => {
-                console.log(item.product);
-                const discountedPrice = item.product.discountPercent
-                  ? item.product.price * (1 - item.product.discountPercent / 100)
-                  : item.product.price;
-                const quantity = localQuantities[item.id] ?? item.quantity;
-                const totalPrice = discountedPrice * quantity;
 
-                const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads/";
-                const getProductImage = (product) => {
-                  if (product.images && product.images.length > 0) {
-                    return `${IMAGE_BASE_URL}${product.images[0].fileName}`;
-                  }
-                  return `${IMAGE_BASE_URL}placeholder.png`; //注意这里是反引号
-                };
+            {cartItems.map(item => {
+              const discountedPrice = item.product.discountPercent
+                ? item.product.price * (1 - item.product.discountPercent / 100)
+                : item.product.price;
+              const quantity = localQuantities[item.id] ?? item.quantity;
+              const totalPrice = discountedPrice * quantity;
 
+              const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads";
+              const getProductImage = (product) => {
+                if (product.images && product.images.length > 0) {
+                  return `${IMAGE_BASE_URL}${product.images[0].fileName}`;
+                }
+                return `${IMAGE_BASE_URL}placeholder.png`; // fallback image
+              };
 
-                return (
-                  <li key={item.id} className="cart-item">
-                    {/* checkbox */}
-                    <div className="cart-select">
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.includes(item.id)}
-                        onChange={() => toggleSelect(item.id)}
-                      />
-                    </div>
+              return (
+                <li key={item.id} className="cart-item">
+                  {/* Checkbox */}
+                  <div className="cart-select">
+                    <input
+                      type="checkbox"
+                      checked={selectedItems.includes(item.id)}
+                      onChange={() => toggleSelect(item.id)}
+                    />
+                  </div>
 
-                    {/* Picture and Name */}
-                    <div className="cart-product">
-                      {/* {(() => {
-                        const productImage =
-                          item.product?.mainImage ||
-                          (item.product?.images && item.product.images[0]?.url) ||
-                          'placeholder.png';
-                        return <img src={productImage} alt={item.product?.title || 'Product'} className="cart-item-image" />;
-                      })()} */}
+                  {/* Product Image & Name */}
+                  <div className="cart-product">
+                    <img
+                      src={getProductImage(item.product)}
+                      alt={item.product?.title || 'Product'}
+                      className="cart-item-image"
+                    />
+                    <h4>{item.product?.title}</h4>
+                  </div>
 
-                      <img src={getProductImage(item.product)} alt={item.product?.title || 'Product'} className="cart-item-image" />
-                      <h4>{item.product?.title}</h4>
-                    </div>
+                  {/* Price */}
+                  <div className="cart-price">
+                    {item.product.discountPercent > 0 ? (
+                      <>
+                        <span className="original-price">${item.product.price.toFixed(2)}</span>
+                        <span className="discount-price">${discountedPrice.toFixed(2)}</span>
+                      </>
+                    ) : (
+                      <span>${discountedPrice.toFixed(2)}</span>
+                    )}
+                  </div>
 
-                    {/* Price */}
-                    <div className="cart-price">
-                      {item.product.discountPercent > 0 ? (
-                        <>
-                          <span className="original-price">${item.product.price.toFixed(2)}</span>
-                          <span className="discount-price">${discountedPrice.toFixed(2)}</span>
-                        </>
-                      ) : (
-                        <span>${discountedPrice.toFixed(2)}</span>
-                      )}
-                    </div>
+                  {/* Quantity */}
+                  <div className="cart-quantity">
+                    <button onClick={() => decrementItem(item.id)}>-</button>
+                    <input
+                      type="number"
+                      min="1"
+                      value={quantity}
+                      onChange={(e) => handleQuantityChange(item.id, e.target.value)}
+                      onBlur={() => handleQuantityBlur(item.id)}
+                    />
+                    <button onClick={() => incrementItem(item.id)}>+</button>
+                  </div>
 
-                    {/* Quantity */}
-                    <div className="cart-quantity">
-                      <button onClick={() => decrementItem(item.id)}>-</button>
-                      <input
-                        type="number"
-                        min="1"
-                        value={quantity}
-                        onChange={(e) => handleQuantityChange(item.id, e.target.value)}
-                        onBlur={() => handleQuantityBlur(item.id)}
-                      />
-                      <button onClick={() => incrementItem(item.id)}>+</button>
-                    </div>
+                  {/* Total */}
+                  <div className="cart-total">${totalPrice.toFixed(2)}</div>
 
-                    {/* Total Price */}
-                    <div className="cart-total">${totalPrice.toFixed(2)}</div>
-
-                    {/* action */}
-                    <div className="cart-action">
-                      <button className="delete-btn" onClick={() => removeCartItem(item.id)}>Delete</button>
-                    </div>
-              </li>
-             );
+                  {/* Action */}
+                  <div className="cart-action">
+                    <button className="delete-btn" onClick={() => removeCartItem(item.id)}>Delete</button>
+                  </div>
+                </li>
+              );
             })}
           </ul>
 
-          {/* 总价和下一步按钮 */}
+          {/* Summary & Next Step */}
           <div className="cart-summary-container">
             <div className="cart-summary-left">
-              <strong>Total Items:</strong> {selectedTotalQuantity}
-              <br />
+              <strong>Total Items:</strong> {selectedTotalQuantity} <br />
               <strong>Original Total Price:</strong> ${originalTotalPrice.toFixed(2)}
-              <br />
             </div>
             <div className="cart-summary-right">
-              <button onClick={caculateOrder}>Calculate Order</button>
+              <button onClick={calculateOrder}>Proceed to Checkout</button>
             </div>
           </div>
         </>

@@ -41,11 +41,7 @@
   margin-top: 5px;
 }
 
-/* 作用：
 
-创建一个小横条作为装饰线，突出每个 section 的标题。
-
-用不同的蓝色，使页面层次更丰富。 */
 
 .about-container .section-content {
   font-size: 1.1rem;

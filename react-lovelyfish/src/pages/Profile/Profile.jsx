@@ -4,13 +4,12 @@ import { useUser } from "../../contexts/UserContext";
 import "./Profile.css";
 
 export default function ProfilePage() {
-  const { user, logout, updateUser } = useUser();
-  //console.log("User from context:", user);
+  const { user, logout, updateUser } = useUser(); // Get user info & actions from context
 
-  // 控制修改密码表单显示/隐藏
+  // Control visibility of Change Password form
   const [showChangePwdForm, setShowChangePwdForm] = useState(false);
 
-  // 修改密码相关状态
+  // Password-related state
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -18,7 +17,7 @@ export default function ProfilePage() {
   const [changePwdError, setChangePwdError] = useState(null);
   const [loadingChangePwd, setLoadingChangePwd] = useState(false);
 
-  // 用户资料表单状态
+  // Profile form state
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -26,7 +25,7 @@ export default function ProfilePage() {
   const [profileError, setProfileError] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
 
-   // 初始化表单
+  // Initialize form with user info
   useEffect(() => {
     if (user) {
       setName(user.name || "");
@@ -35,181 +34,183 @@ export default function ProfilePage() {
     }
   }, [user]);
 
-  //提示框3s后自动消失
+  // Auto-hide success/error alerts after 3 seconds
   useEffect(() => {
-    if (changePwdMessage || changePwdError) {
+    if (changePwdMessage || changePwdError || profileMessage || profileError) {
       const timer = setTimeout(() => {
         setChangePwdMessage(null);
         setChangePwdError(null);
         setProfileMessage(null);
         setProfileError(null);
-      }, 3000); // 3秒后消失
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [changePwdMessage, changePwdError, profileMessage, profileError]);
-  
 
-  // 处理修改密码
+  // Handle password change
   const handleChangePassword = async (e) => {
     e.preventDefault();
-    
-    // Clear password
     setChangePwdMessage(null);
     setChangePwdError(null);
 
-    // Check the new password and confirm one
+    // Check new password and confirmation
     if (newPassword !== confirmNewPassword) {
-      setChangePwdError("新密码和确认密码不一致");
+      setChangePwdError("New password and confirmation do not match");
       return;
     }
 
+    // Password complexity: min 8 chars, uppercase, lowercase, number, special char
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     if (!passwordRegex.test(newPassword)) {
       setChangePwdError(
-        "密码必须至少8位，包含大写字母、小写字母、数字和特殊字符"
+        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character"
       );
       return;
     }
 
     setLoadingChangePwd(true);
-
     try {
       await api.post("/account/change-password", {
         oldPassword,
         newPassword,
       });
-      setChangePwdMessage("密码修改成功");
+      setChangePwdMessage("Password changed successfully");
       setOldPassword("");
       setNewPassword("");
       setConfirmNewPassword("");
       setShowChangePwdForm(false);
     } catch (err) {
-      setChangePwdError(err.response?.data?.message || "修改密码失败");
+      setChangePwdError(err.response?.data?.message || "Failed to change password");
     } finally {
       setLoadingChangePwd(false);
     }
   };
 
-  // 处理更新资料
+  // Handle profile update
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setProfileMessage(null);
     setProfileError(null);
 
     if (!name || !phone || !address) {
-      setProfileError("姓名、电话和地址不能为空");
+      setProfileError("Name, phone, and address cannot be empty");
       return;
     }
 
     setLoadingProfile(true);
     try {
       await api.post("/account/update-profile", { name, phone, address });
-      setProfileMessage("资料更新成功");
-      updateUser(); // 刷新 UserContext
+      setProfileMessage("Profile updated successfully");
+      updateUser(); // Refresh UserContext immediately
     } catch (err) {
-      setProfileError(err.response?.data?.message || "资料更新失败");
+      setProfileError(err.response?.data?.message || "Failed to update profile");
     } finally {
       setLoadingProfile(false);
     }
   };
 
-
   return (
     <div className="profile-container">
-
-      <h2>个人资料</h2>
+      <h2>Profile</h2>
 
       <div className="profile-info">
-        <form onSubmit={handleUpdateProfile} className="profile-form" autoComplete="off">
-          {profileMessage && <div className="alert alert-success">{profileMessage}</div>}
-          {profileError && <div className="alert alert-danger">{profileError}</div>}
+        {/* Profile Update Form */}
+        <form
+          onSubmit={handleUpdateProfile}
+          className="profile-form"
+          autoComplete="off"
+        >
+          {profileMessage && (
+            <div className="alert alert-success">{profileMessage}</div>
+          )}
+          {profileError && (
+            <div className="alert alert-danger">{profileError}</div>
+          )}
 
+          {/* Email (read-only) */}
           <div className="profile-field">
-            <p><strong>邮箱：</strong>{user?.email || "加载中..."}</p>
+            <p>
+              <strong>Email:</strong> {user?.email || "Loading..."}
+            </p>
+          </div>
+
+          {/* Editable fields */}
+          <div className="profile-field">
+            <label>Name</label>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </div>
 
           <div className="profile-field">
-            <label>姓名</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} required />
+            <label>Phone</label>
+            <input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
           </div>
 
           <div className="profile-field">
-            <label>电话</label>
-            <input value={phone} onChange={(e) => setPhone(e.target.value)} required />
-          </div>
-
-          <div className="profile-field">
-            <label>地址</label>
-            <input value={address} onChange={(e) => setAddress(e.target.value)} required />
+            <label>Address</label>
+            <input
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
           </div>
 
           <button type="submit" disabled={loadingProfile}>
-            {loadingProfile ? "保存中..." : "保存资料"}
+            {loadingProfile ? "Saving..." : "Save Profile"}
           </button>
         </form>
 
-
+        {/* Change Password Section */}
         <section className="change-password-section">
           <button
             className="toggle-password-btn"
             onClick={() => setShowChangePwdForm(!showChangePwdForm)}
           >
-            {showChangePwdForm ? "取消修改密码" : "修改密码"}
+            {showChangePwdForm ? "Cancel Change Password" : "Change Password"}
           </button>
 
-          
-          {/* 成功提示  */}
+          {/* Password messages */}
           {changePwdMessage && (
-            <div className="alert alert-success alert-dismissible fade show mt-3" role="alert">
-              {changePwdMessage}
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              ></button>
-            </div>
+            <div className="alert alert-success mt-3">{changePwdMessage}</div>
           )}
-          {/* 错误提示 */}
           {changePwdError && (
-            <div className="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-              {changePwdError}
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              ></button>
-            </div>
+            <div className="alert alert-danger mt-3">{changePwdError}</div>
           )}
 
+          {/* Change Password Form */}
           {showChangePwdForm && (
-          <>
             <form
               onSubmit={handleChangePassword}
               className="change-password-form"
               autoComplete="off"
             >
               <div className="password-requirements">
-                密码要求：至少8位，包含大写字母、小写字母、数字和特殊字符
+                Password must be at least 8 characters, include uppercase, lowercase, number, and special character
               </div>
               <input
                 type="password"
-                placeholder="当前密码"
+                placeholder="Current Password"
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
                 required
               />
               <input
                 type="password"
-                placeholder="新密码"
+                placeholder="New Password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
               />
               <input
                 type="password"
-                placeholder="确认新密码"
+                placeholder="Confirm New Password"
                 value={confirmNewPassword}
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
                 required
@@ -219,28 +220,25 @@ export default function ProfilePage() {
                 type="submit"
                 disabled={loadingChangePwd}
               >
-                {loadingChangePwd ? "提交中..." : "提交修改"}
+                {loadingChangePwd ? "Submitting..." : "Submit Change"}
               </button>
             </form>
-          </>
           )}
         </section>
       </div>
 
+      {/* Logout Button */}
       <button className="logout-button" onClick={logout}>
-        退出登录
+        Logout
       </button>
     </div>
   );
 }
 
-
-// 邮箱不可修改（注册时固定）
-
-// 姓名、电话、地址可编辑
-
-// 点击“保存资料”调用 /account/update-profile
-
-// 调用 updateUser() 后，UserContext 立即刷新
-
-// 修改密码功能保留
+/* Notes:
+- Email is read-only and cannot be changed.
+- Name, phone, and address are editable.
+- "Save Profile" posts to /account/update-profile and updates UserContext.
+- Change password requires old password and validates new password complexity.
+- Alerts auto-hide after 3 seconds.
+*/

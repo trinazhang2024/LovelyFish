@@ -6,7 +6,7 @@ import './OrdersAdminPage.css';
 
 export default function OrdersAdminPage() {
   const [orders, setOrders] = useState([]);
-  const [loadingOrders, setLoadingOrders] = useState(false); // 表格加载状态
+  const [loadingOrders, setLoadingOrders] = useState(false); // Table loading state
   const [savedFields, setSavedFields] = useState({});
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("userId");
@@ -14,20 +14,19 @@ export default function OrdersAdminPage() {
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
   const [totalItems, setTotalItems] = useState(0);
-  const pageSize = 10; // 每页显示条数
+  const pageSize = 10; // Number of items per page
 
   const timerRef = useRef(null);
 
-  // 防抖 + 请求
+  // Debounce search and fetch orders
   useEffect(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
 
     timerRef.current = setTimeout(async () => {
       try {
-        setLoadingOrders(true); // 只控制表格 loading
-        const params = { page, pageSize: 10 };
+        setLoadingOrders(true); // Only control table loading
+        const params = { page, pageSize };
         if (userId) params.userId = userId;
         if (search) params.search = search;
 
@@ -36,7 +35,7 @@ export default function OrdersAdminPage() {
         setTotalPages(res.data.totalPages || 1);
         setTotalItems(res.data.totalItems || 0); 
       } catch (err) {
-        console.error("获取订单失败:", err);
+        console.error("Failed to fetch orders:", err);
       } finally {
         setLoadingOrders(false);
       }
@@ -45,22 +44,25 @@ export default function OrdersAdminPage() {
     return () => clearTimeout(timerRef.current);
   }, [userId, search, page]);
 
+  // Flash effect after saving a field
   const flashSaved = (orderId, field) => {
     const key = `${orderId}-${field}`;
     setSavedFields(prev => ({ ...prev, [key]: true }));
     setTimeout(() => setSavedFields(prev => ({ ...prev, [key]: false })), 2000);
   };
 
+  // Update order status
   const updateStatus = async (id, status) => {
     try {
       await api.put(`/orders/${id}/status`, status, { headers: { "Content-Type": "application/json" } });
       setOrders(prev => prev.map(o => (o.id === id ? { ...o, status } : o)));
       flashSaved(id, "status");
     } catch (err) {
-      console.error("更新状态失败", err);
+      console.error("Failed to update status", err);
     }
   };
 
+  // Update shipping information
   const updateShipping = async (id, courier, trackingNumber) => {
     try {
       await api.put(`/orders/${id}/shipping`, { courier, trackingNumber });
@@ -68,27 +70,31 @@ export default function OrdersAdminPage() {
       flashSaved(id, "courier");
       flashSaved(id, "trackingNumber");
     } catch (err) {
-      console.error("更新快递信息失败", err);
+      console.error("Failed to update shipping info", err);
     }
   };
 
+  // Update local field value before saving
   const updateOrderField = (id, field, value) => {
     setOrders(prev => prev.map(o => (o.id === id ? { ...o, [field]: value } : o)));
   };
+
   console.log(page, totalPages);
 
   return (
     <div className="p-4">
+      {/* Breadcrumb */}
       <nav className="breadcrumb">
-        <Link to="/admin/dashboard">后台管理</Link> &gt;{" "}
-        <Link to="/admin/orders">订单管理</Link> &gt;{" "}
-        <span>{userId ? `用户 ${userId} 的订单` : "所有订单"}</span>
+        <Link to="/admin/dashboard">Admin Dashboard</Link> &gt;{" "}
+        <Link to="/admin/orders">Orders Management</Link> &gt;{" "}
+        <span>{userId ? `Orders for User ${userId}` : "All Orders"}</span>
       </nav>
 
       <h1 className="text-2xl font-bold mb-4">
-        订单管理 {userId && `(用户ID: ${userId})`}
+        Orders Management {userId && `(User ID: ${userId})`}
       </h1>
 
+      {/* Search input */}
       <div className="search-container mb-4">
         <input
           type="text"
@@ -99,24 +105,25 @@ export default function OrdersAdminPage() {
         />
       </div>
 
+      {/* Orders Table */}
       <div className="admin-table-container" style={{ position: "relative" }}>
-        {loadingOrders && <div className="table-loading-overlay">加载中...</div>}
+        {loadingOrders && <div className="table-loading-overlay">Loading...</div>}
         {orders.length === 0 && !loadingOrders ? (
-          <p>None Orders</p>
+          <p>No Orders</p>
         ) : (
           <table className="admin-table">
             <thead>
               <tr>
                 <th>OrderID</th>
-                <th>CustomerName</th>
-                <th>PhoneNumber</th>
-                <th>ContactPhone</th>
+                <th>Customer Name</th>
+                <th>Phone Number</th>
+                <th>Contact Phone</th>
                 <th>Shipping Address</th>
-                <th>TotalPrice</th>
+                <th>Total Price</th>
                 <th>Status</th>
                 <th>Courier</th>
-                <th>TrackingNumber</th>
-                <th>CreatedAt</th>
+                <th>Tracking Number</th>
+                <th>Created At</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -134,6 +141,7 @@ export default function OrdersAdminPage() {
                     <td>{order.shippingAddress}</td>
                     <td>${order.totalPrice.toFixed(2)}</td>
 
+                    {/* Status Dropdown */}
                     <td className={statusSaved ? "saved-flash" : ""}>
                       <select
                         value={order.status || "pending"}
@@ -146,6 +154,7 @@ export default function OrdersAdminPage() {
                       </select>
                     </td>
 
+                    {/* Courier input */}
                     <td className={courierSaved ? "saved-flash" : ""}>
                       <input
                         value={order.courier || ""}
@@ -154,6 +163,7 @@ export default function OrdersAdminPage() {
                       />
                     </td>
 
+                    {/* Tracking number input */}
                     <td className={trackingSaved ? "saved-flash" : ""}>
                       <input
                         value={order.trackingNumber || ""}
@@ -164,6 +174,7 @@ export default function OrdersAdminPage() {
 
                     <td>{new Date(order.createdAt).toLocaleString()}</td>
 
+                    {/* View Details Button */}
                     <td>
                       <Link
                         to={`/admin/orders/${order.id}`}
@@ -180,9 +191,9 @@ export default function OrdersAdminPage() {
         )}
       </div>
 
-      {/* 分页按钮 */}
+      {/* Pagination */}
       <div className="pagination mt-4">
-        <span>共 {totalItems} 条，每页 {pageSize} 条</span>
+        <span>Total {totalItems} items, {pageSize} per page</span>
         <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Previous Page</button>
         <span>{page} / {totalPages}</span>
         <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>Next Page</button>

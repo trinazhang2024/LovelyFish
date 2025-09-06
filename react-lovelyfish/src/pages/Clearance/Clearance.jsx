@@ -9,17 +9,17 @@ import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import '../../components/AddToCartButton/AddToCartButton.css'
 
 function Clearance() {
-  const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [error, setError] = useState(null);
-  const { addToCart } = useCart();
+  const [products, setProducts] = useState([]); // Clearance products
+  const [page, setPage] = useState(1); // Current page
+  const [totalPages, setTotalPages] = useState(1); // Total pages from backend
+  const [loading, setLoading] = useState(true); // Initial loading state
+  const [loadingMore, setLoadingMore] = useState(false); // Load more state
+  const [error, setError] = useState(null); // Error state
+  const { addToCart } = useCart(); // Add to cart function from context
 
-  const pageSize = 8;
+  const pageSize = 8; // Items per page
 
-  // ✅ 初次加载第一页
+  // ----------------- Fetch first page on mount -----------------
   useEffect(() => {
     const fetchFirstPage = async () => {
       try {
@@ -38,7 +38,7 @@ function Clearance() {
     fetchFirstPage();
   }, []);
 
-  // ✅ Load More
+  // ----------------- Load more products -----------------
   const handleLoadMore = async () => {
     if (page >= totalPages) return;
     const nextPage = page + 1;
@@ -56,24 +56,28 @@ function Clearance() {
     }
   };
 
+  // ----------------- Render loading state -----------------
   if (loading)
     return (
-      <Container className="clearance-loading">
+      <Container className="clearance-loading text-center my-5">
         <Spinner animation="border" variant="primary" />
         <p>Loading clearance products...</p>
       </Container>
     );
 
+  // ----------------- Render error state -----------------
   if (error)
     return (
-      <Container className="clearance-error">
+      <Container className="clearance-error text-center my-5">
         <Alert variant="danger">{error}</Alert>
       </Container>
     );
 
+  // ----------------- Render main clearance grid -----------------
   return (
-    <Container className="clearance-section">
-      <div className="clearance-header">
+    <Container className="clearance-section my-4">
+      {/* Header */}
+      <div className="clearance-header mb-3">
         <h2><BsTagFill className="clearance-icon" /> Clearance Sale</h2>
       </div>
 
@@ -88,10 +92,16 @@ function Clearance() {
                 : product.price.toFixed(2);
 
               return (
-                <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="clearance-col">
-                  <Card className="clearance-card">
-                    {product.discountPercent > 0 && <Badge bg="danger" className="clearance-badge">{product.discountPercent}% OFF</Badge>}
+                <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="clearance-col mb-4">
+                  <Card className="clearance-card h-100">
+                    {/* Discount badge */}
+                    {product.discountPercent > 0 && (
+                      <Badge bg="danger" className="clearance-badge">
+                        {product.discountPercent}% OFF
+                      </Badge>
+                    )}
 
+                    {/* Product image linking to product page */}
                     <Link to={`/product/${product.id}`} className="clearance-link">
                       <Card.Img
                         variant="top"
@@ -100,9 +110,11 @@ function Clearance() {
                       />
                     </Link>
 
-                    <Card.Body className="clearance-body">
+                    <Card.Body className="clearance-body d-flex flex-column justify-content-between">
+                      {/* Product title */}
                       <Card.Title className="clearance-title">{product.title}</Card.Title>
 
+                      {/* Price display */}
                       {product.discountPercent > 0 ? (
                         <>
                           <Card.Text className="clearance-oldprice">${product.price.toFixed(2)}</Card.Text>
@@ -112,11 +124,12 @@ function Clearance() {
                         <Card.Text className="clearance-newprice">${discountedPrice}</Card.Text>
                       )}
 
-                      <div className="clearance-actions">
+                      {/* Actions: Shop Now & Add to Cart */}
+                      <div className="clearance-actions mt-auto d-flex justify-content-between">
+                        <Link to={`/product/${product.id}`} className="buy-button btn btn-outline-primary">
+                          Shop Now
+                        </Link>
 
-                        <Link to={`/product/${product.id}`} className="buy-button">Shop Now</Link>
-
-                        {/* 使用封装好的 AddToCartButton */}
                         <AddToCartButton
                           productId={product.id}
                           productTitle={product.title}
@@ -130,6 +143,7 @@ function Clearance() {
             })}
           </Row>
 
+          {/* Load more button */}
           {page < totalPages && (
             <div className="clearance-loadmore text-center my-3">
               <Button variant="outline-primary" onClick={handleLoadMore} disabled={loadingMore}>

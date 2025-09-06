@@ -1,28 +1,28 @@
-/* AdminLogin.css */
+/* ====== Admin Login Page Styles ====== */
 
-/* 背景渐变全屏 */
+/* Fullscreen background with gradient */
 .admin-login-page {
-  min-height: 100vh;
+  min-height: 100vh; /* Full height */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  background: linear-gradient(135deg, #4f46e5, #3b82f6); /* Blue gradient */
   padding: 1rem;
 }
 
-/* 登录表单容器 */
+/* Login form container (card style) */
 .admin-login-form {
   width: 100%;
   max-width: 400px;
   background-color: #ffffff;
   padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  border-radius: 16px; /* Rounded corners */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2); /* Strong shadow */
   text-align: center;
   transition: all 0.3s ease;
 }
 
-/* 标题 */
+/* Title */
 .admin-login-form h2 {
   font-size: 2rem;
   font-weight: bold;
@@ -30,7 +30,7 @@
   color: #111827;
 }
 
-/* 输入框 */
+/* Input fields (email & password) */
 .admin-login-form input[type="email"],
 .admin-login-form input[type="password"] {
   width: 100%;
@@ -42,14 +42,15 @@
   transition: all 0.3s ease;
 }
 
+/* Input focus effect */
 .admin-login-form input[type="email"]:focus,
 .admin-login-form input[type="password"]:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59,130,246,0.2);
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.2); /* Glow effect */
 }
 
-/* 按钮 */
+/* Submit button */
 .admin-login-form button {
   width: 100%;
   background-color: #3b82f6;
@@ -62,19 +63,20 @@
   transition: background-color 0.3s ease, transform 0.2s;
 }
 
+/* Button hover effect */
 .admin-login-form button:hover {
   background-color: #2563eb;
-  transform: translateY(-2px);
+  transform: translateY(-2px); /* Slight lift */
 }
 
-/* 错误信息 */
+/* Error message text */
 .admin-login-form p.error {
   color: #ef4444;
   margin-bottom: 1rem;
   font-weight: 500;
 }
 
-/* 忘记密码链接 */
+/* Forgot password link */
 .admin-login-form .forgot-password {
   display: block;
   text-align: right;
@@ -90,7 +92,7 @@
   color: #2563eb;
 }
 
-/* 响应式 */
+/* ====== Responsive design ====== */
 @media (max-width: 768px) {
   .admin-login-form {
     max-width: 90%;
@@ -106,7 +108,7 @@
 @media (max-width: 500px) {
   .admin-login-page {
     padding: 2rem 1rem;
-    align-items: flex-start; /* 顶部留白 */
+    align-items: flex-start; /* Leave space at top */
   }
 
   .admin-login-form {
@@ -114,8 +116,8 @@
     max-width: 100%;
     padding: 1.5rem;
     border-radius: 12px;
-    margin-top: 2rem; /* 顶部间距 */
-    margin-bottom: 2rem; /* 底部留白 */
+    margin-top: 2rem; /* Top spacing */
+    margin-bottom: 2rem; /* Bottom spacing */
   }
 
   .admin-login-form h2 {

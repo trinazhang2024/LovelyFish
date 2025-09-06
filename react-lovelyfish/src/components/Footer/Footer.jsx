@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.css'; // 引入 Footer 的样式
+import './Footer.css'; 
 
 const Footer = () => {
   return (

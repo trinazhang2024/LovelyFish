@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import api from "../../../API/axios";
-import "./AdminForgotPassword.css"; // 新建 CSS 文件
+import "./AdminForgotPassword.css"; 
 
 export default function AdminForgotPassword() {
   const [email, setEmail] = useState("");

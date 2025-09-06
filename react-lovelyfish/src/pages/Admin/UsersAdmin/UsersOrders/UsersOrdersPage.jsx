@@ -5,24 +5,28 @@ import "../../../Admin/AdminPages.css";
 import './UsersOrdersPage.css';
 
 export default function UsersOrdersPage() {
-  const { userId } = useParams();
+  const { userId } = useParams(); // Get the userId from URL
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const pageSize = 10;
+  const pageSize = 10; // Number of orders per page
+
+
+  // Fetch user orders from backend
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
         const res = await api.get(`/admin/users/${userId}/orders`, {
-          params: { page, pageSize }
+          params: { page, pageSize },
         });
-        setOrders(res.data.items || []);
-        setTotalPages(res.data.totalPages || 1);
+
+        setOrders(res.data.items || []);       // Save orders
+        setTotalPages(res.data.totalPages || 1); // Save total pages
       } catch (err) {
-        console.error("获取用户订单失败:", err);
+        console.error("Failed to fetch user orders:", err);
       } finally {
         setLoading(false);
       }
@@ -30,56 +34,63 @@ export default function UsersOrdersPage() {
     fetchOrders();
   }, [userId, page]);
 
-  if (loading) return <p className="loading-text">加载中...</p>;
-  if (orders.length === 0) return <p className="no-orders">该用户暂无订单</p>;
+ 
+  // Loading and empty state
+ 
+  if (loading) return <p className="loading-text">Loading...</p>;
+  if (orders.length === 0) return <p className="no-orders">This user has no orders.</p>;
 
   return (
     <div className="users-orders-page">
+      {/* Breadcrumb navigation */}
       <nav className="breadcrumb">
-        <Link to="/admin/dashboard">后台管理</Link> &gt;{" "}
-        <Link to="/admin/users">用户管理</Link> &gt; <span>订单列表</span>
+        <Link to="/admin/dashboard">Admin Dashboard</Link> &gt;{" "}
+        <Link to="/admin/users">User Management</Link> &gt; <span>Order List</span>
       </nav>
 
-      <h1 className="page-title">用户订单列表</h1>
+      <h1 className="page-title">User Order List</h1>
 
+      {/*Orders table*/}
       <div className="admin-table-container">
         <table className="admin-table">
           <thead>
             <tr>
-              <th>订单ID</th>
-              <th>客户姓名</th>
-              <th>电话</th>
-              <th>地址</th>
-              <th>总金额</th>
-              <th>状态</th>
-              <th>快递/追踪号</th>
-              <th>下单时间</th>
+              <th>Order ID</th>
+              <th>Customer Name</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>Total Price</th>
+              <th>Status</th>
+              <th>Courier / Tracking</th>
+              <th>Order Time</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((o) => (
               <tr key={o.id}>
-                <td data-label="订单ID">{o.id}</td>
-                <td data-label="客户姓名">{o.customerName}</td>
-                <td data-label="电话">{o.phoneNumber}</td>
-                <td data-label="地址">{o.shippingAddress}</td>
-                <td data-label="总金额">{o.totalPrice}</td>
-                <td data-label="状态">{o.status}</td>
-                <td data-label="快递/追踪号">
+                {/* Use data-label for mobile card layout */}
+                <td data-label="Order ID">{o.id}</td>
+                <td data-label="Customer Name">{o.customerName}</td>
+                <td data-label="Phone">{o.phoneNumber}</td>
+                <td data-label="Address">{o.shippingAddress}</td>
+                <td data-label="Total Price">${o.totalPrice}</td>
+                <td data-label="Status">{o.status}</td>
+                <td data-label="Courier / Tracking">
                   {o.courier} {o.trackingNumber}
                 </td>
-                <td data-label="下单时间">{new Date(o.createdAt).toLocaleString()}</td>
+                <td data-label="Order Time">{new Date(o.createdAt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* 返回按钮 */}
+      {/* Back button */}
       <Link to="/admin/users" className="btn return-button">
-        Back to UserList
+        Back to User List
       </Link>
 
+      {/*Pagination buttons */}
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, i) => (
           <button

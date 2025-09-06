@@ -5,18 +5,17 @@ import './AdminResetPassword.css'
 
 export default function AdminResetPassword() {
   const [searchParams] = useSearchParams();
-  const email = searchParams.get("email");
-  const token = searchParams.get("token");
+  const email = searchParams.get("email"); // Extract email from URL query
+  const token = searchParams.get("token"); // Extract token from URL query
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(""); // Display success/error messages
+  const [loading, setLoading] = useState(false); // Loading state during API call
   const navigate = useNavigate();
 
-  
-  //计算密码强度
-  
+  // ------------------- Password Strength Calculation -------------------
+  // Returns a number between 1 and 5 based on criteria: length, uppercase, lowercase, digit, special char
   const calculateStrength = (password) => {
     let strength = 0;
     if (password.length >= 8) strength++;
@@ -24,25 +23,32 @@ export default function AdminResetPassword() {
     if (/[a-z]/.test(password)) strength++;
     if (/\d/.test(password)) strength++;
     if (/[\W_]/.test(password)) strength++;
-    return strength; // 1 ~ 5
+    return strength;
   };
   const strength = calculateStrength(newPassword);
 
-
-
+  // ------------------- Form Submission -------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if new password and confirm password match
     if (newPassword !== confirmPassword) {
       setMessage("Passwords do not match");
       return;
-    } setLoading(true);
+    }
+
+    setLoading(true);
     try {
+      // Call backend API to reset password
       const res = await api.post("/admin/reset-password", {
         email,
         token,
         newPassword,
       });
+
       setMessage(res.data.message || "Password reset successful");
+
+      // Redirect to admin login after 1 second
       setTimeout(() => navigate("/admin/login"), 1000);
     } catch (err) {
       setMessage("Failed to reset password");
@@ -51,10 +57,13 @@ export default function AdminResetPassword() {
     }
   };
 
+  // ------------------- JSX Render -------------------
   return (
     <div className="admin-reset-page">
       <form onSubmit={handleSubmit} className="admin-reset-form">
         <h2>Reset Password</h2>
+
+        {/* New Password Input */}
         <input
           type="password"
           placeholder="New Password"
@@ -63,6 +72,7 @@ export default function AdminResetPassword() {
           required
         />
 
+        {/* Password Strength Bar */}
         <div className="password-strength">
           <div
             className={`password-strength-bar strength-${strength}`}
@@ -70,6 +80,7 @@ export default function AdminResetPassword() {
           ></div>
         </div>
 
+        {/* Confirm Password Input */}
         <input
           type="password"
           placeholder="Confirm New Password"
@@ -77,10 +88,14 @@ export default function AdminResetPassword() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
+
+        {/* Submit Button */}
         <button type="submit" disabled={loading}>
           {loading ? "Resetting..." : "Reset Password"}
         </button>
-        {message && <p >{message}</p>}
+
+        {/* Message Display */}
+        {message && <p>{message}</p>}
       </form>
     </div>
   );

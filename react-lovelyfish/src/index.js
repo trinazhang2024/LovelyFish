@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import App from './App';
-import './styles/global.css'; // 引入全局样式
+import './styles/global.css'; 
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -1,10 +1,10 @@
 // src/api.js
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = "https://lovelyfish-backend-esgtdkf7h0e2ambg.australiaeast-01.azurewebsites.net/api/Product";
 
-// 获取所有产品
+// Get all products
 export async function getAllProducts() {
   const res = await fetch(API_BASE);
-  if (!res.ok) throw new Error("获取产品失败");
+  if (!res.ok) throw new Error("Failed to fetch products");
   return res.json();
 }

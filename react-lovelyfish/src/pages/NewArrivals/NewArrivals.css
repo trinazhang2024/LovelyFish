@@ -5,15 +5,14 @@
   padding: 20px;
 }
 
-/* 新品区卡片容器 */
+/* Grid layout for new arrivals cards */
 .newarrivals-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 自动多列 */
-  gap: 1rem; /* 卡片之间的间距 */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* auto columns */
+  gap: 1rem; /* space between cards */
 }
 
-
-/* 卡片 */
+/* Card */
 .newarrivals-card {
   border-radius: 0.5rem;
   overflow: hidden;
@@ -29,14 +28,14 @@
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-/* 图片 */
+/* Image */
 .na-img {
   width: 100%;
   height: 250px;
   object-fit: cover;
 }
 
-/* 卡片主体 */
+/* Card body */
 .na-body {
   padding: 1rem;
   flex: 1;
@@ -46,7 +45,7 @@
   text-align: center;
 }
 
-/* 标题 */
+/* Title */
 .na-title {
   font-size: 1rem;
   font-weight: 600;
@@ -57,7 +56,7 @@
   margin-bottom: 0.5rem;
 }
 
-/* 原价 / 折扣价 / 正价 */
+/* Price: original / discounted */
 .na-oldprice {
   font-size: 1rem;
   color: #6c757d;
@@ -65,14 +64,15 @@
   margin: 0.5rem 0 0;
 }
 
-.na-newprice, .na-price {
+.na-newprice,
+.na-price {
   font-size: 1.1rem;
-  color: #dc3545; /* bootstrap danger */
+  color: #dc3545;
   font-weight: bold;
   margin: 0.5rem 0 0;
 }
 
-/* 底部按钮 */
+/* Bottom action buttons */
 .na-actions {
   margin-top: auto;
   display: flex;
@@ -106,7 +106,7 @@
   border: none;
 }
 
-/* Badge */
+/* Badges */
 .na-badge {
   position: absolute;
   top: 0.5rem;
@@ -132,7 +132,7 @@
   margin-bottom: 1rem;
 }
 
-/* Load more 按钮 */
+/* Load More button */
 .na-loadmore {
   text-align: center;
   margin-top: 1.5rem;
@@ -147,7 +147,7 @@
   cursor: pointer;
 }
 
-/* 浮动提示框 */
+/* Floating alert box */
 .na-alert {
   position: fixed;
   top: 50%;
@@ -166,7 +166,7 @@
   animation: fadein 0.3s, fadeout 0.5s 2.5s;
 }
 
-/* 动画 */
+/* Fade in/out animations */
 @keyframes fadein {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -177,21 +177,21 @@
   to { opacity: 0; transform: translateY(-10px); }
 }
 
-@media (min-width: 992px) { /* 大屏幕 */
+/* Responsive grids */
+@media (min-width: 992px) { /* large screens */
   .newarrivals-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media (min-width: 768px) and (max-width: 991px) { /* 平板 */
+@media (min-width: 768px) and (max-width: 991px) { /* tablets */
   .newarrivals-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 767px) { /* 手机 */
+@media (max-width: 767px) { /* mobile */
   .newarrivals-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-

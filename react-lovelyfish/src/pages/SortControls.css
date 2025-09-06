@@ -33,7 +33,7 @@
   background-color: #0088cc;
 }
 
-/* 单选排序时隐藏 label */
+/* hide label */
 .sort-controls.single-option label {
   display: none;
 }
