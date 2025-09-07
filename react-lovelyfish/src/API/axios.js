@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Read backend API URL from environment variable
 // REACT_APP_API_BASE_URL should be set in .env or Azure frontend environment variables
-const baseURL = process.env.REACT_APP_API_BASE_URL;
+const baseURL = "https://lovelyfish-backend-esgtdkf7h0e2ambg.australiaeast-01.azurewebsites.net/api";
 
 // Create axios instance
 const api = axios.create({
