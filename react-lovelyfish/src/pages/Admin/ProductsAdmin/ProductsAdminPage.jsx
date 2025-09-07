@@ -32,7 +32,7 @@ export default function ProductsAdminPage() {
     isClearance: false
   });
 
-  const IMAGE_BASE_URL = "https://localhost:7148/uploads/"; // Change to your domain after deployment
+  const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads/"; // Change to your domain after deployment
 
   // -------------------- Fetch Products --------------------
   const fetchProducts = useCallback(async (searchTerm = "", pageNum = 1) => {
