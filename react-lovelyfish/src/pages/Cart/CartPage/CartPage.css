@@ -1,25 +1,25 @@
+/* ------------------ PC端 / 默认 ------------------ */
 
-
-/* Main container centered with padding */
+/* Main container */
 .cart-container {
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px 30px;
   background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
 
-/* Page title */
+/* Title */
 .cart-container h2 {
   text-align: center;
   color: #2c3e50;
   margin-bottom: 20px;
 }
 
-/* Common button styles */
+/* Buttons */
 .cart-container button {
   cursor: pointer;
   border: none;
@@ -31,16 +31,6 @@
   transition: background-color 0.2s;
 }
 
-/* Quantity buttons (+/-) size */
-.cart-container .cart-quantity button {
-  width: 30px;
-  height: 30px;
-  line-height: 30px;   /* vertical center */
-  text-align: center;  /* horizontal center */
-  padding: 0;
-}
-
-/* Button hover effect */
 .cart-container button:hover {
   background-color: #2980b9;
 }
@@ -54,7 +44,7 @@
   background-color: #c0392b;
 }
 
-/* Cart list table style */
+/* Cart list table */
 .cart-container .cart-list {
   list-style: none;
   padding: 0;
@@ -62,7 +52,6 @@
   width: 100%;
 }
 
-/* Cart header and cart item row layout */
 .cart-container .cart-header,
 .cart-container .cart-item {
   display: grid;
@@ -72,31 +61,28 @@
   padding: 10px 0;
 }
 
-/* Header row style */
 .cart-container .cart-header {
   font-weight: bold;
   border-bottom: 2px solid #ddd;
 }
 
-/* Individual cart item row */
 .cart-container .cart-item {
   border-bottom: 1px solid #eee;
   padding: 10px 0;
 }
 
-/* Checkbox centered */
+/* Checkbox */
 .cart-container .cart-select {
   text-align: center;
 }
 
-/* Product image and name horizontal alignment */
+/* Product image + name */
 .cart-container .cart-product {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Product images */
 .cart-container .cart-item-image {
   width: 50px;
   height: 50px;
@@ -104,13 +90,7 @@
   border-radius: 5px;
 }
 
-.cart-item-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-}
-
-/* Price, total, quantity, and action buttons centered */
+/* Price / total / quantity / action */
 .cart-container .cart-price,
 .cart-container .cart-total,
 .cart-container .cart-quantity,
@@ -118,10 +98,9 @@
   text-align: center;
 }
 
-/* Quantity input and +/- buttons horizontal alignment */
 .cart-container .cart-quantity {
   display: flex;
-  align-items: center;   /* vertical center */
+  align-items: center;
   justify-content: center;
   gap: 5px;
 }
@@ -130,13 +109,13 @@
   width: 50px;
   text-align: center;
   height: 32px;
-  line-height: 32px;    /* match height for vertical center */
+  line-height: 32px;
   padding: 4px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-/* Cart summary and next step button */
+/* Cart summary */
 .cart-container .cart-summary-container {
   display: flex;
   justify-content: space-between;
@@ -156,39 +135,84 @@
   font-size: 16px;
 }
 
-
-/* Responsive: Mobile view */
-
+/* ------------------ 手机端 / 响应式 ------------------ */
 @media (max-width: 768px) {
-  /* Make grid rows stack vertically */
-  .cart-container .cart-header,
-  .cart-item {
-    grid-template-columns: 1fr;
-    gap: 5px;
-  }
-
-  /* Cart item card styling */
+  /* 将 cart-item 改为卡片化布局 */
   .cart-container .cart-item {
-    padding: 15px 10px;
-    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
     background-color: #fff;
-    border-radius: 8px;
-    margin-bottom: 10px;
   }
 
-  /* Product image and name horizontal alignment */
+  /* 隐藏表头 */
+  .cart-container .cart-header {
+    display: none;
+  }
+
+  /* 产品图片 + 名称水平排列 */
   .cart-container .cart-product {
-    flex-direction: row;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  /* Cart summary stacks vertically */
+  /* 图片放大 */
+  .cart-container .cart-item-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* 价格、数量、总价、操作按钮左对齐 */
+  .cart-container .cart-price,
+  .cart-container .cart-quantity,
+  .cart-container .cart-total,
+  .cart-container .cart-action {
+    text-align: left;
+  }
+
+  /* 数量横向排列 */
+  .cart-container .cart-quantity {
+    justify-content: flex-start;
+  }
+
+  /* Cart summary 垂直排列 */
   .cart-container .cart-summary-container {
     flex-direction: column;
-    align-items: stretch;
     gap: 10px;
+    align-items: stretch;
   }
 
   .cart-container .cart-summary-right {
     text-align: center;
+  }
+
+  /* 按钮和输入框放大 */
+  .cart-container .cart-quantity input {
+    width: 60px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .cart-container .cart-quantity button {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .cart-container .cart-summary-right button {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+  }
+
+  /* 列表间距 */
+  .cart-container .cart-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 }
