@@ -8,7 +8,7 @@ export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const { login } = useUser(); // ✅ Get login function from context
 
   const handleSubmit = async (e) => {
@@ -23,7 +23,7 @@ export default function AdminLogin() {
         // Example response: { name, email, roles: ["Admin"] }
         
         login(meRes.data); // ✅ Update UserContext.user
-        navigate("/admin/dashboard"); // Redirect to admin dashboard
+        //navigate("/admin/dashboard"); // Redirect to admin dashboard
       }
     } catch (err) {
       setError("Login failed, please check your email or password");
