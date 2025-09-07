@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../../../API/axios";
 import { useUser } from "../../../contexts/UserContext"; // ✅ Import UserContext
 import "./LoginAdminPage.css";
