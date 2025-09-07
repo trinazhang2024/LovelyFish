@@ -10,8 +10,9 @@ export const UserProvider = ({ children }) => {
   
   // Simple login function: set the current user
   // login(userData) simply sets the current user state; front-end can use /account/me response {name, email}.
-  const login = (userData) => {
-    setUser(userData);
+  const login = async(userData) => {
+    setUser(userData); // temporarily store the user data
+    await updateUser(); // ensure that roles and permissions are updated immediately
   };
 
   // Logout: call API to clear backend cookie and reset user
