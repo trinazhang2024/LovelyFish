@@ -239,7 +239,7 @@ export default function ConfirmOrderPage() {
 
               const getProductImage = (product) => {
                 if (product?.images?.length > 0) {
-                  return `${IMAGE_BASE_URL}${product.images[0].fileName}`;
+                  return product.image[0].fileUrl;
                 }
                 return `${IMAGE_BASE_URL}placeholder.png`;
               };

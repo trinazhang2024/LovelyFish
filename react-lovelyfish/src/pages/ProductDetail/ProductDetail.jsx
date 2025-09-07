@@ -6,9 +6,6 @@ import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import api from '../../API/axios';
 import './ProductDetail.css';
 
-// Base URL for uploaded product images
-const baseUrl = process.env.REACT_APP_API_BASE_UPLOADS;
-
 const ProductDetail = () => {
   const { id } = useParams(); // Get product ID from URL
   const { addToCart } = useCart(); // Cart context
@@ -26,9 +23,9 @@ const ProductDetail = () => {
         const data = res.data;
 
         // Map image file names to full URLs
-        const imagesWithUrl = data.imageUrls?.map(fileName => ({
-          fileName,
-          url: baseUrl + fileName
+        const imagesWithUrl = data.imageUrls?.map(url => ({
+          fileName:url,
+          url
         })) || [];
 
         setProduct({ ...data, images: imagesWithUrl });

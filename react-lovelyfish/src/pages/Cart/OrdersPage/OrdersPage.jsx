@@ -83,7 +83,7 @@ export default function OrdersPage() {
         
         const getProductImage = (item) => {
           if (item.mainImageUrl) {
-            return `${IMAGE_BASE_URL}${item.mainImageUrl}`;
+            return product.image[0].fileUrl;
           }
           return `${IMAGE_BASE_URL}placeholder.png`;
         };
@@ -130,7 +130,7 @@ export default function OrdersPage() {
                     className="order-item-image"
                     onError={(e) => {
                       if (!e.currentTarget.dataset.error) {
-                        e.currentTarget.src = "/uploads/placeholder.png";
+                        e.currentTarget.src = "placeholder.png";
                         e.currentTarget.dataset.error = "true";
                       }
                     }}
