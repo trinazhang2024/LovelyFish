@@ -13,6 +13,7 @@ export default function OrdersPage() {
     const fetchOrders = async () => {
       try {
         const res = await api.get("/orders/my"); // Call backend OrdersController
+        console.log("Fetched orders:", res.data);
         setOrders(res.data); // Store returned orders
       } catch (err) {
         console.error("Failed to fetch orders:", err);
