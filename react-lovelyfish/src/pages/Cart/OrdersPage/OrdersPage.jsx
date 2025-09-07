@@ -79,7 +79,6 @@ export default function OrdersPage() {
         // Amount saved
         const saved = originalTotal - finalTotal;
 
-        const IMAGE_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS;
         
         const getProductImage = (item) => {
             return item.mainImageUrl; //the backend returns the full path and placeholder logical
