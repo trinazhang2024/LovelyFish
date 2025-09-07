@@ -43,6 +43,8 @@ export default function ProductsAdminPage() {
       });
 
       const productsData = res.data.items || [];
+      console.log('productsData :', productsData);
+      
 
       // Map backend image objects to imageUrls
       const mappedProducts = productsData.map(p => {
