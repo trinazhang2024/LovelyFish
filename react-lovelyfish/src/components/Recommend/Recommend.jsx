@@ -10,7 +10,9 @@ const Recommend = () => {
 
   useEffect(() => {
     api.get('/categories')   // 调你的后端接口
+    
       .then(res => {
+        console.log('Categories API response:', res.data); // ← 打印返回值
         setCategories(res.data);
         setLoading(false);
       })
