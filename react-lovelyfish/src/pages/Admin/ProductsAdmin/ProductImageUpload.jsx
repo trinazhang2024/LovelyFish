@@ -36,12 +36,35 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
   };
 
   // Remove image from the list
-  const removeImage = (index) => {
-    setImageUrls(prev => {
-      const newArr = [...prev];
-      newArr.splice(index, 1);
-      return newArr;
-    });
+  // const removeImage = (index) => {
+  //   setImageUrls(prev => {
+  //     const newArr = [...prev];
+  //     newArr.splice(index, 1);
+  //     return newArr;
+  //   });
+  // };
+  const removeImage = async (index) => {
+    const fileUrl = imageUrls[index];
+  
+    // Extract fileName from full URL
+    const fileName = fileUrl.split("/").pop();
+  
+    try {
+      // Call backend to delete file
+      await api.delete(`/Upload/delete/${fileName}`);
+  
+      // Update local state
+      setImageUrls(prev => {
+        const newArr = [...prev];
+        newArr.splice(index, 1);
+        return newArr;
+      });
+  
+      console.log("Deleted image:", fileName);
+    } catch (err) {
+      console.error("Failed to delete image:", err);
+      alert("Failed to delete image from server");
+    }
   };
 
   return (

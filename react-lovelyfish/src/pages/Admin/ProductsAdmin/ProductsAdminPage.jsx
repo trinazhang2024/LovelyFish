@@ -32,8 +32,6 @@ export default function ProductsAdminPage() {
     isClearance: false
   });
 
-  const IMAGE_BASE_URL = "https://lovelyfishstorage2025.blob.core.windows.net/uploads/"; // Change to your domain after deployment
-
   // -------------------- Fetch Products --------------------
   const fetchProducts = useCallback(async (searchTerm = "", pageNum = 1) => {
     setLoading(true);
@@ -49,12 +47,13 @@ export default function ProductsAdminPage() {
       // Map backend image objects to imageUrls
       const mappedProducts = productsData.map(p => {
         console.log("Product ID:", p.id);
-        console.log("Original images:", p.images);
-        console.log("Mapped imageUrls:", (p.images || []).map(img => img.fileName));
+        console.log("Original images:", p.imageUrls);
+        console.log("Mapped imageUrls:", (p.imageUrls || []).map(img => img.fileName));
 
         return {
           ...p,
-          imageUrls: (p.images || []).map(img => `${IMAGE_BASE_URL}${img.fileName}`),
+          imageUrls: Array.isArray(p.imageUrls) ? p.imageUrls : [],
+          mainImageUrl: Array.isArray(p.imageUrls) && p.imageUrls.length > 0 ? p.imageUrls[0] : null
         };
       });
 
