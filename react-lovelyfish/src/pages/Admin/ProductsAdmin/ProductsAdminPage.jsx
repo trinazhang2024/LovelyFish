@@ -48,7 +48,7 @@ export default function ProductsAdminPage() {
       const mappedProducts = productsData.map(p => {
         console.log("Product ID:", p.id);
         console.log("Original images:", p.imageUrls);
-        console.log("Mapped imageUrls:", (p.imageUrls || []).map(img => img.fileName));
+        //console.log("Mapped imageUrls:", (p.imageUrls || []).map(img => img.fileName));
 
         return {
           ...p,

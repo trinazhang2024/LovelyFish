@@ -141,7 +141,7 @@ export default function CartPage() {
               
               const getProductImage = (product) => {
                 if (product.images && product.images.length > 0) {
-                  return product.image[0].fileUrl;
+                  return product.images[0].fileUrl;
                 }
                 return `${IMAGE_BASE_URL}placeholder.png`; // fallback image
               };

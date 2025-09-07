@@ -82,10 +82,7 @@ export default function OrdersPage() {
         const IMAGE_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS;
         
         const getProductImage = (item) => {
-          if (item.mainImageUrl) {
-            return product.image[0].fileUrl;
-          }
-          return `${IMAGE_BASE_URL}placeholder.png`;
+            return item.mainImageUrl; //the backend returns the full path and placeholder logical
         };
 
         return (

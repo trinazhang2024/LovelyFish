@@ -23,10 +23,7 @@ const ProductDetail = () => {
         const data = res.data;
 
         // Map image file names to full URLs
-        const imagesWithUrl = data.imageUrls?.map(url => ({
-          fileName:url,
-          url
-        })) || [];
+        const imagesWithUrl = data.imageUrls?.map(url => ({ url })) || [];
 
         setProduct({ ...data, images: imagesWithUrl });
 

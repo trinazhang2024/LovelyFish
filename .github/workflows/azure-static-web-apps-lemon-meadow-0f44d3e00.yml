@@ -32,6 +32,9 @@ jobs:
           rm -rf node_modules build
           npm install
           npm run build
+        env:
+          REACT_APP_API_BASE_UPLOADS: ${{ secrets.REACT_APP_API_BASE_UPLOADS }}
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
 
        # Ensure the configuration file is in the build/ directory
       - name: Copy staticwebapp.config.json to build
