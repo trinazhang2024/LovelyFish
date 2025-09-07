@@ -9,7 +9,7 @@ const SearchResultsPage = () => {
   const query = new URLSearchParams(useLocation().search).get('q') || '';
 
   // Component state
-  const [products, setProducts] = useState([]); // All products fetched from backend
+  const [products, setProducts] = useState({ items: [] }); // All products fetched from backend
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null);     // Error message
 
@@ -19,7 +19,7 @@ const SearchResultsPage = () => {
     api.get('/Product')
       .then(response => {
         console.log('products:', response.data);
-        setProducts(response.data);
+        setProducts(response.data || { items: [] }); //Ensure there is an items array
         setLoading(false);
       })
       .catch(err => {
@@ -39,7 +39,7 @@ const SearchResultsPage = () => {
   const keyword = normalize(query); // Normalized search keyword
 
   // Filter products based on title, description, or category
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = (products.items || []).filter(product => {
     const title = normalize(product.title);
     const description = normalize(product.description);
     const category = normalize(product.categoryTitle);
