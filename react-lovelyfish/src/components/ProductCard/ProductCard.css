@@ -4,6 +4,91 @@
   border-radius: 0.5rem;
   overflow: hidden;
   background-color: #fff;
+  flex: 1 1 calc(25% - 20px);
+  max-width: 250px;
+
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/*  Unified image area height */
+.product-card-image {
+  width: 100%;
+  height: 200px; /* You can adjust to 180 / 220 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+
+.product-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Content area: flex ensures actions stay at the bottom */
+.product-card-body {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/*  Fixed title height to keep alignment */
+.product-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  min-height: 40px; /* Fixed two-line height */
+  line-height: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Maximum two lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card-category {
+  font-size: 14px;
+  color: #666;
+}
+
+/*  Fixed price area height for alignment */
+.product-card-price {
+  font-size: 16px;
+  font-weight: 600;
+  min-height: 24px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 6px;
+}
+
+.discount-price {
+  color: #00a4ff;
+}
+
+/*  Ensure action buttons are always at the bottom */
+.product-card-actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.product-card-actions .btn {
+  flex: 1;
+  font-size: 14px;
+  padding: 6px 0;
 }
 
 .product-card-badge {
@@ -19,78 +104,11 @@
   z-index: 10;
 }
 
-.product-card {
-  flex: 1 1 calc(25% - 20px);
-  max-width: 250px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.product-card-image img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-.product-card-body {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.product-card-title {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.product-card-category {
-  font-size: 14px;
-  color: #666;
-}
-
-.product-card-price {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.original-price {
-  text-decoration: line-through;
-  color: #999;
-  margin-right: 6px;
-}
-
-.discount-price {
-  color: #00a4ff;
-}
-
-.product-card-actions {
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.product-card-actions .btn {
-  flex: 1;
-  font-size: 14px;
-  padding: 6px 0;
-}
-
 .product-card .new {
   background-color: #ffc107;
 }
 
-/* responsive */
+/* Responsive */
 @media (max-width: 768px) {
   .product-card {
     flex: 1 1 calc(50% - 15px);
