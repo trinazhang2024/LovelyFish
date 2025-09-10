@@ -21,17 +21,18 @@ jobs:
           node-version: '20'
           submodules: true
           lfs: false
-        # 新增：设置 Node 20
+        # add Node 20
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-        # add clean build
+        # add clean build 
       - name: Clean Node Modules & Build 
         run: |
           rm -rf node_modules build
           npm install
           npm run build
+        working-directory: ./react-lovelyfish
         env:
           REACT_APP_API_BASE_UPLOADS: ${{ secrets.REACT_APP_API_BASE_UPLOADS }}
           REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
