@@ -31,17 +31,21 @@ An online platform for buying aquarium equipment, built with React and Bootstrap
 
 ## Installation & Running Locally
 **1. Clone the repository:** 
+```bash
    git clone https://github.com/trinazhang2024/LovelyFish.git
-   
+```   
 **2. Navigate to the project folder:**
+```bash
    cd LovelyFish
-   
+```   
 **3. Install dependencies:**
+```bash
   npm install
-
+```
 **4. Start the development server:**
+```bash
   npm start
-
+```
 **5. Open http://localhost:3000 to view the app in the browser.**
 
 ---
