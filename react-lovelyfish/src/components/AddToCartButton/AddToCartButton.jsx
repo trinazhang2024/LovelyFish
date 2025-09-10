@@ -11,9 +11,9 @@ const handleClick = async () => {
     setAdding(true);
     try {
       await addToCart(productId, 1);
-      showToast(`🐟 ${productTitle} 已添加到购物车！`,3000);
+      showToast(`🐟 ${productTitle} has been added to cart！`,3000);
     } catch (err) {
-      showToast('添加购物车失败，请稍后重试');
+      showToast('Fail to add cart, please try again');
     } finally {
       setAdding(false);
     }
