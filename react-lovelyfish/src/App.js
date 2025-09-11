@@ -9,6 +9,7 @@ import UserLoginRedirect from './components/UserLoginRedirect';
 
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
+import Layout from "./components/Layout/Layout";
 
 import Home from "./pages/Home";
 import Login from './pages/Login/Login';
@@ -40,6 +41,9 @@ import Clearance from './pages/Clearance/Clearance';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import FishOwnersPage from './pages/FishOwners/FishOwnersPage/FishOwnersPage'
+import EquipmentTips from './pages/Aquarium Guide/EquipmentTips/EquipmentTips'
+import FishCareFAQ from './pages/Aquarium Guide/EquipmentTips/EquipmentTips'
+import AquariumGuide from './pages/Aquarium Guide/AquariumGuide'
 
 
  // AppRoutes defines all frontend routes for the application.
@@ -116,6 +120,9 @@ const AppRoutes = () => {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/fish-community" element={<FishOwnersPage />} />
+      <Route path="/equipment-tips" element={<EquipmentTips />} />
+      <Route path="/fish-care-faq" element={<FishCareFAQ />} />
+      <Route path="/aquarium-guide" element={<AquariumGuide />} />
 
       {/* Redirect unmatched routes to home */}
       <Route path="*" element={<Navigate to="/" />} />
@@ -133,9 +140,11 @@ const App = () => {
       <UserProvider> {/* User authentication and info */}
         <CartProvider> {/* Shopping cart context */}
           <Router>
-            <Navbar /> {/* Top navigation bar */}
-            <AppRoutes /> {/* Application routes */}
-            <Footer /> {/* Footer component */}
+            <Layout>
+              <Navbar /> {/* Top navigation bar */}
+              <AppRoutes /> {/* Application routes */}
+              <Footer /> {/* Footer component */}
+            </Layout>
           </Router>
         </CartProvider>
       </UserProvider>
