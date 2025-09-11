@@ -8,7 +8,7 @@ import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import UserLoginRedirect from './components/UserLoginRedirect';
 
 import Navbar from './components/Navbar/Navbar';
-import Footer from './components/Footer/Footer';
+//import Footer from './components/Footer/Footer';
 import Layout from "./components/Layout/Layout";
 
 import Home from "./pages/Home";
