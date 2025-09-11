@@ -143,29 +143,23 @@ function FishOwnersList({ refresh }) {
                   </p>
                   <p className="fish-owner-meta">
                     Fish: {owner.fishName || "Not specified"}
-                    </p>
+                  </p>
 
-                    {owner.isContactPublic ? (
-                      <div className="fish-owner-contact">
-                        <p>📞 {owner.phone || "N/A"}</p>
-                        <p>📧 {owner.email || "N/A"}</p>
-                      </div>
-                    ) : (
-                      <div className="fish-owner-contact">
-                        <p>📞 Hidden</p>
-                        <p>📧 Hidden</p>
-                      </div>
-                    )}
-                    <div className="fish-owner-card-buttons">
-                      <button onClick={() => startEdit(owner)}>Edit</button>
-                      <button
-                        onClick={() => handleDelete(owner.ownerID)}
-                        className="delete-btn"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </>
+                  <div className="fish-owner-contact">
+                    <p>📞 {owner.isContactPublic ? owner.phone || "N/A" : "Hidden"}</p>
+                    <p>📧 {owner.isContactPublic ? owner.email || "N/A" : "Hidden"}</p>
+                  </div>
+
+                  <div className="fish-owner-card-buttons">
+                    <button onClick={() => startEdit(owner)}>Edit</button>
+                    <button
+                      onClick={() => handleDelete(owner.ownerID)}
+                      className="delete-btn"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </>
               )}
             </div>
           ))}
