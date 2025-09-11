@@ -143,28 +143,29 @@ function FishOwnersList({ refresh }) {
                   </p>
                   <p className="fish-owner-meta">
                     Fish: {owner.fishName || "Not specified"}
-                  </p>
-
-                  {owner.isContactPublic ? (
-                    <div className="fish-owner-contact">
-                      <p>📞 {owner.phone || "N/A"}</p>
-                      <p>📧 {owner.email || "N/A"}</p>
-                    </div>
-                  ) : (
-                    <p className="fish-owner-contact-hidden">
-                      Contact info is hidden, Pls contact the website owner.
                     </p>
-                  )}
-                  <div className="fish-owner-card-buttons">
-                    <button onClick={() => startEdit(owner)}>Edit</button>
-                    <button
-                      onClick={() => handleDelete(owner.ownerID)}
-                      className="delete-btn"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </>
+
+                    {owner.isContactPublic ? (
+                      <div className="fish-owner-contact">
+                        <p>📞 {owner.phone || "N/A"}</p>
+                        <p>📧 {owner.email || "N/A"}</p>
+                      </div>
+                    ) : (
+                      <div className="fish-owner-contact">
+                        <p>📞 Hidden</p>
+                        <p>📧 Hidden</p>
+                      </div>
+                    )}
+                    <div className="fish-owner-card-buttons">
+                      <button onClick={() => startEdit(owner)}>Edit</button>
+                      <button
+                        onClick={() => handleDelete(owner.ownerID)}
+                        className="delete-btn"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </>
               )}
             </div>
           ))}
