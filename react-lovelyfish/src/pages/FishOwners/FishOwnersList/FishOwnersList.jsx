@@ -146,8 +146,8 @@ function FishOwnersList({ refresh }) {
                   </p>
 
                   <div className="fish-owner-contact">
-                    <p>📞 {owner.isContactPublic ? owner.phone || "N/A" : "Hidden"}</p>
-                    <p>📧 {owner.isContactPublic ? owner.email || "N/A" : "Hidden"}</p>
+                    <p>📞 {owner.isContactPublic ? owner.phone || "N/A" : "Hidden,contact seller"}</p>
+                    <p>📧 {owner.isContactPublic ? owner.email || "N/A" : "Hidden,contact seller"}</p>
                   </div>
 
                   <div className="fish-owner-card-buttons">

@@ -1,5 +1,5 @@
-
-html, body {
+/* html, body, root cover the whole page */
+html, body , #root {
   height: 100%;
   margin: 0;
 }
