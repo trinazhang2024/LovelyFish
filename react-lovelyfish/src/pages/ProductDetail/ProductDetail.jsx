@@ -104,7 +104,7 @@ const ProductDetail = () => {
           {/* Category */}
           <div className="product-field">
             <span className="field-label">Category:</span>
-            <span className="field-value">{product.category?.name || 'Uncategorized'}</span>
+            <span className="field-value">{product.CategoryTitle|| 'Uncategorized'}</span>
           </div>
 
           {/* Add to Cart button (reusable component) */}

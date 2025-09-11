@@ -132,6 +132,10 @@
   margin-top: 20px;
 }
 
+.product-description p {
+  white-space: pre-wrap;
+}
+
 .product-description h2 {
   font-size: 18px;
   margin-bottom: 10px;
