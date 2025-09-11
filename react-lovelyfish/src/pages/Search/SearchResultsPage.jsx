@@ -41,10 +41,10 @@ const SearchResultsPage = () => {
   // Filter products based on title, description, or category
   const filteredProducts = (products.items || []).filter(product => {
     const title = normalize(product.title);
-    const description = normalize(product.description);
+    
     const category = normalize(product.categoryTitle);
 
-    return title.includes(keyword) || description.includes(keyword) || category.includes(keyword);
+    return title.includes(keyword) || category.includes(keyword);
   });
 
 
