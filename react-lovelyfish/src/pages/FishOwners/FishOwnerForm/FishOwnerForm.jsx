@@ -38,7 +38,7 @@ function FishOwnerForm({ onAdded }) {
       });
       if (onAdded) onAdded(); // refresh list if needed
     } catch (error) {
-      console.error("Error adding fish owner:", error);
+      console.error("Error adding fish owner:", error.response?.data || error.message);
       alert("Failed to add fish owner.");
     }
   };
