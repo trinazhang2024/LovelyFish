@@ -24,26 +24,29 @@ function Home() {
     }, []);
 
     return (
-        <div>
-            {/* Carousel banner component */}
-            <Carousel />
+        <div className="home-container">
+            <div className="main">
+                {/* Carousel banner component */}
+                <Carousel />
 
-            {/* Discount or new arrivals section */}
-            <DiscountNew />
+                {/* Discount or new arrivals section */}
+                <DiscountNew />
 
-            {/* Recommended products section */}
-            <Recommend />
+                {/* Recommended products section */}
+                <Recommend />
 
-            {/* Product list component */}
-            <ProductList 
-               products={products}   // Pass the fetched products
-               limit={true}          // Limit the number of products displayed
-               addToCart={addToCart} // Pass function to add products to cart
-               addingIds={addingIds} // Pass IDs of products currently being added
-            />
+                {/* Product list component */}
+                <ProductList
+                    products={products}   // Pass the fetched products
+                    limit={true}          // Limit the number of products displayed
+                    addToCart={addToCart} // Pass function to add products to cart
+                    addingIds={addingIds} // Pass IDs of products currently being added
+                />
 
-            {/* Customer reviews section */}
-            <Reviews /> 
+                {/* Customer reviews section */}
+                <Reviews />
+            </div>
+            <Footer />
         </div>
     );
 }
