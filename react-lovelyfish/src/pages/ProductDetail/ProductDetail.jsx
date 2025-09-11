@@ -30,6 +30,9 @@ const ProductDetail = () => {
         // Set first image as the selected main image
         setSelectedImage(imagesWithUrl.length > 0 ? imagesWithUrl[0].url : 'placeholder.png');
         setLoading(false);
+
+        console.log('Loaded product:', data); 
+
       })
       .catch(err => {
         console.error('Failed to load product details:', err);
@@ -104,7 +107,7 @@ const ProductDetail = () => {
           {/* Category */}
           <div className="product-field">
             <span className="field-label">Category:</span>
-            <span className="field-value">{product.CategoryTitle|| 'Uncategorized'}</span>
+            <span className="field-value">{product.categoryTitle|| 'Uncategorized'}</span>
           </div>
 
           {/* Add to Cart button (reusable component) */}

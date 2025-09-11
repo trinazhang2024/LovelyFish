@@ -1,5 +1,7 @@
 
 .buy-button {
+  height: 48px;
+  min-height: 48px;           /* fix the height */
   min-width: 100px;           /* Minimum width */
   white-space: nowrap;        /* Prevent text wrapping */
   display: inline-flex;       /* Flex for centering content */
@@ -31,7 +33,9 @@
 .loading {
   display: flex;
   align-items: center;        /* Vertical align spinner and text */
+  justify-content: center;
   gap: 8px;                   /* Space between spinner and text */
+  height: 100%; 
 }
 
 /* Spinner animation */
@@ -42,6 +46,7 @@
   border-top: 2px solid transparent; /* Top is transparent for rotation effect */
   border-radius: 50%;           /* Make it a circle */
   animation: spin 0.7s linear infinite; /* Continuous rotation */
+  box-sizing: border-box; 
 }
 
 /* Keyframes for spinner rotation */
