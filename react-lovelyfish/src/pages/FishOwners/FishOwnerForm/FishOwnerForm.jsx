@@ -22,6 +22,9 @@ function FishOwnerForm({ onAdded }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("Sending to API:", formData);
+
     try {
       await api.post("/FishOwners", formData);
       alert("Fish owner added successfully!");
