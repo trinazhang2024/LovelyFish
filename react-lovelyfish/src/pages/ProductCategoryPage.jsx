@@ -23,10 +23,10 @@ const ProductCategoryPage = () => {
     wavemakers: "Wave Maker",
     airpumps: "Air Pump",
     heaters: "Heater",
-    filtration: "Filtration",
+    filtrations: "Filtration",
     ledlights: "Led Light",
-    spongefoams: "Foam and Sponge Filter",
-    other: "Other"
+    foamandspongefilters: "Foam and Sponge Filter",
+    others: "Other"
   };
   const dbCategory = categoryMap[category.toLowerCase()]; // Convert URL param to DB category
 
