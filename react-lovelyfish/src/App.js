@@ -39,6 +39,7 @@ import NewArrivals from './pages/NewArrivals/NewArrivals';
 import Clearance from './pages/Clearance/Clearance';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
+import FishOwnersPage from './pages/FishOwners/FishOwnersPage/FishOwnersPage'
 
 
  // AppRoutes defines all frontend routes for the application.
@@ -114,6 +115,7 @@ const AppRoutes = () => {
       <Route path="/clearance" element={<Clearance />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/fish-community" element={<FishOwnersPage />} />
 
       {/* Redirect unmatched routes to home */}
       <Route path="*" element={<Navigate to="/" />} />

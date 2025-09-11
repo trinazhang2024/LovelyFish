@@ -1,0 +1,68 @@
+.fish-owner-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.fish-owner-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.fish-owner-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.fish-owner-form input[type="text"],
+.fish-owner-form input[type="email"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  margin-bottom: 12px;
+}
+
+.fish-owner-form button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #0078d7;
+  color: #fff;
+  cursor: pointer;
+}
+
+.fish-owner-form button:hover {
+  background: #005fa3;
+}
+
+/* 📱 Mobile first */
+@media (max-width: 480px) {
+  .fish-owner-form {
+    padding: 12px;
+  }
+
+  .fish-owner-form h2 {
+    font-size: 1.2rem;
+  }
+
+  .fish-owner-form button {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}
