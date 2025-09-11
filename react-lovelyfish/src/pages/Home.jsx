@@ -5,10 +5,9 @@ import DiscountNew from "../components/DiscountNew/DiscountNew";
 import Recommend from "../components/Recommend/Recommend";
 import ProductList from '../components/ProductList/ProductList';
 import Reviews from "../components/Reviews/Reviews";
-import Footer from "../components/Footer/Footer";
 import { useCart } from '../contexts/CartContext';
 import api from '../API/axios';
-import './Home.css'
+
 
 function Home() {
     const [products, setProducts] = useState([]); // State to store fetched products
@@ -26,8 +25,8 @@ function Home() {
     }, []);
 
     return (
-        <div className="home-container">
-            <div className="main">
+        
+            <div>
                 {/* Carousel banner component */}
                 <Carousel />
 
@@ -48,8 +47,8 @@ function Home() {
                 {/* Customer reviews section */}
                 <Reviews />
             </div>
-            <Footer />
-        </div>
+            
+        
     );
 }
 
