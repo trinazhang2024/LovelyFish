@@ -42,7 +42,7 @@ import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import FishOwnersPage from './pages/FishOwners/FishOwnersPage/FishOwnersPage'
 import EquipmentTips from './pages/Aquarium Guide/EquipmentTips/EquipmentTips'
-import FishCareFAQ from './pages/Aquarium Guide/EquipmentTips/EquipmentTips'
+import FishCareFAQ from './pages/Aquarium Guide/FishCareFAQ/FishCareFAQ'
 import AquariumGuide from './pages/Aquarium Guide/AquariumGuide'
 
 
