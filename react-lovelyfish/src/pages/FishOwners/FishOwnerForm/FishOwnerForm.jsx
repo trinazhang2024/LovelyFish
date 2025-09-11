@@ -26,7 +26,7 @@ function FishOwnerForm({ onAdded }) {
     console.log("Sending to API:", formData);
 
     try {
-      await api.post("/FishOwners", { owner: formData });
+      await api.post("/FishOwners", formData);
       alert("Fish owner added successfully!");
       setFormData({
         UserName: "",
