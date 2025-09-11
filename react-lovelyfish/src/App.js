@@ -141,9 +141,9 @@ const App = () => {
         <CartProvider> {/* Shopping cart context */}
           <Router>
             <Layout>
-              <Navbar /> {/* Top navigation bar */}
+              <Navbar /> 
               <AppRoutes /> {/* Application routes */}
-              <Footer /> {/* Footer component */}
+              {/* <Footer />  */}
             </Layout>
           </Router>
         </CartProvider>
