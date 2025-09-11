@@ -4,12 +4,12 @@ import "./FishOwnerForm.css";
 
 function FishOwnerForm({ onAdded }) {
   const [formData, setFormData] = useState({
-    userName: "",
-    phone: "",
-    email: "",
-    location: "",
-    fishName: "",
-    isContactPublic: false,
+    UserName: "",
+    Phone: "",
+    Email: "",
+    Location: "",
+    FishName: "",
+    IsContactPublic: false,
   });
 
   const handleChange = (e) => {
@@ -29,12 +29,12 @@ function FishOwnerForm({ onAdded }) {
       await api.post("/FishOwners", formData);
       alert("Fish owner added successfully!");
       setFormData({
-        userName: "",
-        phone: "",
-        email: "",
-        location: "",
-        fishName: "",
-        isContactPublic: false,
+        UserName: "",
+        Phone: "",
+        Email: "",
+        Location: "",
+        FishName: "",
+        IsContactPublic: false,
       });
       if (onAdded) onAdded(); // refresh list if needed
     } catch (error) {
@@ -51,8 +51,8 @@ function FishOwnerForm({ onAdded }) {
         Name:
         <input
           type="text"
-          name="userName"
-          value={formData.userName}
+          name="UserName"
+          value={formData.UserName}
           onChange={handleChange}
           required
         />
@@ -62,8 +62,8 @@ function FishOwnerForm({ onAdded }) {
         Phone:
         <input
           type="text"
-          name="phone"
-          value={formData.phone}
+          name="Phone"
+          value={formData.Phone}
           onChange={handleChange}
         />
       </label>
@@ -72,8 +72,8 @@ function FishOwnerForm({ onAdded }) {
         Email:
         <input
           type="email"
-          name="email"
-          value={formData.email}
+          name="Email"
+          value={formData.Email}
           onChange={handleChange}
         />
       </label>
@@ -82,8 +82,8 @@ function FishOwnerForm({ onAdded }) {
         Location:
         <input
           type="text"
-          name="location"
-          value={formData.location}
+          name="Location"
+          value={formData.Location}
           onChange={handleChange}
         />
       </label>
@@ -92,8 +92,8 @@ function FishOwnerForm({ onAdded }) {
         Fish Name:
         <input
           type="text"
-          name="fishName"
-          value={formData.fishName}
+          name="FishName"
+          value={formData.FishName}
           onChange={handleChange}
         />
       </label>
@@ -101,8 +101,8 @@ function FishOwnerForm({ onAdded }) {
       <label className="checkbox-label">
         <input
           type="checkbox"
-          name="isContactPublic"
-          checked={formData.isContactPublic}
+          name="IsContactPublic"
+          checked={formData.IsContactPublic}
           onChange={handleChange}
         />
         Make contact information public
