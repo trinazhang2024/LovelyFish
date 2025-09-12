@@ -4,13 +4,19 @@
   box-sizing: border-box;
 }
 
-body {
-  background-color:#e6f2f7;
-  color: #333;
+/* Global body & html full height + dark blue gradient */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #366ca5, #2c55a0); /* Dark blue gradient */
+  color: #fff; 
 }
 
+/* Reset link and list styles */
 a {
   text-decoration: none;
+  color: inherit; 
 }
 
 li {

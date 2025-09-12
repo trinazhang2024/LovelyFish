@@ -1,10 +1,4 @@
-/* Body and html full height for centering */
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg,#59a3b6, #376c79); /* Gradient background */
-}
+
 
 /* Center container vertically and horizontally */
 .container.d-flex {

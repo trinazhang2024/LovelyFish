@@ -2,14 +2,6 @@
 /* Full-Screen Modern Register Page */
 /* ===================== */
 
-/* Body and html full height for centering */
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg,#0d1b2a, #1b263b); /* Gradient background */
-}
-
 /* Center container vertically and horizontally */
 .container.d-flex {
   height: 100%;
