@@ -62,8 +62,10 @@ function NewArrivals() {
       }));
       setProducts(prev => [...prev, ...newProducts]); // append to existing products
       setPage(nextPage);
+      setLoadingMore(true);
     } catch (err) {
       console.error('Load more failed', err);
+      setLoadingMore(false);
     }
   };
 
