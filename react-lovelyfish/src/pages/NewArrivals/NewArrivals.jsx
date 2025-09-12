@@ -5,6 +5,8 @@ import { useCart } from '../../contexts/CartContext';
 import api from '../../API/axios';
 import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import '../../components/AddToCartButton/AddToCartButton.css';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import { BsBoxSeam } from 'react-icons/bs';
 import './NewArrivals.css';
 
 function NewArrivals() {
@@ -73,43 +75,30 @@ function NewArrivals() {
   return (
     <div className="newarrivals-section">
       {/* Section header */}
-      <div className="newarrivals-header">
-        <h2>New Arrivals</h2>
+      <div className="newarrivals-header mb-4">
+        <h2><BsBoxSeam className="me-2" /> New Arrivals</h2>
       </div>
 
-      {/* Show message if no products */}
-      {products.length === 0 ? (
-        <div className="na-empty">No new arrivals at the moment.</div>
-      ) : (
-        <>
-          {/* Product Grid */}
-          <div className="newarrivals-grid">
-            {products.map(product => {
-              // Calculate discounted price if applicable
-              const discountedPrice = product.discountPercent
-                ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
-                : product.price.toFixed(2);
+      <Container>
+        <Row className="justify-content-center">
+          {products.map(product => {
+            const discountedPrice = product.discountPercent
+              ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
+              : product.price.toFixed(2);
 
-              return (
-                <div key={product.id} className="newarrivals-card">
-                  {/* Badge: Sale or New */}
-                  {product.isClearance && product.discountPercent > 0 ? (
-                    <div className="na-badge na-sale">{product.discountPercent}% OFF</div>
-                  ) : (
-                    <div className="na-badge na-new">NEW</div>
-                  )}
-
-                  {/* Product Image with link */}
-                  <Link to={`/product/${product.id}`} className="na-link">
-                    <img src={product.mainImageUrl} alt={product.title} className="na-img" />
+            return ( //bootstrap 
+              <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+                <Card className="na-card h-100">
+                  <Link to={`/product/${product.id}`}>
+                    <Card.Img
+                      variant="top"
+                      src={product.mainImageUrl}
+                      className="na-img"
+                    />
                   </Link>
-
-                  {/* Card Body */}
-                  <div className="na-body">
-                    <div className="na-title">{product.title}</div>
-
-                    {/* Price display: old price and new price if clearance, otherwise regular price */}
-                    {product.isClearance && product.discountPercent > 0 ? (
+                  <Card.Body className="d-flex flex-column">
+                    <Card.Title className="na-title text-truncate">{product.title}</Card.Title>
+                    {product.discountPercent ? (
                       <>
                         <div className="na-oldprice">${product.price.toFixed(2)}</div>
                         <div className="na-newprice">${discountedPrice}</div>
@@ -117,34 +106,31 @@ function NewArrivals() {
                     ) : (
                       <div className="na-price">${product.price.toFixed(2)}</div>
                     )}
-
-                    {/* Actions: Shop Now + Add to Cart */}
-                    <div className="na-actions">
-                      <Link to={`/product/${product.id}`} className="buy-button">Shop Now</Link>
-
-                      {/* Reusable AddToCartButton component */}
+                    <div className="na-actions mt-auto d-flex gap-2">
+                      <Link to={`/product/${product.id}`} className="btn btn-outline-primary flex-fill">
+                        Shop Now
+                      </Link>
                       <AddToCartButton
                         productId={product.id}
                         productTitle={product.title}
                         addToCart={addToCart}
                       />
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
 
-          {/* Load More Button */}
-          {page < totalPages && (
-            <div className="na-loadmore">
-              <button className="na-btn na-load" onClick={loadMore}>
-                Load More
-              </button>
-            </div>
-          )}
-        </>
-      )}
+        {page < totalPages && (
+          <div className="na-loadmore text-center my-3">
+            <button className="na-btn na-load" onClick={loadMore}>
+              Load More
+            </button>
+          </div>
+        )}
+      </Container>
     </div>
   );
 }

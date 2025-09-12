@@ -122,7 +122,7 @@ const ProductDetail = () => {
             <h2>Description</h2>
             <p>{product.description}</p>
             {Array.isArray(product.features) && product.features.length > 0 && (
-              <ul className="features-list">
+              <ul className="features-list">                 
                 {product.features.map((feature, index) => <li key={index}>{feature}</li>)}
               </ul>
             )}
