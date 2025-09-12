@@ -47,7 +47,7 @@ const About = () => {
         <p className="section-content">We check our email every day. You are also welcome to contact us via text message or phone call.</p>
         <ul className="contact-list">
           <li><FaPhoneAlt /> Phone: +64 221932432</li>
-          <li><FaEnvelope /> Email: lovelyfish@yahoo.com</li>
+          <li><FaEnvelope /> Email: info@lovelyfishaquarium.co.nz</li>
           <li><FaMapMarkerAlt /> Address: Massey, West Auckland, New Zealand</li>
         </ul>
       </section>

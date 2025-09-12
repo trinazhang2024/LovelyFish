@@ -47,9 +47,9 @@
   color: #fff;
 }
 
-/* Transparent background for navbar (Bootstrap bg-body-tertiary) */
+/* #E6F3FA background for navbar (Bootstrap bg-body-tertiary) */
 .bg-body-tertiary {
-  background-color: transparent !important;
+  background-color: #E6F3FA !important;
 }
 
 /* Spacing between nav items */

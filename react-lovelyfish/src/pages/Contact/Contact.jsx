@@ -61,7 +61,7 @@ const Contact = () => {
         <h2 className="section-title">Contact Info</h2>
         <ul className="contact-info">
           <li><FaPhoneAlt /> Phone: +64 221932432</li>
-          <li><FaEnvelope /> Email: lovelyfish@yahoo.com</li>
+          <li><FaEnvelope /> Email: info@lovelyfishaquarium.co.nz</li>
           <li><FaMapMarkerAlt /> Address: Massey, West Auckland, New Zealand 0614</li>
         </ul>
       </section>
