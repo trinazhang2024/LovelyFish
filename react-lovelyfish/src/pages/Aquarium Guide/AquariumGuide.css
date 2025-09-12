@@ -1,0 +1,78 @@
+/* Container for the Aquarium Guide page */
+.aquarium-guide {
+  max-width: 700px;            /* Maximum width */
+  margin: 40px auto;           /* Centered horizontally with top/bottom margin */
+  padding: 20px;               /* Inner padding */
+  background-color: #f9f9f9;  /* Light background color */
+  border-radius: 12px;         /* Rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Page title styling */
+.aquarium-guide h2 {
+  text-align: center;          /* Centered title */
+  font-size: 2rem;             /* Large font size */
+  margin-bottom: 25px;         /* Space below the title */
+  color: #1e90ff;              /* Blue title */
+}
+
+/* List styling */
+.aquarium-guide ul {
+  list-style: none;            /* Remove default bullets */
+  padding: 0;
+}
+
+/* List items styling */
+.aquarium-guide li {
+  margin-bottom: 15px;         /* Space between items */
+}
+
+/* Link styling */
+.aquarium-guide a {
+  text-decoration: none;       /* Remove underline */
+  font-size: 1.1rem;           /* Slightly larger text */
+  color: #1e90ff;              /* Blue color */
+  transition: color 0.2s, transform 0.2s; /* Smooth hover effect */
+}
+
+/* Hover effect for links */
+.aquarium-guide a:hover {
+  color: #104e8b;              /* Darker blue on hover */
+  transform: translateX(5px);  /* Slight right shift */
+}
+
+/* Responsive design for tablets */
+@media (max-width: 768px) {
+  .aquarium-guide {
+    margin: 20px;
+    padding: 15px;
+  }
+
+  .aquarium-guide h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .aquarium-guide a {
+    font-size: 1rem;
+  }
+}
+
+/* Responsive design for mobile phones */
+@media (max-width: 480px) {
+  .aquarium-guide {
+    margin: 15px;
+    padding: 10px;
+  }
+
+  .aquarium-guide h2 {
+    font-size: 1.5rem;
+  }
+
+  .aquarium-guide a {
+    font-size: 0.95rem;
+  }
+}

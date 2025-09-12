@@ -1,30 +1,74 @@
-.register-container {
-  margin-top: 80px;
-  width: 500px;
-  padding: 2rem;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* ===================== */
+/* Full-Screen Modern Register Page */
+/* ===================== */
+
+/* Body and html full height for centering */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #4facfe, #00f2fe); /* Gradient background */
 }
 
+/* Center container vertically and horizontally */
+.container.d-flex {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px; /* Padding for small screens */
+}
+
+/* Register card */
+.register-container {
+  width: 400px;
+  max-width: 100%;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Card hover effect */
+.register-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Title styling */
 .register-container h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   color: #333;
+  font-size: 2rem;
 }
 
+/* Form centering */
 .register-form {
-  width: 350px;
-  margin: 0 auto; 
+  width: 100%;
+  margin: 0 auto;
 }
 
+/* Input fields */
 .register-container .form-control {
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 1rem;
 }
 
+/* Submit button */
 .register-container .btn {
-  border-radius: 8px;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  padding: 10px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+/* Button hover effect */
+.register-container .btn:hover {
+  background-color: #198754;
+  transform: translateY(-2px);
 }
 
 /* Password rules list */
@@ -75,15 +119,64 @@
 .strength-text-3 { color: #ffc107; } /* Yellow */
 .strength-text-4 { color: #198754; } /* Green */
 
-/* Bootstrap built-in styles: is-invalid + invalid-feedback
-   Add a bit of extra customization */
+/* Invalid feedback */
 .is-invalid {
   border-color: #dc3545 !important;
 }
 
 .invalid-feedback {
-  display: block; /* Always visible when triggered */
+  display: block;
   font-size: 0.9rem;
   margin-top: 4px;
   color: #dc3545;
+}
+
+/* ===================== */
+/* Responsive Design */
+/* ===================== */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .register-container {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .register-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .register-container .form-control,
+  .register-container .btn {
+    font-size: 1rem;
+    padding: 9px;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+  .register-container {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .register-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .register-container .form-control,
+  .register-container .btn {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .password-rules {
+    font-size: 0.85rem;
+  }
+
+  .strength-text {
+    font-size: 0.8rem;
+  }
 }

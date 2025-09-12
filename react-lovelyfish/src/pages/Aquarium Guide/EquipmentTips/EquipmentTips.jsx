@@ -1,5 +1,6 @@
 // EquipmentTips.jsx
 import React from "react";
+import './EquipmentTips.css';
 
 function EquipmentTips() {
   return (

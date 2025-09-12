@@ -199,9 +199,28 @@ export default function ConfirmOrderPage() {
       {/* If order has been submitted */}
       {lastOrderId ? (
         <div className="order-success">
-          <p>🎉 Your order has been submitted! Order ID: <strong>{userOrderCount+1}</strong></p>
-          <p>Payment instructions have been sent to your email. Please follow them to complete the order.</p>
+          <p>🎉 Your order has been submitted! Order ID: <strong>{userOrderCount + 1}</strong></p>
+          <p>Payment instructions have been sent to your email. Please check your inbox or spam folder for the details.</p>
           <p><strong>Order Amount:</strong> ${orderAmount.toFixed(2)}</p>
+
+          {/* <p>
+      {shippingMethod === "courier" 
+        ? "For courier delivery, we will email you shortly with the total amount including courier fees." 
+        : "For pickup, please transfer the payment using the bank details provided in the email, or pay in cash at our store."}
+    </p>
+
+    {bankInfo && shippingMethod !== "courier" && (
+      <>
+        <h4>Bank Transfer Information:</h4>
+        <p><strong>Bank:</strong> {bankInfo.bankName}</p>
+        <p><strong>Account Name:</strong> {bankInfo.accountName}</p>
+        <p><strong>Account Number:</strong> {bankInfo.accountNumber}</p>
+        <p>
+          ⚠️ After transferring, please screenshot the transaction and email it to us for verification.{" "}
+          <Link to="/contact">Contact Us</Link>
+        </p>
+      </>
+    )} */}
 
           {bankInfo && (
             <>
@@ -209,8 +228,8 @@ export default function ConfirmOrderPage() {
               <p><strong>Bank:</strong> {bankInfo.bankName}</p>
               <p><strong>Account Name:</strong> {bankInfo.accountName}</p>
               <p><strong>Account Number:</strong> {bankInfo.accountNumber}</p>
-              <p>⚠️ After transferring, please screenshot the transaction and email it to us for verification. 
-                 <Link to="/contact">Contact Us</Link>
+              <p>⚠️ After transferring, please screenshot the transaction and email it to us for verification.
+                <Link to="/contact">Contact Us</Link>
               </p>
             </>
           )}
@@ -287,13 +306,13 @@ export default function ConfirmOrderPage() {
           <h3>Customer Information</h3>
           <div className="confirm-form">
             <h5>Name</h5>
-            <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} placeholder="Your Name"/>
+            <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} placeholder="Your Name" />
             <h5>Phone Number</h5>
-            <input type="text" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone"/>
+            <input type="text" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone" />
             <h5>Email</h5>
-            <input type="email" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} placeholder="Email"/>
+            <input type="email" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} placeholder="Email" />
             <h5>Postal Address</h5>
-            <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Shipping Address"/>
+            <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Shipping Address" />
           </div>
 
           {/* Coupons */}
@@ -313,8 +332,8 @@ export default function ConfirmOrderPage() {
           {/* Cart Summary */}
           <div className="cart-summary-container">
             <div className="cart-summary-left">
-              <strong>Total Items:</strong> {Object.values(localQuantities).reduce((a,b)=>a+b,0)}
-              <br/>
+              <strong>Total Items:</strong> {Object.values(localQuantities).reduce((a, b) => a + b, 0)}
+              <br />
               <strong>Original Total Price:</strong> ${originalTotalPrice.toFixed(2)}
               {discountAmount > 0 && (
                 <>

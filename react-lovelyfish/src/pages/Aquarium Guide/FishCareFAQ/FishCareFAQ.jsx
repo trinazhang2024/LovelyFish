@@ -1,5 +1,6 @@
 // FishCareFAQ.jsx
 import React from "react";
+import './FishCareFAQ.css';
 
 function FishCareFAQ() {
   return (

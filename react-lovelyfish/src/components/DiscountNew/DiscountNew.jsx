@@ -15,7 +15,7 @@ const DiscountNew = () => {
       {/* Right - Clearance Specials */}
       <div className="right">
         <h2>CLEARANCE SPECIALS</h2>
-        <h3>Big discounts 30% before it's gone!</h3>
+        <h3>Big discounts before it's gone!</h3>
         <div className="button-container">
           <a href="/clearance" className="button">GRAB DEALS</a>
         </div>
