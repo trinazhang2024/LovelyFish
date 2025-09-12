@@ -3,8 +3,9 @@
   margin: 0 auto;
   padding: 20px;
   border-radius: 12px;
-  background: #fff;
+  background: hsl(209, 66%, 84%);
   border: 1px solid #ddd;
+  color:#333 !important;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
