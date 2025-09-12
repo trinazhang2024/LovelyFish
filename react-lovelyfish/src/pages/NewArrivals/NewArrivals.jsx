@@ -5,7 +5,7 @@ import { useCart } from '../../contexts/CartContext';
 import api from '../../API/axios';
 import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import '../../components/AddToCartButton/AddToCartButton.css';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { BsArrowRight, BsBoxSeam } from 'react-icons/bs';
 import './NewArrivals.css';
 
