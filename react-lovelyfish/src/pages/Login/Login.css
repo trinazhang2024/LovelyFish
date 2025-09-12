@@ -3,7 +3,7 @@ html, body {
   height: 100%;
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #0d1b2a, #1b263b); /* Gradient background */
+  background: linear-gradient(135deg,#59a3b6, #376c79); /* Gradient background */
 }
 
 /* Center container vertically and horizontally */
