@@ -114,22 +114,6 @@
   margin-top: auto;
 }
 
-.buy-button {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #007bff;
-  border-radius: 0.3rem;
-  text-decoration: none;
-  color: #007bff;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-}
-
-.buy-button:hover {
-  background: #007bff;
-  color: #fff;
-}
-
 /* Load More Button */
 .na-loadmore {
   text-align: center;
