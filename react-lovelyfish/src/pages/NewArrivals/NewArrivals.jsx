@@ -6,7 +6,7 @@ import api from '../../API/axios';
 import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import '../../components/AddToCartButton/AddToCartButton.css';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import { BsBoxSeam } from 'react-icons/bs';
+import { BsArrowRight, BsBoxSeam } from 'react-icons/bs';
 import './NewArrivals.css';
 
 function NewArrivals() {
@@ -15,6 +15,7 @@ function NewArrivals() {
   const [page, setPage] = useState(1); // current page
   const [totalPages, setTotalPages] = useState(1); // total pages from backend
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false); // Load more state
   const [error, setError] = useState(null);
   
   const { addToCart } = useCart(); // cart context
@@ -73,13 +74,13 @@ function NewArrivals() {
   if (error) return <div className="na-error">{error}</div>;
 
   return (
-    <div className="newarrivals-section">
+    <Container className="newarrivals-section mb-4">
       {/* Section header */}
-      <div className="newarrivals-header mb-4">
+      <div className="newarrivals-header mb-3">
         <h2><BsBoxSeam className="me-2" /> New Arrivals</h2>
       </div>
 
-      <Container>
+      
         <Row className="justify-content-center">
           {products.map(product => {
             const discountedPrice = product.discountPercent
@@ -107,7 +108,7 @@ function NewArrivals() {
                       <div className="na-price">${product.price.toFixed(2)}</div>
                     )}
                     <div className="na-actions mt-auto d-flex gap-2">
-                      <Link to={`/product/${product.id}`} className="btn btn-outline-primary flex-fill">
+                      <Link to={`/product/${product.id}`} className="buy-button btn btn-outline-primary">
                         Shop Now
                       </Link>
                       <AddToCartButton
@@ -125,13 +126,18 @@ function NewArrivals() {
 
         {page < totalPages && (
           <div className="na-loadmore text-center my-3">
-            <button className="na-btn na-load" onClick={loadMore}>
-              Load More
-            </button>
+            {/* <button className="na-btn na-load" onClick={loadMore}>
+              Load More <BsArrowRight className="ms-1" />
+            </button> */}
+
+            <Button variant="outline-primary" onClick={loadMore} disabled={loadingMore}>
+                {loadingMore ? 'Loading...' : 'Load More'} <BsArrowRight className="ms-1" />
+              </Button>
+
           </div>
         )}
       </Container>
-    </div>
+
   );
 }
 

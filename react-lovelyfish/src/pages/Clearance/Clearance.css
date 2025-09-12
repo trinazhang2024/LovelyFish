@@ -27,11 +27,15 @@
 .clearance-section .clearance-title {
   font-size: 1rem;
   font-weight: 600;
-  height: 50px;
+  min-height: 50px;
+  margin-bottom: 0.5rem;
+
+  /* default: decktop 2rows, more will show ... */
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-bottom: 0.5rem;
 }
 
 .clearance-section .clearance-oldprice {
@@ -54,7 +58,7 @@
 }
 
 .clearance-section .clearance-img {
-  height: 200px;
+  height: 300px;
   object-fit: cover;
 }
 
@@ -69,11 +73,25 @@
 .clearance-loadmore {
   text-align: center;
   margin-top: 1.5rem;
+  color: #fff
 }
 
 /* Responsive  */
 @media (max-width: 576px) {
   .clearance-section .clearance-actions {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .clearance-section .clearance-title {
+    display: block;      /* remore -webkit-box */
+    line-clamp: unset;   /* remore the rows limited */
+    -webkit-box-orient: unset;
+    overflow: visible;
+    text-overflow: unset;
+    white-space: normal;         
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 }
