@@ -9,24 +9,50 @@ const SearchResultsPage = () => {
   const query = new URLSearchParams(useLocation().search).get('q') || '';
 
   // Component state
-  const [products, setProducts] = useState({ items: [] }); // All products fetched from backend
+  const [products, setProducts] = useState([]); // All products fetched from backend
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null);     // Error message
 
 
   // Fetch all products on component mount
+  // useEffect(() => {
+  //   api.get('/Product?page=1&size=9999')
+  //     .then(response => {
+  //       console.log('products:', response.data);
+  //       setProducts(response.data.items ||  [] ); //Ensure there is an items array
+  //       setLoading(false);
+  //     })
+  //     .catch(err => {
+  //       console.error('Failed to load products:', err);
+  //       setError('Unable to load product data');
+  //       setLoading(false);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    api.get('/Product?page=1&size=9999')
-      .then(response => {
-        console.log('products:', response.data);
-        setProducts(response.data.items ||  [] ); //Ensure there is an items array
+    const fetchAllProducts = async () => {
+      try {
+        let allItems = [];
+        let page = 1;
+        let totalPages = 1;
+  
+        do {
+          const res = await api.get(`/Product?page=${page}&pageSize=12`);
+          allItems = [...allItems, ...res.data.items];
+          totalPages = res.data.totalPages;
+          page++;
+        } while (page <= totalPages);
+  
+        setProducts(allItems);
         setLoading(false);
-      })
-      .catch(err => {
-        console.error('Failed to load products:', err);
-        setError('Unable to load product data');
+      } catch (err) {
+        console.error(err);
+        setError("Unable to load products");
         setLoading(false);
-      });
+      }
+    };
+  
+    fetchAllProducts();
   }, []);
 
   // Normalize strings for search
