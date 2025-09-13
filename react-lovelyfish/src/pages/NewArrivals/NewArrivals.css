@@ -69,21 +69,16 @@
 .na-loadmore {
   text-align: center;
   margin-top: 1.5rem;
-  color: #fff
+}
+.na-loadmore .btn {
+  color: white;          
+  border-color: white;   
 }
 
-/* Load More button
-.na-btn.na-load {
-  padding: 8px 16px;
-  border-radius: 6px;
-  background-color: #0078d7;
-  color: #fff;
-  border: none;
-} */
-
-/* .na-btn.na-load:hover {
-  background-color: #005fa3;
-} */
+.na-loadmore .btn:hover {
+  background-color: white;
+  color: #007bff;          
+}
 
 /* Loading / Error */
 .na-loading, .na-error, .na-empty {
