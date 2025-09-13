@@ -76,7 +76,9 @@ export default function UsersOrdersPage() {
                 <td data-label="Total Price">${o.totalPrice}</td>
                 <td data-label="Status">{o.status}</td>
                 <td data-label="Courier / Tracking">
-                  {o.courier} {o.trackingNumber}
+                  {o.deliveryMethod === "courier"
+                    ? `${o.courier ?? ""} ${o.trackingNumber ?? ""}`
+                    : "N/A"}
                 </td>
                 <td data-label="Order Time">{new Date(o.createdAt).toLocaleString()}</td>
               </tr>

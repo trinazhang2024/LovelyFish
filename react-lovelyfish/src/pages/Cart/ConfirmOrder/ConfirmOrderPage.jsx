@@ -147,8 +147,13 @@ export default function ConfirmOrderPage() {
   const handleCheckout = async () => {
 
     // Validate required fields
-    if (!customerName.trim() || !phone.trim() || !shippingAddress.trim()) {
+    if (!customerName.trim() || !phone.trim() || !customerEmail.trim()) {
       alert("⚠️ Please fill in your name, phone number and shipping address before submitting the order.");
+      return;
+    }
+
+    if (shippingAddress !== "none" && !shippingAddress.trim()) {
+      alert("⚠️ Please provide your shipping address or select Pickup option.");
       return;
     }
     
@@ -305,27 +310,72 @@ export default function ConfirmOrderPage() {
           {/* Customer Information Form */}
           <h3>Customer Information</h3>
           <div className="confirm-form">
+
             <h5>Name</h5>
             <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} placeholder="Your Name" />
-            <h5>Phone Number</h5>
-            <input type="text" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone" />
-            <h5>Email</h5>
-            <input type="email" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} placeholder="Email" />
-            <h5>Postal Address</h5>
-            <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Shipping Address" />
-          </div>
 
-          {/* Coupons */}
-          <h3>Coupon</h3>
-          <div className="coupon-buttons">
-            <button className={useNewUserCoupon ? "active" : ""} disabled={!canUseNewUserCoupon} onClick={handleNewUserCoupon}>
-              New User - $5
-            </button>
-            <button className={use50Coupon ? "active" : ""} disabled={!canUse50Coupon} onClick={handle50Coupon}>
-              $50 - $5
-            </button>
-            <button className={use100Coupon ? "active" : ""} disabled={!canUse100Coupon} onClick={handle100Coupon}>
-              $100 - $10
+            <h5>Phone Number</h5>
+              <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone" 
+              pattern="[0-9]{7,15}"   // only numbers, and length limited between 7 and 15.
+              required/>
+
+              <h5>Email</h5>
+              <input type="email" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} placeholder="Email" 
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              required/>
+
+              <h5>Delivery Method</h5>
+              <div className="delivery-method">
+                {/* courier */}
+                <label>
+                  <input
+                    type="radio"
+                    name="deliveryMethod"
+                    value="courier"
+                    checked={shippingAddress !== "none"}
+                    onChange={() => setShippingAddress("")}
+                  />
+                  Courier
+                </label>
+                
+                {/* Pickup */}
+                <label>
+                  <input
+                    type="radio"
+                    name="deliveryMethod"
+                    value="pickup"
+                    checked={shippingAddress === "none"}
+                    onChange={() => setShippingAddress("none")}
+                  />
+                  Pickup
+                </label>
+              </div>
+
+              <h5>Postal Address</h5>
+              <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder={
+                shippingAddress === "none"
+                  ? "Pickup selected - please enter 'none'"
+                  : "Shipping Address"
+              }
+                disabled={shippingAddress === "none"} // Postal address will be disable if choose pickup option. 
+              />
+
+              {shippingAddress === "none" && (
+                <p className="pickup-note">※ You selected pickup. Address will be set to <strong>none</strong>.</p>
+              )}
+            </div>
+
+            {/* Coupons */}
+            <h3>Coupon</h3>
+            <div className="coupon-buttons">
+              <button className={useNewUserCoupon ? "active" : ""} disabled={!canUseNewUserCoupon} onClick={handleNewUserCoupon}>
+                New User - $5
+              </button>
+              <button className={use50Coupon ? "active" : ""} disabled={!canUse50Coupon} onClick={handle50Coupon}>
+                $50 - $5
+              </button>
+              <button className={use100Coupon ? "active" : ""} disabled={!canUse100Coupon} onClick={handle100Coupon}>
+                $100 - $10
             </button>
           </div>
 

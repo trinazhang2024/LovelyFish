@@ -104,8 +104,16 @@ export default function OrderDetailPage() {
               </td>
             </tr>
             <tr>
+              <th>Delivery Method</th>
+              <td>{order.deliveryMethod}</td>
+            </tr>
+            <tr>
               <th>Shipping Address</th>
-              <td>{order.shippingAddress}</td>
+              <td>
+                {order.deliveryMethod === "pickup"
+                  ? "Pickup at store"
+                  : order.shippingAddress}
+              </td>
             </tr>
             <tr>
               <th>Total Price</th>
@@ -119,7 +127,7 @@ export default function OrderDetailPage() {
                 </span>
               </td>
             </tr>
-            <tr>
+            {/* <tr>
               <th>Courier</th>
               <td className={savedFields["courier"] ? "saved-flash" : ""}>
                 <input
@@ -146,7 +154,47 @@ export default function OrderDetailPage() {
                   placeholder="Tracking Number"
                 />
               </td>
-            </tr>
+            </tr> */}
+
+             {/* Only show courier info if deliveryMethod = courier */}
+             {order.deliveryMethod === "courier" && (
+              <>
+                <tr>
+                  <th>Courier</th>
+                  <td className={savedFields["courier"] ? "saved-flash" : ""}>
+                    <input
+                      value={order.courier || ""}
+                      onChange={(e) =>
+                        handleFieldChange("courier", e.target.value)
+                      }
+                      onBlur={(e) => updateShipping("courier", e.target.value)}
+                      placeholder="Courier Company"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Tracking Number</th>
+                  <td
+                    className={
+                      savedFields["trackingNumber"] ? "saved-flash" : ""
+                    }
+                  >
+                    <input
+                      value={order.trackingNumber || ""}
+                      onChange={(e) =>
+                        handleFieldChange("trackingNumber", e.target.value)
+                      }
+                      onBlur={(e) =>
+                        updateShipping("trackingNumber", e.target.value)
+                      }
+                      placeholder="Tracking Number"
+                    />
+                  </td>
+                </tr>
+              </>
+            )}
+
+
             <tr>
               <th>Created At</th>
               <td>{new Date(order.createdAt).toLocaleString()}</td>

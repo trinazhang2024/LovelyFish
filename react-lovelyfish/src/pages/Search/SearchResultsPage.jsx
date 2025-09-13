@@ -64,7 +64,7 @@ const SearchResultsPage = () => {
 
   const keyword = normalize(query); // Normalized search keyword
 
-  console.log(products.items.map(p => normalize(p.categoryTitle)), "keyword:", keyword);
+  console.log(products.map(p => normalize(p.categoryTitle)), "keyword:", keyword);
 
   // Filter products based on title, description, or category
   const filteredProducts = products.filter(product => {

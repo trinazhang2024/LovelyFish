@@ -154,23 +154,32 @@ export default function OrdersAdminPage() {
                       </select>
                     </td>
 
-                    {/* Courier input */}
-                    <td className={courierSaved ? "saved-flash" : ""}>
-                      <input
-                        value={order.courier || ""}
-                        onChange={e => updateOrderField(order.id, "courier", e.target.value)}
-                        onBlur={e => updateShipping(order.id, e.target.value, order.trackingNumber || "")}
-                      />
-                    </td>
+                    {/* Courier input, pickup will show N/A */}
+                    {order.deliveryMethod === "courier" ? (
+                      <td className={courierSaved ? "saved-flash" : ""}>
+                        <input
+                          value={order.courier || ""}
+                          onChange={e => updateOrderField(order.id, "courier", e.target.value)}
+                          onBlur={e => updateShipping(order.id, e.target.value, order.trackingNumber || "")}
+                        />
+                      </td>
+                    ) : (
+                      <td>N/A</td>
+                    )}
 
-                    {/* Tracking number input */}
-                    <td className={trackingSaved ? "saved-flash" : ""}>
-                      <input
-                        value={order.trackingNumber || ""}
-                        onChange={e => updateOrderField(order.id, "trackingNumber", e.target.value)}
-                        onBlur={e => updateShipping(order.id, order.courier || "", e.target.value)}
-                      />
-                    </td>
+
+                    {/* Tracking number input, pickup will show N/A */}
+                    {order.deliveryMethod === "courier" ? (
+                      <td className={trackingSaved ? "saved-flash" : ""}>
+                        <input
+                          value={order.trackingNumber || ""}
+                          onChange={e => updateOrderField(order.id, "trackingNumber", e.target.value)}
+                          onBlur={e => updateShipping(order.id, order.courier || "", e.target.value)}
+                        />
+                      </td>
+                    ) : (
+                      <td>N/A</td>
+                    )}
 
                     <td>{new Date(order.createdAt).toLocaleString()}</td>
 

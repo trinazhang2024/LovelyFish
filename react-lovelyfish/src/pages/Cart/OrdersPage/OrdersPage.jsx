@@ -107,7 +107,14 @@ export default function OrdersPage() {
                 )}
               </p>
               <p><strong>Customer:</strong> {order.customerName}</p>
-              <p><strong>Address:</strong> {order.shippingAddress}</p>
+              <p>
+                <strong>Delivery:</strong>{" "}
+                {order.deliveryMethod === "pickup" ? (
+                  <span>Pickup at store</span>
+                ) : (
+                  <span>{order.shippingAddress}</span>
+                )}
+              </p>
               <p><strong>Profile Phone:</strong> {order.phoneNumber ?? order.PhoneNumber ?? "N/A"}</p>
               <p><strong>Contact Phone:</strong> {order.contactPhone ?? order.ContactPhone ?? "N/A"}</p>
               <p>
@@ -142,9 +149,12 @@ export default function OrdersPage() {
 
             {/* ----------------- Order Actions ----------------- */}
             <div className="order-actions">
-              <button onClick={() => viewLogistics(order.courier, order.trackingNumber)}>
-                Courier info
-              </button>
+              {/* Only show courier when choose courier method */}
+              {order.deliveryMethod === "courier" && (
+                <button onClick={() => viewLogistics(order.courier, order.trackingNumber)}>
+                  Courier info
+                </button>
+              )}
               <button onClick={() => repurchase(order)}>
                 Re-purchase
               </button>
