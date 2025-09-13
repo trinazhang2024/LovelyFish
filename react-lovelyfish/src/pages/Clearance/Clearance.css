@@ -73,7 +73,16 @@
 .clearance-loadmore {
   text-align: center;
   margin-top: 1.5rem;
-  color: #fff
+}
+
+.clearance-loadmore .btn {
+  color: white;          
+  border-color: white;   
+}
+
+.clearance-loadmore .btn:hover {
+  background-color: white;
+  color: #007bff;          
 }
 
 /* Responsive  */

@@ -17,7 +17,7 @@ function NewArrivals() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false); // Load more state
   const [error, setError] = useState(null);
-  
+
   const { addToCart } = useCart(); // cart context
 
 
@@ -82,63 +82,74 @@ function NewArrivals() {
         <h2><BsBoxSeam className="me-2" /> New Arrivals</h2>
       </div>
 
-      
-        <Row className="justify-content-center">
-          {products.map(product => {
-            const discountedPrice = product.discountPercent
-              ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
-              : product.price.toFixed(2);
+      {products.length === 0 ? (
+        <div className="na-empty">No new arrivals at the moment.</div>
+      ) : (
+        <>
 
-            return ( //bootstrap 
-              <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-                <Card className="na-card h-100">
-                  <Link to={`/product/${product.id}`}>
-                    <Card.Img
-                      variant="top"
-                      src={product.mainImageUrl}
-                      className="na-img"
-                    />
-                  </Link>
-                  <Card.Body className="d-flex flex-column">
-                    <Card.Title className="na-title text-truncate">{product.title}</Card.Title>
-                    {product.discountPercent ? (
-                      <>
-                        <div className="na-oldprice">${product.price.toFixed(2)}</div>
-                        <div className="na-newprice">${discountedPrice}</div>
-                      </>
-                    ) : (
-                      <div className="na-price">${product.price.toFixed(2)}</div>
-                    )}
-                    <div className="na-actions mt-auto d-flex gap-2">
-                      <Link to={`/product/${product.id}`} className="buy-button btn btn-outline-primary">
-                        Shop Now
-                      </Link>
-                      <AddToCartButton
-                        productId={product.id}
-                        productTitle={product.title}
-                        addToCart={addToCart}
-                      />
+
+          <Row className="justify-content-center">
+            {products.map(product => {
+              const discountedPrice = product.discountPercent
+                ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
+                : product.price.toFixed(2);
+
+              const showDiscount = product.isClearance && product.discountPercent > 0;
+
+              return ( //bootstrap 
+                <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+                  <Card className="na-card h-100" position-relative>
+
+                    {/* Badge */}
+                    <div className={`na-badge ${showDiscount ? 'na-sale' : 'na-new'}`}>
+                      {showDiscount ? `${product.discountPercent}% OFF` : 'NEW'}
                     </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
 
-        {page < totalPages && (
-          <div className="na-loadmore text-center my-3">
-            {/* <button className="na-btn na-load" onClick={loadMore}>
-              Load More <BsArrowRight className="ms-1" />
-            </button> */}
+                    <Link to={`/product/${product.id}`}>
+                      <Card.Img
+                        variant="top"
+                        src={product.mainImageUrl}
+                        className="na-img"
+                      />
+                    </Link>
+                    <Card.Body className="d-flex flex-column">
+                      <Card.Title className="na-title text-truncate">{product.title}</Card.Title>
 
-            <Button variant="outline-primary" onClick={loadMore} disabled={loadingMore}>
+                      {showDiscount ? (
+                        <>
+                          <div className="na-oldprice">${product.price.toFixed(2)}</div>
+                          <div className="na-newprice">${discountedPrice}</div>
+                        </>
+                      ) : (
+                        <div className="na-price">${product.price.toFixed(2)}</div>
+                      )}
+                      <div className="na-actions mt-auto d-flex gap-2">
+                        <Link to={`/product/${product.id}`} className="buy-button btn btn-outline-primary">
+                          Shop Now
+                        </Link>
+                        <AddToCartButton
+                          productId={product.id}
+                          productTitle={product.title}
+                          addToCart={addToCart}
+                        />
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+
+          {page < totalPages && (
+            <div className="na-loadmore text-center my-3">
+              <Button variant="outline-primary" onClick={loadMore} disabled={loadingMore}>
                 {loadingMore ? 'Loading...' : 'Load More'} <BsArrowRight className="ms-1" />
               </Button>
-
-          </div>
-        )}
-      </Container>
+            </div>
+          )}
+        </>
+      )}
+    </Container>
 
   );
 }

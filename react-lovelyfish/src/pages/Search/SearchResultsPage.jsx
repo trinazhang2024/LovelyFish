@@ -16,10 +16,10 @@ const SearchResultsPage = () => {
 
   // Fetch all products on component mount
   useEffect(() => {
-    api.get('/Product')
+    api.get('/Product?page=1&size=9999')
       .then(response => {
         console.log('products:', response.data);
-        setProducts(response.data || { items: [] }); //Ensure there is an items array
+        setProducts(response.data.items ||  [] ); //Ensure there is an items array
         setLoading(false);
       })
       .catch(err => {
@@ -41,7 +41,7 @@ const SearchResultsPage = () => {
   console.log(products.items.map(p => normalize(p.categoryTitle)), "keyword:", keyword);
 
   // Filter products based on title, description, or category
-  const filteredProducts = (products.items || []).filter(product => {
+  const filteredProducts = products.filter(product => {
     
     const title = normalize(product.title);
     const category = normalize(product.categoryTitle);
