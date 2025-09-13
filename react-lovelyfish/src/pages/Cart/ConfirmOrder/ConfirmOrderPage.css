@@ -115,6 +115,19 @@
   font-size: 14px;
 }
 
+.delivery-method {
+  display: flex;
+  gap: 20px;        /* desktop distance */
+  align-items: center;
+  flex-wrap: wrap;   /* wrap automatically when small screen */
+}
+
+.delivery-method label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
 /* Coupon Buttons */
 .coupon-buttons {
   display: flex;
@@ -292,5 +305,11 @@
   .coupon-buttons button {
     font-size: 14px;
     padding: 8px 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .delivery-method {
+    gap: 10px;
   }
 }

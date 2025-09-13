@@ -165,11 +165,15 @@ export default function ConfirmOrderPage() {
         quantity: localQuantities[item.id] || item.quantity || 1
       }));
 
+      // Determine delivery method based on shippingAddress
+      const deliveryMethod = shippingAddress === "none" ? "pickup" : "courier";
+
       const res = await api.post("/cart/checkout", {
         customerName,
         phone,
         customerEmail,
         shippingAddress,
+        deliveryMethod,
         items: itemsToSubmit,
         useNewUserCoupon,
         use50Coupon,
