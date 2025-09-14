@@ -107,7 +107,7 @@ const ProductDetail = () => {
           {/* Category */}
           <div className="product-field">
             <span className="field-label">Category:</span>
-            <span className="field-value">{product.categoryTitle|| 'Uncategorized'}</span>
+            <span className="field-value">{product.categoryTitle || 'Uncategorized'}</span>
           </div>
 
           {/* Add to Cart button (reusable component) */}
@@ -122,9 +122,12 @@ const ProductDetail = () => {
             <h2>Description</h2>
             <p>{product.description}</p>
             {Array.isArray(product.features) && product.features.length > 0 && (
-              <ul className="features-list">                 
-                {product.features.map((feature, index) => <li key={index}>{feature}</li>)}
-              </ul>
+              <>
+                <h3>Features:</h3>
+                <ul className="features-list">
+                  {product.features.map((feature, index) => <li key={index}>{feature}</li>)}
+                </ul>
+              </>
             )}
           </div>
         </div>
