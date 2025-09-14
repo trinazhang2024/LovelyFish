@@ -81,6 +81,9 @@ function FishOwnersList({ refresh }) {
   // Optional: hide page if not logged in
   // if (!user) return <p>Please log in to view fish owners.</p>;
 
+  console.log("Current user:", user);
+  console.log("Owner record:", owner);
+
   return (
     <div className="fish-owners-container">
       <h2 className="fish-owners-title">Fish Owners</h2>
@@ -157,8 +160,8 @@ function FishOwnersList({ refresh }) {
                     <p>📧 {owner.isContactPublic ? owner.email || "N/A" : "Hidden,contact seller"}</p>
                   </div>
 
-                  {/* only Admin and user account can operate the edit and delete */}
-                  {(isAdmin || user.id === owner.ownerID) && (
+                  {/* Only admin and record owner can edit/delete  */}
+                  {(isAdmin || user.id === owner.userId) && (
                     <div className="fish-owner-card-buttons">
                       <button onClick={() => startEdit(owner)}>Edit</button>
                       <button

@@ -15,6 +15,51 @@
 
 section {
   margin-bottom: 40px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 登录提示样式 */
+.login-prompt {
+  text-align: center;
+  padding: 50px 20px;
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 12px;
+  max-width: 500px;
+  margin: 50px auto;
+}
+
+.login-prompt p {
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: #856404;
+}
+
+.login-prompt button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.3s;
+}
+
+.login-prompt button:hover {
+  background-color: #0056b3;
+}
+
+.login-prompt a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-prompt a:hover {
+  text-decoration: underline;
 }
 
 /* 📱 Mobile first */
@@ -26,6 +71,19 @@ section {
   .fish-owners-page h1 {
     font-size: 1.4rem;
     margin-bottom: 20px;
+  }
+
+  section {
+    padding: 15px;
+  }
+
+  .login-prompt {
+    padding: 30px 10px;
+    margin: 30px 10px;
+  }
+
+  .login-prompt button {
+    width: 100%;
   }
 }
 
