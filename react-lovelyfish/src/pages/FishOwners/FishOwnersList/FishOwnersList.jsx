@@ -12,14 +12,14 @@ function FishOwnersList({ refresh }) {
 
   // Fetch owners
   const fetchOwners = useCallback(async () => {
-    setLoading(true);
+    setOwnersLoading(true);
     try {
       const res = await api.get("/FishOwners");
       setOwners(res.data);
     } catch (error) {
       console.error("Error fetching fish owners:", error);
     }
-    setLoading(false);
+    setOwnersLoading(false);
   }, []);
 
   useEffect(() => {
