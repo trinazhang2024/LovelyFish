@@ -22,29 +22,54 @@ const Login = () => {
     }
   }, [location.state]);
 
+  // 🔹 fetch current user with optional retry (for mobile cookie sync)
+  const fetchCurrentUser = async (retry = 1) => {
+    try {
+      const meRes = await api.get('/account/me');
+      console.log('Logged in user data:', meRes.data);
+      login(meRes.data);
+      navigate('/');
+    } catch (err) {
+      console.warn('fetchCurrentUser failed', err.response || err);
+      if (retry > 0) {
+        console.log(`Retrying fetchCurrentUser in 200ms, remaining retries: ${retry - 1}`);
+        setTimeout(() => fetchCurrentUser(retry - 1), 200);
+      } else {
+        setErrorMessage('Login succeeded but failed to fetch user info. Try again.');
+        setLoading(false);
+      }
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setLoading(true);
 
     try {
+
+      // Step 1: call backend login endpoint
+      console.log('Attempting login with', email);
+
       // Call backend login endpoint; auth cookies are automatically stored
       await api.post('/account/login', { email, password });
 
-      // Fetch current user info and update UserContext
-      const meRes = await api.get('/account/me');
-      console.log('Logged in user data:', meRes.data);
+      console.log('Login POST /account/login succeeded');
 
-      login(meRes.data); // Example: { name: "John Doe", email: "john@example.com" }
-
-      navigate('/'); // Redirect to homepage after login
-    } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Login failed');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+       // Step 2: fetch current user with retry
+       await fetchCurrentUser(2); // 🔹 Retry twice if first fetch fails
+      } catch (error) {
+        console.error('Login error:', error.response || error);
+        if (error.response?.status === 401) {
+          setErrorMessage('Invalid credentials or session expired.');
+        } else {
+          setErrorMessage(error.response?.data?.message || 'Login failed.');
+        }
+        setLoading(false);
+      }
+    };
+    
   return (
     <>
       {registerMessage && (
