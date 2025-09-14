@@ -82,7 +82,7 @@ function FishOwnersList({ refresh }) {
   // if (!user) return <p>Please log in to view fish owners.</p>;
 
   console.log("Current user:", user);
-  console.log("Owner record:", owner);
+  
 
   return (
     <div className="fish-owners-container">
@@ -91,7 +91,11 @@ function FishOwnersList({ refresh }) {
         <p>No records found</p>
       ) : (
         <div className="fish-owners-grid">
-          {owners.map((owner) => (
+          {owners.map((owner) => {
+            
+            console.log("Owner record:", owner);
+
+            return (
             <div key={owner.ownerID} className="fish-owner-card">
               {editingId === owner.ownerID ? (
                 <>
@@ -174,8 +178,8 @@ function FishOwnersList({ refresh }) {
                   )}
                 </>
               )}
-            </div>
-          ))}
+            </div>);
+          })}
         </div>
       )}
     </div>
