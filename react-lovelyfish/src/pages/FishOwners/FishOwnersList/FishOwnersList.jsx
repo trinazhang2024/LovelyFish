@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import api from "../../../API/axios";
+import { useUser } from '../../../contexts/UserContext'
 import "./FishOwnersList.css";
 
 function FishOwnersList({ refresh }) {
+  const { user, isAdmin, loading: userLoading } = useUser();
   const [owners, setOwners] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [ownersLoading, setOwnersLoading] = useState(true);
   const [editingId, setEditingId] = useState(null); // Currently Editing OwnerID
   const [editData, setEditData] = useState({});   // Edit Form Data
 
+  // Fetch owners
   const fetchOwners = useCallback(async () => {
     setLoading(true);
     try {
@@ -23,6 +26,7 @@ function FishOwnersList({ refresh }) {
     fetchOwners();
   }, [fetchOwners, refresh]); //Refetch data when refresh changes.
 
+  //delete
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
@@ -72,7 +76,10 @@ function FishOwnersList({ refresh }) {
   };
 
 
-  if (loading) return <p>Loading...</p>;
+  if (userLoading || ownersLoading) return <p>Loading...</p>;
+
+  // Optional: hide page if not logged in
+  // if (!user) return <p>Please log in to view fish owners.</p>;
 
   return (
     <div className="fish-owners-container">
@@ -150,15 +157,18 @@ function FishOwnersList({ refresh }) {
                     <p>📧 {owner.isContactPublic ? owner.email || "N/A" : "Hidden,contact seller"}</p>
                   </div>
 
-                  <div className="fish-owner-card-buttons">
-                    <button onClick={() => startEdit(owner)}>Edit</button>
-                    <button
-                      onClick={() => handleDelete(owner.ownerID)}
-                      className="delete-btn"
-                    >
-                      Delete
-                    </button>
-                  </div>
+                  {/* only Admin and user account can operate the edit and delete */}
+                  {(isAdmin || user.id === owner.ownerID) && (
+                    <div className="fish-owner-card-buttons">
+                      <button onClick={() => startEdit(owner)}>Edit</button>
+                      <button
+                        onClick={() => handleDelete(owner.ownerID)}
+                        className="delete-btn"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </>
               )}
             </div>

@@ -31,6 +31,12 @@ export default function OrdersAdminPage() {
         if (search) params.search = search;
 
         const res = await api.get("/admin/orders", { params });
+
+        console.log("Fetched orders from API:", res.data.items);
+        if (res.data.items) {
+          res.data.items.forEach(o => console.log(`Order ${o.id} deliveryMethod:`, o.deliveryMethod));
+        }
+        
         setOrders(res.data.items || []);
         setTotalPages(res.data.totalPages || 1);
         setTotalItems(res.data.totalItems || 0); 
