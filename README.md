@@ -85,9 +85,32 @@ An online platform for buying aquarium equipment, built with React and Bootstrap
 - **Result:** Increased user engagement and potential site traffic, providing additional value to visitors.  
 
 ### 6. Multi-Device Login Testing
-- **Issue found:** Logging in on one device sometimes prevented login on another.  
-- **Current handling:** Frontend uses cookies to store session; multi-device login may be limited.  
-- **Result / Note:** Users can log in on a single device without issues. Future improvements could include token-based multi-device login.
+- **Issue:** Backend session stored in cookies. On iPhone Safari (and some mobile browsers), API /account/me requests failed because cookies were blocked.
+- **Frontend Investigation:** Tested cross-browser behavior, verified that desktop works but mobile Safari blocks the cookie.
+- **Result:** Users can log in on desktop without issues. Mobile limitations noted and backend informed; future improvements could include token-based authentication (JWT) to ensure cross-device consistency.
+- **Visual Evidence:**  
+ **Desktop**  
+✅ Login succeeds and user info returned    
+ **iPhone Safari**  
+❌ Login succeeds but fails to fetch user info
+<img src="react-lovelyfish/public/assets/uploads/iphone-login.jpg" alt="iphone-login" width="300"/>
+
+### 7. Feature-specific Testing: Cart Calculation
+- **Issue:** Users expect instant updates of total price and quantities in the shopping cart.
+- **Fix Implemented:**
+Added frontend calculation logic to update subtotal and total dynamically for better UX.
+Ensured that final payment amount is calculated and verified by backend when submitting the order.
+- **Result:**
+Frontend displays totals immediately ✅  
+Backend calculation ensures correctness of payment ✅  
+Users see instant feedback without compromising transaction accuracy.  
+- **Visual Evidence:**  
+**Frontend Calculation**  
+<img src="react-lovelyfish/public/assets/uploads/cart1.png" alt="cart1" width="300"/> <img src="react-lovelyfish/public/assets/uploads/cart2.png" alt="cart2" width="300"/>
+
+
+**Backend Verification**  
+<img src="react-lovelyfish/public/assets/uploads/cart3.png" alt="cart3" width="300"/>
 
 
 ---
