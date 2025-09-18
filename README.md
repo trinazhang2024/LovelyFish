@@ -95,7 +95,7 @@ An online platform for buying aquarium equipment, built with React and Bootstrap
 ❌ Login succeeds but fails to fetch user info
 <img src="react-lovelyfish/public/assets/uploads/iphone-login.jpg" alt="iphone-login" width="300"/>
 
-### 7. Feature-specific Testing: Cart Calculation
+### 7. Cart Calculation
 - **Issue:** Users expect instant updates of total price and quantities in the shopping cart.
 - **Fix Implemented:**
 Added frontend calculation logic to update subtotal and total dynamically for better UX.
