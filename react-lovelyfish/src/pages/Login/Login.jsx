@@ -53,19 +53,19 @@ const Login = () => {
       console.log('Attempting login with', email);
 
       // Call backend login endpoint; auth cookies are automatically stored
-      await api.post('/account/login', { email, password });
+      const res = await api.post('/account/login', { email, password });
 
       console.log('Login POST /account/login succeeded');
+
+      localStorage.setItem('token', res.data.token);
 
        // Step 2: fetch current user with retry
        await fetchCurrentUser(2); // 🔹 Retry twice if first fetch fails
       } catch (error) {
+        
         console.error('Login error:', error.response || error);
-        if (error.response?.status === 401) {
-          setErrorMessage('Invalid credentials or session expired.');
-        } else {
-          setErrorMessage(error.response?.data?.message || 'Login failed.');
-        }
+
+        setErrorMessage(error.message);
         setLoading(false);
       }
     };
