@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../../API/axios";
 import { useUser } from "../../../contexts/UserContext"; 
 import "./LoginAdminPage.css";
