@@ -31,7 +31,7 @@ const Login = () => {
       console.log('Attempting login with', email);
 
       // 1: call backend login endpoint, get token
-      const res = await api.post('/account/login', { email, password });
+      const res = await api.post('/Account/login', { email, password });
       const token = res.data.token;
       if (!token) throw new Error('No token returned from backend');
 
@@ -39,7 +39,7 @@ const Login = () => {
       localStorage.setItem('token', token);
 
       // 3: fetch current user
-      const meRes = await api.get('/account/me');
+      const meRes = await api.get('/Account/me');
       login(meRes.data, token); // update context
       navigate('/');
     } catch (error) {
