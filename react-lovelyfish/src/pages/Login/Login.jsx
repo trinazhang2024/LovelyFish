@@ -31,7 +31,7 @@ const Login = () => {
       console.log('Attempting login with', email);
 
       // 1: call backend login endpoint, get token
-      const res = await api.post('/Account/login', { email, password });
+      const res = await api.post('/account/login', { email, password });
       const token = res.data.token;
       if (!token) throw new Error('No token returned from backend');
 
@@ -39,17 +39,24 @@ const Login = () => {
       localStorage.setItem('token', token);
 
       // 3: fetch current user
-      const meRes = await api.get('/Account/me');
+      const meRes = await api.get('/account/me');
       login(meRes.data, token); // update context
       navigate('/');
     } catch (error) {
       console.error('Login error:', error.response || error);
        // if fail to login, remove token
       localStorage.removeItem('token');
-      if (error.response?.status === 401) {
-        setErrorMessage('Invalid credentials or session expired.');
+
+      if (error.response) {
+        if (error.response.status === 401) {
+          setErrorMessage('Invalid credentials or session expired.');
+        } else if (error.response.data?.message) {
+          setErrorMessage(error.response.data.message);
+        } else {
+          setErrorMessage('Login failed.');
+        }
       } else {
-        setErrorMessage(error.response?.data?.message || 'Login failed.');
+        setErrorMessage(error.message || 'Network error.');
       }
     } finally {
       setLoading(false);
