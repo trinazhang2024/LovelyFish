@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../../../API/axios";
 import { useUser } from "../../../contexts/UserContext"; 
 import "./LoginAdminPage.css";
@@ -9,7 +9,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const { login } = useUser(); // Get login function from context
 
   const handleSubmit = async (e) => {
@@ -30,7 +30,7 @@ export default function AdminLogin() {
       login(meRes.data, token); 
 
       // navigate to admin dashboard
-      navigate("/admin/dashboard");
+      //navigate("/admin/dashboard");
     } catch (err) {
       console.error("Admin login error:", err.response || err);
       localStorage.removeItem("token"); // remove token
