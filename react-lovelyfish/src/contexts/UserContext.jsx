@@ -8,53 +8,57 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);  // Initial state is null
   const [loading, setLoading] = useState(true);  
   
-  // Simple login function: set the current user
-  // login(userData) simply sets the current user state; front-end can use /account/me response {name, email}.
-  const login = async(userData) => {
-    setUser(userData); // temporarily store the user data
-    await updateUser(); // ensure that roles and permissions are updated immediately
+  // login: store token and fetch current user
+  const login = async (userData, token) => {
+    if (token) localStorage.setItem("token", token);
+    setUser(userData);
   };
 
-  // Logout: call API to clear backend cookie and reset user
-  // logout calls the API to clear backend cookies to prevent stale sessions; failures are logged but won't block front-end logout logic.
-  const logout = async () => {
-    try {
-      await api.post("/account/logout");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
+  // logout: clear token and user state
+  const logout = () => {
+    localStorage.removeItem("token"); // remove token
     setUser(null);
   };
 
-  // Update user info (refresh the entire user object)
+  // refresh current user info from backend
   const updateUser = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setUser(null);
+      return;
+    }
+
     try {
-      const res = await api.get("/account/me");
+      const res = await api.get("/account/me"); // Authorization header is automatically added
       setUser(res.data);
     } catch (error) {
       console.error("updateUser error:", error);
+      localStorage.removeItem('token'); // remove invalid token
+      setUser(null);
     }
   };
 
-  // ✅ Automatically fetch user info on page refresh
+  // On page load, fetch user if token exists
   useEffect(() => {
-    const fetchMe = async () => {
+    const initUser = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await api.get("/account/me");
-
-        console.log("Current user info:", res.data); // ✅ Log for inspection
-
-        setUser(res.data); // res.data may contain roles = ["Admin"] or empty array
-
-      } catch(error){
+        setUser(res.data);
+      } catch (error) {
         console.error("fetchMe error:", error);
-        setUser(null); // Clear user state on failure
-      }
-      finally {
-        setLoading(false); // End loading state regardless of success/failure
+        localStorage.removeItem("token"); // remove invalid token
+        setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchMe();
+    initUser();
   }, []);
 
   const isAdmin = user?.roles?.includes("Admin") || false;
@@ -67,7 +71,3 @@ export const UserProvider = ({ children }) => {
 };
 
 export const useUser = () => useContext(UserContext);
-
-
-
-

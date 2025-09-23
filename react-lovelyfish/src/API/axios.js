@@ -5,14 +5,18 @@ import axios from "axios";
 const baseURL = "https://lovelyfish-backend-esgtdkf7h0e2ambg.australiaeast-01.azurewebsites.net/api";
 
 // Create axios instance
-const api = axios.create({
-  baseURL,             // Use environment variable
-  withCredentials: true, // Include cookies in requests
-});
+const api = axios.create({baseURL});
 
-// Request interceptor
+// Request Interceptor: Automatically Add Authorization Token
 api.interceptors.request.use(
   (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+      };
+    }
     console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`);
     return config;
   },

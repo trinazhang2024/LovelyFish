@@ -1,32 +1,42 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../../API/axios";
-import { useUser } from "../../../contexts/UserContext"; // ✅ Import UserContext
+import { useUser } from "../../../contexts/UserContext"; 
 import "./LoginAdminPage.css";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  //const navigate = useNavigate();
-  const { login } = useUser(); // ✅ Get login function from context
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useUser(); // Get login function from context
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
     try {
       // Call backend login API
-      const res = await api.post("/account/login", { email, password });
+      const res = await api.post("/admin/login", { email, password });
+      const token = res.data.token;
+      if (!token) throw new Error("No token returned from backend");
 
-      if (res.status === 200) {
-        // After successful login, fetch current admin info
-        const meRes = await api.get("/admin/me"); 
-        // Example response: { name, email, roles: ["Admin"] }
-        
-        login(meRes.data); // ✅ Update UserContext.user
-        //navigate("/admin/dashboard"); // Redirect to admin dashboard
-      }
+      localStorage.setItem("token", token);
+
+      // get admin info by token
+      const meRes = await api.get("/admin/me");
+      login(meRes.data, token); 
+
+      // navigate to admin dashboard
+      navigate("/admin/dashboard");
     } catch (err) {
+      console.error("Admin login error:", err.response || err);
+      localStorage.removeItem("token"); // remove token
       setError("Login failed, please check your email or password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,7 +56,11 @@ export default function AdminLogin() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+
         {error && <p>{error}</p>}
         <Link to="/admin/forgot-password" className="forgot-password">
           Forgot password?

@@ -22,54 +22,39 @@ const Login = () => {
     }
   }, [location.state]);
 
-  // 🔹 fetch current user with optional retry (for mobile cookie sync)
-  const fetchCurrentUser = async (retry = 1) => {
-    try {
-      const meRes = await api.get('/account/me');
-      console.log('Logged in user data:', meRes.data);
-      login(meRes.data);
-      navigate('/');
-    } catch (err) {
-      console.warn('fetchCurrentUser failed', err.response || err);
-      if (retry > 0) {
-        console.log(`Retrying fetchCurrentUser in 200ms, remaining retries: ${retry - 1}`);
-        setTimeout(() => fetchCurrentUser(retry - 1), 200);
-      } else {
-        setErrorMessage('Login succeeded but failed to fetch user info. Try again.');
-        setLoading(false);
-      }
-    }
-  };
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setLoading(true);
 
     try {
-
-      // Step 1: call backend login endpoint
       console.log('Attempting login with', email);
 
-      // Call backend login endpoint; auth cookies are automatically stored
-      await api.post('/account/login', { email, password });
+      // 1: call backend login endpoint, get token
+      const res = await api.post('/account/login', { email, password });
+      const token = res.data.token;
+      if (!token) throw new Error('No token returned from backend');
 
-      console.log('Login POST /account/login succeeded');
+      // 2: store token in localStorage
+      localStorage.setItem('token', token);
 
-       // Step 2: fetch current user with retry
-       await fetchCurrentUser(2); // 🔹 Retry twice if first fetch fails
-      } catch (error) {
-        console.error('Login error:', error.response || error);
-        if (error.response?.status === 401) {
-          setErrorMessage('Invalid credentials or session expired.');
-        } else {
-          setErrorMessage(error.response?.data?.message || 'Login failed.');
-        }
-        setLoading(false);
+      // 3: fetch current user
+      const meRes = await api.get('/account/me');
+      login(meRes.data, token); // update context
+      navigate('/');
+    } catch (error) {
+      console.error('Login error:', error.response || error);
+       // if fail to login, remove token
+      localStorage.removeItem('token');
+      if (error.response?.status === 401) {
+        setErrorMessage('Invalid credentials or session expired.');
+      } else {
+        setErrorMessage(error.response?.data?.message || 'Login failed.');
       }
-    };
-    
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       {registerMessage && (
