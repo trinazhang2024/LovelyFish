@@ -30,6 +30,9 @@ const Login = () => {
     try {
       console.log('Attempting login with', email);
 
+      // Clear any previously stored token before sending request
+      localStorage.removeItem("token");
+
       // 1: call backend login endpoint, get token
       const res = await api.post('/account/login', { email, password });
       const token = res.data.token;
