@@ -10,6 +10,9 @@ import "./ProductImageUpload.css"; // External styles
    - setImageUrls: function to update image URLs in parent component
  */
 export default function ProductImageUpload({ imageUrls, setImageUrls }) {
+
+  const UPLOADS_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS; // get from  .env 
+
   const [uploading, setUploading] = useState(false);
 
   // Handle file selection and upload
@@ -79,7 +82,7 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
       <div className="image-list">
         {Array.isArray(imageUrls) ? imageUrls.map((url, idx) => (
           <div key={idx} className="image-wrapper">
-            <img src={url} alt={`Preview ${idx}`} className="preview-image" />
+            <img src={`${UPLOADS_BASE_URL}${url}`} alt={`Preview ${idx}`} className="preview-image" />
             <button
               type="button"
               onClick={() => removeImage(idx)}
