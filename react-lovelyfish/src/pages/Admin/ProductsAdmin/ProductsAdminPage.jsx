@@ -164,6 +164,14 @@ export default function ProductsAdminPage() {
 
   // -------------------- Edit Product --------------------
   const handleEdit = (product) => {
+    //const urls = Array.isArray(product.imageUrls) ? product.imageUrls : product.imageUrls ? [product.imageUrls] : [];
+    //const urls = Array.isArray(product.imageUrls) ? [...product.imageUrls] : [];
+    const UPLOADS_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS; // get from  .env 
+    const urls = Array.isArray(product.imageUrls)
+  ? product.imageUrls.map(url => url.replace(UPLOADS_BASE_URL, "")) // If the backend returns a full URL, it can be retained.
+  : [];
+
+
     setForm({
       id: product.id,
       title: product.title,
@@ -173,9 +181,12 @@ export default function ProductsAdminPage() {
       description: product.description,
       features: product.features || [],
       categoryId: product.categoryId,
-      imageUrls: Array.isArray(product.imageUrls) ? product.imageUrls : product.imageUrls ? [product.imageUrls] : [],
+      imageUrls: urls, //used in form , the parent pros are not updated.
       isClearance: product.isClearance || false
     });
+
+    // Key: synchronize parent component state -> used in preview pics
+    setImageUrls(urls)
 
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

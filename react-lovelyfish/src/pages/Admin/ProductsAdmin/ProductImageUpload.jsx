@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import api from "../../../API/axios";
 import "./ProductImageUpload.css"; // External styles
 
@@ -14,6 +14,7 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
   const UPLOADS_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS; // get from  .env 
 
   const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   // Handle file selection and upload
   const handleImageChange = async (e) => {
@@ -27,7 +28,11 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
     try {
       const res = await api.post("/Upload", formData);
       const uploadedFileUrls = res.data.map(item => item.fileUrl);
-      setImageUrls(prev => [...prev, ...uploadedFileUrls]);
+
+      // Remove duplicates + update state
+      setImageUrls((prev) => [
+        ...prev, 
+        ...uploadedFileUrls.filter((url) => !prev.includes(url)),]);
 
       console.log("After upload, imageUrls:", [...imageUrls, ...uploadedFileUrls]);
     } catch (err) {
@@ -35,17 +40,16 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
       alert("Upload failed");
     } finally {
       setUploading(false);
+
+      //reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
 
+
   // Remove image from the list
-  // const removeImage = (index) => {
-  //   setImageUrls(prev => {
-  //     const newArr = [...prev];
-  //     newArr.splice(index, 1);
-  //     return newArr;
-  //   });
-  // };
   const removeImage = async (index) => {
     const fileUrl = imageUrls[index];
   
@@ -70,10 +74,22 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
     }
   };
 
+  // Reset Input when parent clears inmages
+  useEffect(()=> {
+    if (imageUrls.length===0 && fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  }, [imageUrls]);
+
   return (
     <div className="upload-container">
       {/* File input */}
-      <input type="file" multiple onChange={handleImageChange} disabled={uploading} />
+      <input
+        type="file"
+        multiple
+        ref={fileInputRef}
+        onChange={handleImageChange}
+        disabled={uploading} />
       
       {/* Uploading indicator */}
       {uploading && <p className="uploading-text">Uploading...</p>}
@@ -82,7 +98,10 @@ export default function ProductImageUpload({ imageUrls, setImageUrls }) {
       <div className="image-list">
         {Array.isArray(imageUrls) ? imageUrls.map((url, idx) => (
           <div key={idx} className="image-wrapper">
-            <img src={`${UPLOADS_BASE_URL}${url}`} alt={`Preview ${idx}`} className="preview-image" />
+            <img
+              src={url.startsWith("http") ? url : `${UPLOADS_BASE_URL}${url}`}
+              alt={`Preview ${idx}`}
+              className="preview-image" />
             <button
               type="button"
               onClick={() => removeImage(idx)}
