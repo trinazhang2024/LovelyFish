@@ -1,18 +1,26 @@
 import React from 'react';
+import SEO from '../../components/SEO'
 import './About.css';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+
 //import { MdPayment } from 'react-icons/md';
 
 const About = () => {
   return (
     <div className="about-container">
+
+      {/* SEO Meta */}
+      <SEO
+        title="About LovelyFish Aquarium | Aquarium Equipment Store NZ"
+        description="Learn about LovelyFish, a local aquarium equipment store in Massey, West Auckland. We provide high-quality aquarium products for hobbyists and professionals."
+      />
       <h1 className="about-title">About Us</h1>
 
       {/* Company Overview */}
       <section className="about-section">
         <h2 className="section-title">Company Overview</h2>
         <p className="section-content">
-        LovelyFish is a local aquarium equipment store based in Massey, West Auckland, New Zealand. We specialize in providing high-quality, practical, and affordable equipment and accessories for freshwater aquariums, marine tanks, and ponds.
+          LovelyFish is a local aquarium equipment store based in Massey, West Auckland, New Zealand. We specialize in providing high-quality, practical, and affordable equipment and accessories for freshwater aquariums, marine tanks, and ponds.
         </p>
       </section>
 
@@ -20,7 +28,7 @@ const About = () => {
       <section className="about-section">
         <h2 className="section-title">Mission and Vision</h2>
         <p className="section-content">
-           We offer a wide range of products, including but not limited to:
+          We offer a wide range of products, including but not limited to:
         </p>
         <ul className="section-content">
           <li>Air pumps, submersible pumps</li>
@@ -29,7 +37,7 @@ const About = () => {
           <li>Gravel, aquatic soil, aquarium decorations, and more</li>
         </ul>
         <p className="section-content">
-           Our products are suitable for home aquarium enthusiasts, professional breeders, and commercial aquarium systems.
+          Our products are suitable for home aquarium enthusiasts, professional breeders, and commercial aquarium systems.
         </p>
       </section>
 

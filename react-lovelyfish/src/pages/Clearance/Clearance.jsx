@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SEO from "../../components/SEO";
 import { useCart } from '../../contexts/CartContext';
 import { Container, Row, Col, Card, Button, Badge, Alert, Spinner } from 'react-bootstrap';
 import { BsArrowRight, BsTagFill } from 'react-icons/bs';
@@ -75,85 +76,96 @@ function Clearance() {
 
   // ----------------- Render main clearance grid -----------------
   return (
-    <Container className="clearance-section my-4">
-      {/* Header */}
-      <div className="clearance-header mb-3">
-        <h2><BsTagFill className="clearance-icon" /> Clearance Sale</h2>
-      </div>
+    <>
+      {/* SEO Section */}
+      <SEO
+        title="Clearance – Lovely Fish Aquarium"
+        description="Check out our clearance aquarium products in New Zealand. Great deals on filters, heaters, pumps, and more."
+      />
 
-      {products.length === 0 ? (
-        <Alert variant="info">No clearance items available right now.</Alert>
-      ) : (
-        <>
-          <Row className="clearance-grid">
-            {products.map(product => {
-              const discountedPrice = product.discountPercent
-                ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
-                : product.price.toFixed(2);
 
-              return (
-                <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="clearance-col mb-4">
-                  <Card className="clearance-card h-100">
-                    {/* Discount badge */}
-                    {product.discountPercent > 0 && (
-                      <Badge bg="danger" className="clearance-badge">
-                        {product.discountPercent}% OFF
-                      </Badge>
-                    )}
+      <Container className="clearance-section my-4">
+        {/* Header */}
+        <div className="clearance-header mb-3">
+          <h2><BsTagFill className="clearance-icon" /> Clearance Sale</h2>
+        </div>
 
-                    {/* Product image linking to product page */}
-                    <Link to={`/product/${product.id}`} className="clearance-link">
-                      <Card.Img
-                        variant="top"
-                        src={product.mainImageUrl || (product.imageUrls && product.imageUrls[0]) || ''}
-                        className="clearance-img"
-                      />
-                    </Link>
+        {products.length === 0 ? (
+          <Alert variant="info">No clearance items available right now.</Alert>
+        ) : (
+          <>
+            <Row className="clearance-grid">
+              {products.map(product => {
+                const discountedPrice = product.discountPercent
+                  ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
+                  : product.price.toFixed(2);
 
-                    <Card.Body className="clearance-body d-flex flex-column justify-content-between">
-                      {/* Product title */}
-                      <Card.Title className="clearance-title">{product.title}</Card.Title>
-
-                      {/* Price display */}
-                      {product.discountPercent > 0 ? (
-                        <>
-                          <Card.Text className="clearance-oldprice">${product.price.toFixed(2)}</Card.Text>
-                          <Card.Text className="clearance-newprice">${discountedPrice}</Card.Text>
-                        </>
-                      ) : (
-                        <Card.Text className="clearance-newprice">${discountedPrice}</Card.Text>
+                return (
+                  <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="clearance-col mb-4">
+                    <Card className="clearance-card h-100">
+                      {/* Discount badge */}
+                      {product.discountPercent > 0 && (
+                        <Badge bg="danger" className="clearance-badge">
+                          {product.discountPercent}% OFF
+                        </Badge>
                       )}
 
-                      {/* Actions: Shop Now & Add to Cart */}
-                      <div className="clearance-actions mt-auto d-flex justify-content-between">
-                        <Link to={`/product/${product.id}`} className="buy-button btn btn-outline-primary">
-                          Shop Now
-                        </Link>
-
-                        <AddToCartButton
-                          productId={product.id}
-                          productTitle={product.title}
-                          addToCart={addToCart}
+                      {/* Product image linking to product page */}
+                      <Link to={`/product/${product.id}`} className="clearance-link">
+                        <Card.Img
+                          variant="top"
+                          src={product.mainImageUrl || (product.imageUrls && product.imageUrls[0]) || ''}
+                          className="clearance-img"
+                          alt={`${product.title} aquarium product`} // Added alt for SEO             
+                          loading="lazy" // Lazy load images for SEO
                         />
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              );
-            })}
-          </Row>
+                      </Link>
 
-          {/* Load more button */}
-          {page < totalPages && (
-            <div className="clearance-loadmore text-center my-3">
-              <Button variant="outline-primary" onClick={handleLoadMore} disabled={loadingMore}>
-                {loadingMore ? 'Loading...' : 'Load More'} <BsArrowRight className="ms-1" />
-              </Button>
-            </div>
-          )}
-        </>
-      )}
-    </Container>
+                      <Card.Body className="clearance-body d-flex flex-column justify-content-between">
+                        {/* Product title */}
+                        <Card.Title className="clearance-title">{product.title}</Card.Title>
+
+                        {/* Price display */}
+                        {product.discountPercent > 0 ? (
+                          <>
+                            <Card.Text className="clearance-oldprice">${product.price.toFixed(2)}</Card.Text>
+                            <Card.Text className="clearance-newprice">${discountedPrice}</Card.Text>
+                          </>
+                        ) : (
+                          <Card.Text className="clearance-newprice">${discountedPrice}</Card.Text>
+                        )}
+
+                        {/* Actions: Shop Now & Add to Cart */}
+                        <div className="clearance-actions mt-auto d-flex justify-content-between">
+                          <Link to={`/product/${product.id}`} className="buy-button btn btn-outline-primary">
+                            Shop Now
+                          </Link>
+
+                          <AddToCartButton
+                            productId={product.id}
+                            productTitle={product.title}
+                            addToCart={addToCart}
+                          />
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+
+            {/* Load more button */}
+            {page < totalPages && (
+              <div className="clearance-loadmore text-center my-3">
+                <Button variant="outline-primary" onClick={handleLoadMore} disabled={loadingMore}>
+                  {loadingMore ? 'Loading...' : 'Load More'} <BsArrowRight className="ms-1" />
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      </Container>
+    </>
   );
 }
 

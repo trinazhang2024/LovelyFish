@@ -1,8 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import api from '../API/axios'; 
+import api from '../API/axios';
 import { useCart } from '../contexts/CartContext';
 import ProductList from '../components/ProductList/ProductList';
+import { Helmet } from 'react-helmet';
 import './Products.css';
+
+//Helper function: generate SEO keywords from product List
+//New function added
+const generateKeywords = (products) => {
+  const fixedKeywords = ["filter", "heater", "water pump", "air pump", "sponge", "filtration", "LED light"];
+  const titles = products.map(p => p.title || "").join(" ");
+  const words = titles.split(/[\s,]+/).filter(w => w.length > 2);
+  const unique = Array.from(new Set(words));
+  return [...unique, ...fixedKeywords].join(", ");
+};
 
 const Products = () => {
   const [products, setProducts] = useState([]); // State to store products
@@ -38,32 +49,50 @@ const Products = () => {
   // Fetch products whenever page changes
   useEffect(() => {
     fetchProducts(page);
-  }, [page, fetchProducts]); // ✅ Including fetchProducts avoids ESLint warnings
+  }, [page, fetchProducts]); // Including fetchProducts avoids ESLint warnings
 
   // Show loading or error messages
   if (loading) return <p>Loading products...</p>;
   if (error) return <p>Error loading products: {error}</p>;
 
   return (
-    <div className="products-container">
-      {/* <h1>All Products</h1> */}
+    <>
+      {/* SEO Section */}
+      {/* Added Helmet for title, description, keywords */}
+      <Helmet>
 
-      {/* ✅ Pass addToCart and addingIds to ProductList */}
-      <ProductList 
-        products={products} 
-        addToCart={addToCart} 
-        addingIds={addingIds} 
-      />
+        <title>All Products | Lovely Fish Aquarium</title>
 
-      {/* Pagination controls */}
-      <div className="pagination">
-        <span>Total {totalItems} items, {pageSize} per page</span>
-        <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Previous</button>
-        <span>{page} / {totalPages}</span>
-        <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>Next</button>
+        <meta
+          name="description"
+          content={`Browse our aquarium products including filters, heaters, pumps, LED lights, and more. Page ${page} of ${totalPages}.`} />
+
+        <meta
+          name="keywords"
+          content={generateKeywords(products)} />
+
+      </Helmet>
+
+      <div className="products-container">
+        {/* <h1>All Products</h1> */}
+
+        {/* Pass addToCart and addingIds to ProductList */}
+        <ProductList
+          products={products}
+          addToCart={addToCart}
+          addingIds={addingIds}
+        />
+
+        {/* Pagination controls */}
+        <div className="pagination">
+          <span>Total {totalItems} items, {pageSize} per page</span>
+          <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Previous</button>
+          <span>{page} / {totalPages}</span>
+          <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>Next</button>
+        </div>
+
       </div>
-
-    </div>
+    </>
   );
 };
 

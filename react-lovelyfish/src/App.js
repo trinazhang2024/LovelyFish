@@ -1,4 +1,5 @@
 import React from "react";
+import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { UserProvider } from "./contexts/UserContext";
 import { CartProvider } from './contexts/CartContext';
@@ -30,7 +31,7 @@ import UsersOrdersPage from './pages/Admin/UsersAdmin/UsersOrders/UsersOrdersPag
 
 // Other front-end pages
 import Products from './pages/Products';
-import ProductDetail from './pages/ProductDetail/ProductDetail'; 
+import ProductDetail from './pages/ProductDetail/ProductDetail';
 import ProductCategoryPage from './pages/ProductCategoryPage';
 import SearchResultsPage from './pages/Search/SearchResultsPage';
 import CartPage from './pages/Cart/CartPage/CartPage';
@@ -46,88 +47,89 @@ import FishCareFAQ from './pages/Aquarium Guide/FishCareFAQ/FishCareFAQ'
 import AquariumGuide from './pages/Aquarium Guide/AquariumGuide'
 
 
- // AppRoutes defines all frontend routes for the application.
- // It uses ProtectedRoute and ProtectedAdminRoute to restrict access.
- 
+// AppRoutes defines all frontend routes for the application.
+// It uses ProtectedRoute and ProtectedAdminRoute to restrict access.
+
 const AppRoutes = () => {
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/reset-password" element={<ResetPasswordPage />} />
+    
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-      {/* Protected customer routes */}
-      <Route path="/profile" element={
-        <ProtectedRoute>
-          <Profile />
-        </ProtectedRoute>
-      } />
+        {/* Protected customer routes */}
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />
 
-      {/* Admin routes */}
-      <Route path="/admin/login" element={
-        <UserLoginRedirect>
-          <AdminLogin />
-        </UserLoginRedirect>
-      } />
-      <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
-      <Route path="/admin/reset-password" element={<AdminResetPassword />} />
-      <Route path="/admin/change-password" element={<AdminChangePassword />} />
+        {/* Admin routes */}
+        <Route path="/admin/login" element={
+          <UserLoginRedirect>
+            <AdminLogin />
+          </UserLoginRedirect>
+        } />
+        <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+        <Route path="/admin/reset-password" element={<AdminResetPassword />} />
+        <Route path="/admin/change-password" element={<AdminChangePassword />} />
 
-      {/* Protected admin routes */}
-      <Route path="/admin/dashboard" element={
-        <ProtectedAdminRoute>
-          <Dashboard />
-        </ProtectedAdminRoute>
-      } />
-      <Route path="/admin/orders" element={
-        <ProtectedAdminRoute>
-          <OrdersAdminPage />
-        </ProtectedAdminRoute>
-      } />
-      <Route path="/admin/orders/:orderId" element={
-        <ProtectedAdminRoute>
-          <OrderDetailPage />
-        </ProtectedAdminRoute>
-      } />
-      <Route path="/admin/users" element={
-        <ProtectedAdminRoute>
-          <UsersAdminPage />
-        </ProtectedAdminRoute>
-      } />
-      <Route path="/admin/users/:userId/orders" element={
-        <ProtectedAdminRoute>
-          <UsersOrdersPage />
-        </ProtectedAdminRoute>
-      } />
+        {/* Protected admin routes */}
+        <Route path="/admin/dashboard" element={
+          <ProtectedAdminRoute>
+            <Dashboard />
+          </ProtectedAdminRoute>
+        } />
+        <Route path="/admin/orders" element={
+          <ProtectedAdminRoute>
+            <OrdersAdminPage />
+          </ProtectedAdminRoute>
+        } />
+        <Route path="/admin/orders/:orderId" element={
+          <ProtectedAdminRoute>
+            <OrderDetailPage />
+          </ProtectedAdminRoute>
+        } />
+        <Route path="/admin/users" element={
+          <ProtectedAdminRoute>
+            <UsersAdminPage />
+          </ProtectedAdminRoute>
+        } />
+        <Route path="/admin/users/:userId/orders" element={
+          <ProtectedAdminRoute>
+            <UsersOrdersPage />
+          </ProtectedAdminRoute>
+        } />
 
-      {/* Products & search pages */}
-      <Route path="/products" element={<Products />} />
-      <Route path="/product/:id" element={<ProductDetail />} />
-      <Route path="/products/:category" element={<ProductCategoryPage />} />
-      <Route path="/search" element={<SearchResultsPage />} />
+        {/* Products & search pages */}
+        <Route path="/products" element={<Products />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/products/:category" element={<ProductCategoryPage />} />
+        <Route path="/search" element={<SearchResultsPage />} />
 
-      {/* Cart & orders */}
-      <Route path="/cart" element={<CartPage />} />
-      <Route path="/confirm-order" element={<ConfirmOrderPage />} />
-      <Route path="/orders" element={<OrdersPage />} />
+        {/* Cart & orders */}
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/confirm-order" element={<ConfirmOrderPage />} />
+        <Route path="/orders" element={<OrdersPage />} />
 
-      {/* Other pages */}
-      <Route path="/new-arrivals" element={<NewArrivals />} />
-      <Route path="/clearance" element={<Clearance />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/fish-community" element={<FishOwnersPage />} />
-      <Route path="/equipment-tips" element={<EquipmentTips />} />
-      <Route path="/fish-care-faq" element={<FishCareFAQ />} />
-      <Route path="/aquarium-guide" element={<AquariumGuide />} />
+        {/* Other pages */}
+        <Route path="/new-arrivals" element={<NewArrivals />} />
+        <Route path="/clearance" element={<Clearance />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/fish-community" element={<FishOwnersPage />} />
+        <Route path="/equipment-tips" element={<EquipmentTips />} />
+        <Route path="/fish-care-faq" element={<FishCareFAQ />} />
+        <Route path="/aquarium-guide" element={<AquariumGuide />} />
 
-      {/* Redirect unmatched routes to home */}
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
-  );
+        {/* Redirect unmatched routes to home */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+      );
 };
 
 /**
@@ -136,19 +138,21 @@ const AppRoutes = () => {
  */
 const App = () => {
   return (
-    <ToastProvider> {/* Global toast notifications */}
-      <UserProvider> {/* User authentication and info */}
-        <CartProvider> {/* Shopping cart context */}
-          <Router>
-            <Layout>
-              <Navbar /> 
-              <AppRoutes /> {/* Application routes */}
-              {/* <Footer />  */}
-            </Layout>
-          </Router>
-        </CartProvider>
-      </UserProvider>
-    </ToastProvider>
+    <HelmetProvider>
+      <ToastProvider> {/* Global toast notifications */}
+        <UserProvider> {/* User authentication and info */}
+          <CartProvider> {/* Shopping cart context */}
+            <Router>
+              <Layout>
+                <Navbar />
+                <AppRoutes /> {/* Application routes */}
+                {/* <Footer />  */}
+              </Layout>
+            </Router>
+          </CartProvider>
+        </UserProvider>
+      </ToastProvider>
+    </HelmetProvider>
   );
 };
 

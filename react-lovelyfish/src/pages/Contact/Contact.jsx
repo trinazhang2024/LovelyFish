@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SEO from "../../components/SEO";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaUser, FaPaperPlane } from 'react-icons/fa';
 import api from '../../API/axios';
 import './Contact.css';
@@ -52,84 +53,92 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-container">
-      {/* Page Title */}
-      <h1 className="contact-title">Contact Us</h1>
+    <>
+      {/*  ----------------- SEO Section -----------------  */}
+      <SEO
+        title="Contact Us – Lovely Fish Aquarium"
+        description="Contact Lovely Fish Aquarium in Auckland, New Zealand. Reach us by phone, email, or message us directly using our contact form."
+      />
 
-      {/* ----------------- Contact Info Section ----------------- */}
-      <section className="contact-section">
-        <h2 className="section-title">Contact Info</h2>
-        <ul className="contact-info">
-          <li><FaPhoneAlt /> Phone: +64 221932432</li>
-          <li><FaEnvelope /> Email: info@lovelyfishaquarium.co.nz</li>
-          <li><FaMapMarkerAlt /> Address: Massey, West Auckland, New Zealand 0614</li>
-        </ul>
-      </section>
+      <div className="contact-container">
+        {/* Page Title */}
+        <h1 className="contact-title">Contact Us</h1>
 
-      {/* ----------------- Contact Form Section ----------------- */}
-      <section className="contact-section">
-        <h2 className="section-title">Send a Message</h2>
+        {/* ----------------- Contact Info Section ----------------- */}
+        <section className="contact-section">
+          <h2 className="section-title">Contact Info</h2>
+          <ul className="contact-info">
+            <li><FaPhoneAlt /> Phone: +64 221932432</li>
+            <li><FaEnvelope /> Email: info@lovelyfishaquarium.co.nz</li>
+            <li><FaMapMarkerAlt /> Address: Massey, West Auckland, New Zealand 0614</li>
+          </ul>
+        </section>
 
-        <form className="contact-form" onSubmit={handleSubmit}>
-          {/* Name Field */}
-          <div className="form-group">
-            <label htmlFor="name"><FaUser /> Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Please input your name here."
-              required
-            />
-          </div>
+        {/* ----------------- Contact Form Section ----------------- */}
+        <section className="contact-section">
+          <h2 className="section-title">Send a Message</h2>
 
-          {/* Email Field */}
-          <div className="form-group">
-            <label htmlFor="email"><FaEnvelope /> Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Please input your email address here."
-              required
-            />
-          </div>
+          <form className="contact-form" onSubmit={handleSubmit}>
+            {/* Name Field */}
+            <div className="form-group">
+              <label htmlFor="name"><FaUser /> Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Please input your name here."
+                required
+              />
+            </div>
 
-          {/* Message Field */}
-          <div className="form-group">
-            <label htmlFor="message"><FaPaperPlane /> Message</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Please leave your message here."
-              required
-            />
-          </div>
+            {/* Email Field */}
+            <div className="form-group">
+              <label htmlFor="email"><FaEnvelope /> Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Please input your email address here."
+                required
+              />
+            </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="submit-button"
-            disabled={status === 'Sending...'}
-          >
-            {status === 'Sending...' ? 'Sending...' : 'Submit'}
-          </button>
-        </form>
+            {/* Message Field */}
+            <div className="form-group">
+              <label htmlFor="message"><FaPaperPlane /> Message</label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Please leave your message here."
+                required
+              />
+            </div>
 
-        {/* ----------------- Status Message ----------------- */}
-        {status && (
-          <p className={`status-message ${status.includes('❌') ? 'error' : 'success'}`}>
-            {status}
-          </p>
-        )}
-      </section>
-    </div>
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="submit-button"
+              disabled={status === 'Sending...'}
+            >
+              {status === 'Sending...' ? 'Sending...' : 'Submit'}
+            </button>
+          </form>
+
+          {/* ----------------- Status Message ----------------- */}
+          {status && (
+            <p className={`status-message ${status.includes('❌') ? 'error' : 'success'}`}>
+              {status}
+            </p>
+          )}
+        </section>
+      </div>
+    </>
   );
 };
 

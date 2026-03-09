@@ -6,15 +6,17 @@ import '../AddToCartButton/AddToCartButton.css';
 
 /**
  * ProductCard component
+ * Includes SEO and accessibility improvement.
  * @param {Object} product - Product data
  * @param {Function} addToCart - Function from parent to add product to cart
  */
 const ProductCard = ({ product, addToCart }) => {
-  // If no product, show fallback
+  // Fallback if no product data.
   if (!product) return <div>Product not found</div>;
 
-  // Use main image, fallback to first image or placeholder
-  const mainImage = product.mainImageUrl || (product.images && product.images[0]?.url) || 'placeholder.png';
+  // Use main image if defined, fallback to first image or placeholder
+  const mainImage = 
+      product.mainImageUrl || (product.images && product.images[0]?.url) || 'placeholder.png';
 
   // Calculate discounted price if discountPercent exists
   const discountedPrice = product.discountPercent
@@ -31,16 +33,35 @@ const ProductCard = ({ product, addToCart }) => {
         <div className="product-card-badge new">NEW</div>
       ) : null}
 
-      {/* Product image */}
+       {/* Product Image with SEO-friendly alt text and lazy loading */}
       <div className="product-card-image">
-        <img src={mainImage} alt={product.title} />
+        <img 
+          src={mainImage} 
+          alt={`${product.title} aquarium equipment`} //SEO-friendly alt
+          loading='lazy' //Lazy loading improves page performance
+        />
       </div>
 
       {/* Product details */}
       <div className="product-card-body">
+
+        {/* Product title */}
         <h5 className="product-card-title">{product.title}</h5>
-        {product.category && <p className="product-card-category">{product.category.title}</p>}
-        <p className="product-card-price">
+        
+        {/* Category display with SEO keywords */}
+        {product.category && (
+          <p className="product-card-category">
+            {product.category.title} aquarium equipment
+          </p>
+        )}
+        
+        {/* Price with schema markup for SEO */}
+        <p 
+          className="product-card-price" 
+          itemProp="offers" 
+          itemScope 
+          itemType="http://schema.org/Offer"
+        >
           {product.discountPercent > 0 ? (
             <>
               <span className="original-price">${product.price.toFixed(2)}</span>
@@ -54,12 +75,19 @@ const ProductCard = ({ product, addToCart }) => {
         {/* Actions: Shop Now + Add to Cart */}
         <div className="product-card-actions">
           {/* Link to product detail page */}
-          <Link to={`/product/${product.id}`} className="buy-button">Shop Now</Link>
+
+          <Link
+            to={`/product/${product.id}`}
+            className="buy-button"
+            aria-label={`View details for ${product.title}`} // Accessibility improvement
+          >
+            Shop Now
+          </Link>
 
           {/* Unified AddToCartButton */}
-          <AddToCartButton 
-            productId={product.id} 
-            productTitle={product.title} 
+          <AddToCartButton
+            productId={product.id}
+            productTitle={product.title}
             addToCart={addToCart}   // Use parent-provided function
           />
         </div>
