@@ -165,9 +165,11 @@ export default function ProductsAdminPage() {
   // -------------------- Edit Product --------------------
   const handleEdit = (product) => {
    
-    //const UPLOADS_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS; // get from  .env 
-    const urls = Array.isArray(product.imageUrls)
-  ? product.imageUrls.map(fileName => `${fileName}`)
+  //Split the url as "/" and only pop off the last one: file name, no matter what return from API.
+  const urls = Array.isArray(product.imageUrls)
+  ? product.imageUrls.map(url => {
+      return url.split("/").pop();
+    })
   : [];
 
 
