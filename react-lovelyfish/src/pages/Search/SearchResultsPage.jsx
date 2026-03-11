@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProductList from '../../components/ProductList/ProductList';
 import api from '../../API/axios';
+//import SEO from '../../components/SEO';
 import './SearchResultsPage.css';
 
 const SearchResultsPage = () => {

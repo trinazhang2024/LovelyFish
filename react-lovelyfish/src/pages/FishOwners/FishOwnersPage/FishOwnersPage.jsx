@@ -1,8 +1,9 @@
-import React,{ useState }  from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import FishOwnerForm from "../FishOwnerForm/FishOwnerForm";
 import FishOwnersList from "../FishOwnersList/FishOwnersList";
 import { useUser } from "../../../contexts/UserContext";
+import SEO from "../../../components/SEO";
 import "./FishOwnersPage.css";
 
 function FishOwnersPage() {
@@ -27,17 +28,26 @@ function FishOwnersPage() {
   }
 
   return (
-    <div className="fish-owners-page">
-      <h1>Fish Owners Community</h1>
+    <>
+      <div className="fish-owners-page">
 
-      <section>
-        <FishOwnerForm onAdded={handleAdded} />
-      </section>
+        {/* SEO */}
+        <SEO
+          title="Fish Owners Community | Lovely Fish Aquarium"
+          description="Join the Lovely Fish Aquarium community! Share your fish, aquarium tips, and connect with other aquarium enthusiasts in New Zealand."
+        />
 
-      <section>
-        <FishOwnersList refresh={refreshList} />
-      </section>
-    </div>
+        <h1>Fish Owners Community</h1>
+
+        <section>
+          <FishOwnerForm onAdded={handleAdded} />
+        </section>
+
+        <section>
+          <FishOwnersList refresh={refreshList} />
+        </section>
+      </div>
+    </>
   );
 }
 

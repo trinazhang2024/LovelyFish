@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import api from '../API/axios';
 import { useCart } from '../contexts/CartContext';
 import ProductList from '../components/ProductList/ProductList';
-import { Helmet } from 'react-helmet';
+import SEO from '.././components/SEO';
 import './Products.css';
 
 //Helper function: generate SEO keywords from product List
@@ -58,20 +58,13 @@ const Products = () => {
   return (
     <>
       {/* SEO Section */}
-      {/* Added Helmet for title, description, keywords */}
-      <Helmet>
+      <SEO
+        title={`All Products | Lovely Fish Aquarium`}
+        description={`Browse our aquarium products including filters, heaters, pumps, LED lights, and more. Page ${page} of ${totalPages}.`}
+      // Optional: if you want, you can add page-specific URL
+      //url={`https://lovelyfishaquarium.co.nz/products?page=${page}`}
+      />
 
-        <title>All Products | Lovely Fish Aquarium</title>
-
-        <meta
-          name="description"
-          content={`Browse our aquarium products including filters, heaters, pumps, LED lights, and more. Page ${page} of ${totalPages}.`} />
-
-        <meta
-          name="keywords"
-          content={generateKeywords(products)} />
-
-      </Helmet>
 
       <div className="products-container">
         {/* <h1>All Products</h1> */}

@@ -164,11 +164,10 @@ export default function ProductsAdminPage() {
 
   // -------------------- Edit Product --------------------
   const handleEdit = (product) => {
-    //const urls = Array.isArray(product.imageUrls) ? product.imageUrls : product.imageUrls ? [product.imageUrls] : [];
-    //const urls = Array.isArray(product.imageUrls) ? [...product.imageUrls] : [];
-    const UPLOADS_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS; // get from  .env 
+   
+    //const UPLOADS_BASE_URL = process.env.REACT_APP_API_BASE_UPLOADS; // get from  .env 
     const urls = Array.isArray(product.imageUrls)
-  ? product.imageUrls.map(url => url.replace(UPLOADS_BASE_URL, "")) // If the backend returns a full URL, it can be retained.
+  ? product.imageUrls.map(fileName => `${fileName}`)
   : [];
 
 

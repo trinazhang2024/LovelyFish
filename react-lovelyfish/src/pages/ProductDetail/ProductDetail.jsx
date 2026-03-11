@@ -4,19 +4,32 @@ import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import api from '../../API/axios';
-import { Helmet } from 'react-helmet'; //Added for SEO
+import SEO from '../../components/SEO'; // ADD global SEO component
+import { Helmet } from 'react-helmet-async';// ADD Helmet for structured data JSON-LD
 import './ProductDetail.css';
 
-// Helper function: generate SEO keywords from product title
-// Below function is new added
-const generateKeywords = (title) => {
-  if (!title) return "";
-  const words = title.split(/[\s,]+/); // Split by sppace or comma
-  const filtered = words.filter(w => w.length > 2); // Filter out too short words
-  const unique = Array.from(new Set(filtered)); // Remove duplicates
-  const extraKeywords = ["filter", "heater", "water pump", "air pump", "sponge", "filtration", "LED light"];
-  return [...unique, ...extraKeywords].join(", ");
-};
+// NEW: Generate Google Product Structured Data
+// const structuredData = product ? {
+//   "@context": "https://schema.org/",
+//   "@type": "Product",
+//   "name": product.title,
+//   "image": product.images?.map(img => img.url) || [],
+//   "description": product.description,
+//   "sku": product.id,
+//   "brand": {
+//     "@type": "Brand",
+//     "name": "Lovely Fish Aquarium"
+//   },
+//   "offers": {
+//     "@type": "Offer",
+//     "url": `https://lovelyfishaquarium.co.nz/product/${product.id}`,
+//     "priceCurrency": "NZD",
+//     "price": product.discountPercent > 0
+//       ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
+//       : product.price,
+//     "availability": "https://schema.org/InStock"
+//   }
+// } : null;
 
 const ProductDetail = () => {
   const { id } = useParams(); // Get product ID from URL
@@ -60,21 +73,23 @@ const ProductDetail = () => {
 
   return (
     <>
-      {/* SEO Section */}
-      {/* Added Helmet for title, description, keywords. */}
+      <SEO
+        title={`${product.title} | Lovely Fish Aquarium`}
+        description={
+          product.description
+            ? product.description.substring(0, 160)
+            : `${product.title} - High quality aquarium equipment for fish tanks in New Zealand.`
+        }
+      />
+
+      {/* NEW: Product Structured Data for Google Rich Results */}
+      {/* {structuredData && (
       <Helmet>
-        <title>{product.title} | Lovely Fish Aquarium</title>
-        <meta
-          name="description"
-          content={
-            product.description
-              ? product.description.substring(0, 150)
-              : "High quality aquarium products."
-          } />
-        <meta
-          name="keywords"
-          content={generateKeywords(product.title)} />
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
       </Helmet>
+    )} */}
 
       <div className="product-detail">
         {/* Breadcrumb navigation */}
@@ -170,3 +185,29 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+
+// When google get this：
+
+// https://lovelyfishaquarium.co.nz/product/123
+
+// Google will see：
+
+// Product Name
+// Price: $39.99
+// Currency: NZD
+// Availability: In Stock
+// Images
+// Description
+// Brand
+
+// the search outcome will be：
+
+// Aquarium Heater 300W
+// $39.99 · In stock
+// Lovely Fish Aquarium
+// ⭐⭐⭐⭐☆
+
+// this is named as Rich Results
+
+// the click will be increased.

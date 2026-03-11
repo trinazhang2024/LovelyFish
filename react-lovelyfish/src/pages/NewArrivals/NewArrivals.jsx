@@ -1,7 +1,7 @@
 // src/pages/NewArrivals/NewArrivals.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet'; // For SEO
+import SEO from '../../components/SEO'
 import { useCart } from '../../contexts/CartContext';
 import api from '../../API/axios';
 import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
@@ -78,14 +78,12 @@ function NewArrivals() {
 
   return (
     <>
-      {/* ---------------- SEO ---------------- */}
-      <Helmet>
-        <title>LovelyFishAquarium | New Arrivals</title>
-        <meta
-          name="description"
-          content="Explore the latest aquarium equipment, fish tanks, and supplies at LovelyFishAquarium. Check out our new arrivals and shop online in New Zealand."
-        />
-      </Helmet>
+      {/* ⭐ SEO */}
+      <SEO
+        title="New Aquarium Products | Lovely Fish Aquarium"
+        description="Discover the latest aquarium equipment, fish tanks, filters, heaters and accessories at Lovely Fish Aquarium. Shop our newest arrivals in New Zealand."
+      />
+
       <Container className="newarrivals-section mb-4">
         {/* Section header */}
         <div className="newarrivals-header mb-3">
@@ -120,7 +118,8 @@ function NewArrivals() {
                           variant="top"
                           src={product.mainImageUrl}
                           className="na-img"
-                          alt={`Image of ${product.title}`} //SEO-friendly alt
+                          alt={`${product.title} aquarium product`} //SEO-friendly alt
+                          loading='lazy'
                         />
                       </Link>
                       <Card.Body className="d-flex flex-column">

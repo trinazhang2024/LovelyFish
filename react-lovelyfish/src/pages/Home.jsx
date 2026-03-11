@@ -7,6 +7,7 @@ import ProductList from '../components/ProductList/ProductList';
 import Reviews from "../components/Reviews/Reviews";
 import { useCart } from '../contexts/CartContext';
 import api from '../API/axios';
+import SEO from '.././components/SEO';
 
 
 function Home() {
@@ -25,7 +26,13 @@ function Home() {
     }, []);
 
     return (
-        
+        <>
+            {/* ---------- SEO ---------- */}
+            <SEO
+                title="Lovely Fish Aquarium | Your One-Stop Aquarium Shop in NZ"
+                description="Lovely Fish Aquarium offers high-quality aquarium equipment, fish tank accessories, filters, pumps, and aquarium supplies in New Zealand."
+
+            />
             <div>
                 {/* Carousel banner component */}
                 <Carousel />
@@ -47,8 +54,8 @@ function Home() {
                 {/* Customer reviews section */}
                 <Reviews />
             </div>
-            
-        
+        </>
+
     );
 }
 
