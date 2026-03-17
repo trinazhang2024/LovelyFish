@@ -1,3 +1,10 @@
-# https://www.robotstxt.org/robotstxt.html
+
+# robots.txt for LovelyFishAquarium
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+
+Allow: /
+
+Sitemap: https://www.lovelyfishaquarium.co.nz/sitemap.xml
