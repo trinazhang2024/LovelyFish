@@ -3,23 +3,36 @@
   background-position: center center;
   background-repeat: no-repeat;
   width: 100%;
+  height: clamp(240px, 38vw, 500px);
 }
 
 @media (max-width: 768px) {
   .carousel-item {
-    height: 250px;
+    height: clamp(210px, 48vw, 300px);
   }
 }
 
 @media (min-width: 768px) {
   .carousel-item {
-    height: 400px;
+    height: clamp(320px, 42vw, 460px);
   }
 }
 
 @media (min-width: 900px) {
   .carousel-item {
-    height: 500px;
+    height: clamp(380px, 36vw, 500px);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .carousel-item {
+    height: clamp(190px, 58vw, 250px);
+    background-position: center top;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 12%;
   }
 }
 

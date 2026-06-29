@@ -26,7 +26,8 @@
 /* Search input field styling */
 .navbar .form-control {
   border: 1.5px solid #189AB4;
-  min-width: 250px;
+  width: 100%;
+  min-width: 0;
   border-radius: 20px;
   padding: 8px 20px;
   color: #05445E;
@@ -65,8 +66,10 @@
 /* Cart Icon */
 .cart-icon {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   color: inherit;
+  margin-left: 12px;
 }
 
 /* Badge for cart item count */
@@ -125,4 +128,93 @@
 .settings-dropdown .dropdown-divider {
   margin: 0.5rem 0;
   border-top: 1px solid #e9ecef;
+}
+
+@media (min-width: 992px) {
+  .navbar .form-control {
+    min-width: 220px;
+  }
+}
+
+@media (max-width: 1199.98px) and (min-width: 992px) {
+  .navbar .container {
+    max-width: 100%;
+  }
+
+  .navbar-nav .nav-item:not(:last-child) {
+    margin-right: 4px;
+  }
+
+  .navbar .nav-link {
+    font-size: 0.92rem;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+  }
+
+  .navbar .form-control {
+    min-width: 170px;
+  }
+
+  .navbar .btn-outline-success {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .navbar .navbar-collapse {
+    padding-top: 12px;
+  }
+
+  .navbar-nav .nav-item:not(:last-child) {
+    margin-right: 0;
+  }
+
+  .navbar .nav-link {
+    padding: 0.55rem 0;
+  }
+
+  .navbar form.d-flex {
+    width: 100%;
+    gap: 8px;
+    margin: 10px 0;
+  }
+
+  .navbar .btn-outline-success {
+    margin-left: 0;
+    flex: 0 0 auto;
+  }
+
+  .settings-dropdown .dropdown-menu {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+    margin-top: 4px;
+  }
+
+  .cart-icon {
+    width: max-content;
+    margin: 8px 0 0;
+    padding: 6px 0;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .navbar .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .navbar-brand img {
+    max-width: 150px;
+    height: auto;
+  }
+
+  .navbar form.d-flex {
+    flex-wrap: wrap;
+  }
+
+  .navbar .btn-outline-success {
+    width: 100%;
+  }
 }
