@@ -6,6 +6,14 @@
   height: clamp(240px, 38vw, 500px);
 }
 
+@media (max-width: 1199.98px) {
+  .carousel {
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}
+
 @media (max-width: 768px) {
   .carousel-item {
     height: clamp(210px, 48vw, 300px);
@@ -14,13 +22,13 @@
 
 @media (min-width: 768px) {
   .carousel-item {
-    height: clamp(320px, 42vw, 460px);
+    height: clamp(340px, 46vw, 480px);
   }
 }
 
 @media (min-width: 900px) {
   .carousel-item {
-    height: clamp(380px, 36vw, 500px);
+    height: clamp(410px, 40vw, 500px);
   }
 }
 

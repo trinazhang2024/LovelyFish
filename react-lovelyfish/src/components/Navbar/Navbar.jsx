@@ -39,7 +39,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-xl bg-body-tertiary">
       <div className="container">
         {/* Logo */}
         <Link className="navbar-brand" to="/">

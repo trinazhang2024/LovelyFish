@@ -130,13 +130,13 @@
   border-top: 1px solid #e9ecef;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .navbar .form-control {
     min-width: 220px;
   }
 }
 
-@media (max-width: 1199.98px) and (min-width: 992px) {
+@media (min-width: 1200px) and (max-width: 1399.98px) {
   .navbar .container {
     max-width: 100%;
   }
@@ -161,7 +161,13 @@
   }
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 1199.98px) {
+  .navbar-brand img {
+    width: clamp(165px, 24vw, 190px);
+    max-width: 100%;
+    height: auto;
+  }
+
   .navbar .navbar-collapse {
     padding-top: 12px;
   }
@@ -206,7 +212,7 @@
   }
 
   .navbar-brand img {
-    max-width: 150px;
+    width: clamp(155px, 46vw, 175px);
     height: auto;
   }
 
