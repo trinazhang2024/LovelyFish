@@ -1,63 +1,68 @@
 
 .recommend {
-  padding: 20px; /* Section padding */
+  padding: 28px 16px;
 }
 
 /* Section title */
 .recommend h3 {
-  font-size: 1.5rem;       /* Font size */
-  margin-bottom: 1rem;     /* Spacing below title */
-  font-weight: 600;        /* Semi-bold */
+  font-size: 1.45rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #12384a;
 }
 
 /* Recommendation list container */
 .recommend ul {
-  list-style: none;         /* Remove default bullets */
-  padding: 0;               /* Remove default padding */
-  display: flex;            /* Flex layout for cards */
-  flex-wrap: wrap;          /* Wrap to next line if needed */
-  gap: 12px;                /* Space between items */
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
 }
 
 /* Individual recommendation item */
 .recommend li {
-  background-color: #f2f2f2;                /* Light gray background */
-  padding: 8px 14px;                        /* Inner spacing */
-  border-radius: 6px;                       /* Rounded corners */
+  background-color: #fff;
+  border: 1px solid #dbe8ef;
+  padding: 10px 16px;
+  border-radius: 6px;
   transition: transform 0.3s ease, 
-              box-shadow 0.3s ease;        /* Smooth hover effect */
+              box-shadow 0.3s ease;
 }
 
 /* Hover effect for recommendation item */
 .recommend li:hover {
-  transform: translateY(-3px);              /* Lift effect */
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);  /* Shadow */
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
 /* Recommendation link style */
 .recommend a {
-  text-decoration: none;   /* Remove underline */
-  color: #333;             /* Dark text */
-  font-weight: 500;        /* Medium font weight */
+  text-decoration: none;
+  color: #12384a;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 
 /* ===== Responsive adjustments ===== */
 @media (max-width: 768px) {
   .recommend {
-    padding: 10px;         /* Reduce padding on small screens */
+    padding: 24px 12px;
   }
 
   .recommend h3 {
-    font-size: 1.2rem;     /* Smaller font */
-    text-align: center;    /* Center title */
+    font-size: 1.25rem;
+    text-align: center;
   }
 
   .recommend ul {
-    justify-content: center; /* Center list items */
+    justify-content: center;
   }
 
   .recommend li {
-    width: auto;           /* Width adjusts to content */
-    text-align: center;    /* Center text inside each item */
+    text-align: center;
   }
 }

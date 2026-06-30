@@ -33,14 +33,15 @@ const ProductList = ({ products, limit, addToCart, addingIds }) => {
       </div>
 
       {/* Grid of ProductCards */}
-      <div className="products-grid">
+      <div className="products-grid row g-4 justify-content-center">
         {displayProducts.map(product => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            addToCart={addToCart}   // Use parent-provided addToCart
-            addingIds={addingIds}   // Pass current addingIds for loading indication
-          />
+          <div key={product.id} className="col-10 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
+            <ProductCard
+              product={product}
+              addToCart={addToCart}   // Use parent-provided addToCart
+              addingIds={addingIds}   // Pass current addingIds for loading indication
+            />
+          </div>
         ))}
       </div>
     </div>

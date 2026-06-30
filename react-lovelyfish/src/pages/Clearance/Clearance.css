@@ -1,14 +1,27 @@
 .clearance-section .clearance-card {
+  border: 1px solid #dbe8ef;
   border-radius: 0.5rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
   height: 100%;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .clearance-section .clearance-header {
   color: #fff;
+}
+
+.clearance-section .clearance-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.clearance-section .clearance-grid {
+  justify-content: center;
 }
 
 .clearance-section .clearance-card:hover {
@@ -27,7 +40,8 @@
 .clearance-section .clearance-title {
   font-size: 1rem;
   font-weight: 600;
-  min-height: 50px;
+  min-height: 40px;
+  line-height: 20px;
   margin-bottom: 0.5rem;
 
   /* default: decktop 2rows, more will show ... */
@@ -48,6 +62,7 @@
   font-size: 1.2rem;
   color: #dc3545;
   font-weight: 600;
+  min-height: 28px;
   margin: 0.5rem 0;
 }
 
@@ -58,8 +73,12 @@
 }
 
 .clearance-section .clearance-img {
-  height: 300px;
-  object-fit: cover;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 220px;
+  padding: 14px;
+  background-color: #f6fbfd;
+  object-fit: contain;
 }
 
 .clearance-section .clearance-badge {
@@ -68,6 +87,16 @@
   left: 10px;
   font-size: 0.8rem;
   padding: 0.4rem 0.6rem;
+}
+
+.clearance-section .clearance-actions .buy-button,
+.clearance-section .clearance-actions .btn {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  min-height: 44px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
 }
 
 .clearance-loadmore {
@@ -87,20 +116,24 @@
 
 /* Responsive  */
 @media (max-width: 576px) {
+  .clearance-section {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .clearance-section .clearance-header h2 {
+    font-size: 1.45rem;
+  }
+
+  .clearance-section .clearance-card {
+    max-width: 320px;
+  }
+
+  .clearance-section .clearance-img {
+    min-height: 210px;
+  }
+
   .clearance-section .clearance-actions {
     flex-direction: column;
-  }
-}
-
-@media (max-width: 768px) {
-  .clearance-section .clearance-title {
-    display: block;      /* remore -webkit-box */
-    line-clamp: unset;   /* remore the rows limited */
-    -webkit-box-orient: unset;
-    overflow: visible;
-    text-overflow: unset;
-    white-space: normal;         
-    word-break: break-word;
-    overflow-wrap: break-word;
   }
 }
