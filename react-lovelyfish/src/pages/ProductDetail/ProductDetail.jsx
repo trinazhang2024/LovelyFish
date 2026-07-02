@@ -98,9 +98,9 @@ const ProductDetail = () => {
           <span>{product.title}</span>
         </div>
 
-        <div className="product-container">
+        <div className="product-container row g-4 g-lg-5">
           {/* Left: Main Image */}
-          <div className="product-image-container">
+          <div className="product-image-container col-12 col-lg-6">
             {selectedImage && (
               <img
                 key={selectedImage} // Force re-render to trigger animation when switching images
@@ -128,7 +128,7 @@ const ProductDetail = () => {
           </div>
 
           {/* Right: Product Info */}
-          <div className="product-info-container">
+          <div className="product-info-container col-12 col-lg-6">
             {/* Name */}
             <div className="product-field">
               <span className="field-label">Name:</span>

@@ -2,7 +2,7 @@
 .buy-button {
   height: 48px;
   min-height: 48px;           /* fix the height */
-  min-width: 100px;           /* Minimum width */
+  min-width: 160px;           /* Minimum width */
   white-space: nowrap;        /* Prevent text wrapping */
   display: inline-flex;       /* Flex for centering content */
   align-items: center;        /* Vertical center */
@@ -52,4 +52,11 @@
 /* Keyframes for spinner rotation */
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .buy-button {
+    width: 100%;
+    max-width: 420px;
+  }
 }
